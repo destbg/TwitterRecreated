@@ -1,0 +1,59 @@
+<div class="container-fluid h-100 p-0">
+  <div class="row h-100">
+    <div class="col overflow-hidden h-100 p-0 d-md-block d-none" data-toggle="tooltip" data-placement="bottom"
+      title="not a bird">
+      <div class="cover-img">
+        <div class="align-middle">
+          <h3>Follow your interests.</h3>
+          <h3>Hear what people are talking about.</h3>
+          <h3>Join the conversation.</h3>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center h-100">
+        <img [src]="API_URL + 'img/site-logo.png'" class="h-100 w-auto">
+      </div>
+    </div>
+    <div class="col justify-content-center d-flex align-items-center">
+      <div class="row">
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" formControlName="username" class="form-control"
+              [ngClass]="{ 'is-invalid': f.username.touched && f.username.errors }" />
+            <div *ngIf="f.username.touched && f.username.errors" class="invalid-feedback">
+              <div *ngIf="f.username.errors.required">Username is required</div>
+              <div *ngIf="f.username.value.length < 6">Username needs to be at least 6 characters long</div>
+              <div *ngIf="f.username.value.length > 32">Username can't be more then 32 characters long</div>
+              <div *ngIf="f.username.errors.pattern">Username must contain only letters and numbers</div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" formControlName="password" class="form-control"
+              [ngClass]="{ 'is-invalid': f.password.touched && f.password.errors }" />
+            <div *ngIf="f.password.touched && f.password.errors" class="invalid-feedback">
+              <div *ngIf="f.password.value.length < 12">Password needs to be at least 12 characters long</div>
+              <div *ngIf="f.password.value.length > 64">Password can't be more then 64 characters long</div>
+              <div *ngIf="f.password.errors.required">Password is required</div>
+              <div *ngIf="f.password.errors.pattern">
+                Password must contain 1 lower case and upper case character and a number
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <re-captcha (resolved)="resolved($event)" [siteKey]="key"></re-captcha>
+          </div>
+          <button [disabled]="loading || loginForm.invalid || !response" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Login
+          </button>
+          <a [routerLink]="'/auth/register'" class="float-right">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Go to register
+          </a>
+          <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

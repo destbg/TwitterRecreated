@@ -1,0 +1,59 @@
+<div class="position-relative" style="top: -10px">
+  <button class="position-relative" (click)="closeDialog()" style="left: -10px">
+    <img [src]="API_URL + 'img/close.png'" height="30">
+  </button>
+  <button class="btn btn-info position-absolute" (click)="onSubmit()" style="top: -5px;right: -10px">
+    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+    Save
+  </button>
+</div>
+<div class="list-group position-relative" style="left: -24px;width: 109.1%;overflow-y: auto">
+  <div class="list-group-item p-0">
+    <div class="row-5">
+      <div id="thumbnail" class="d-flex justify-content-center" #thumbnail>
+        <label for="thumbnailUpload" class="pointer position-absolute align-self-center btn btn-outline-info">
+          <img [src]="API_URL + 'img/camera-outline.png'" height="24">
+          <input type="file" id="thumbnailUpload" style="display:none"
+            (change)="handleFileInput($event.target.files, true)">
+        </label>
+        <img id="thumbnail-img" #thumbnailimg [src]="thumbnailImg" alt=" ">
+      </div>
+      <div style="width: 100px;height: 100px" class="mt-n5 ml-3 fit-img d-inline-block position-relative">
+        <div style="position: absolute;height:100%;width:100%;top:0;bottom:0;left:0;right:0;background-color:black">
+        </div>
+        <img [src]="userImg" alt=" " class="position-relative">
+      </div>
+      <label for="imageUpload" class="pointer position-relative d-block btn btn-outline-info"
+        style="top: -75px;left:40px;max-width: 50px">
+        <img [src]="API_URL + 'img/camera-outline.png'" height="24">
+        <input type="file" id="imageUpload" style="display:none" (change)="handleFileInput($event.target.files, false)">
+      </label>
+    </div>
+    <form class="p-3" [formGroup]="editProfileDialog" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" formControlName="name" class="form-control"
+          [ngClass]="{ 'is-invalid': f.name.touched && f.name.invalid }" />
+        <div class="float-right">
+          <span>{{f.name.value.length}} / 50</span>
+        </div>
+        <div *ngIf="f.name.touched && f.name.invalid" class="invalid-feedback">
+          <div *ngIf="f.name.value.length < 6">Name needs to be at least 6 characters long</div>
+          <div *ngIf="f.name.value.length > 50">Name can't be more then 50 characters long</div>
+          <div *ngIf="f.name.errors.pattern">Name doesn't match with pattern</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="bio">Bio</label>
+        <textarea formControlName="bio" class="form-control"></textarea>
+        <div class="float-right">
+          <span>{{f.bio.value.length}} / 250</span>
+        </div>
+        <div *ngIf="f.bio.touched && f.bio.invalid" class="invalid-feedback">
+          <div *ngIf="f.bio.value.length > 250">Bio can't be more then 250 characters long</div>
+          <div *ngIf="f.bio.errors.pattern">Bio doesn't match with pattern</div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

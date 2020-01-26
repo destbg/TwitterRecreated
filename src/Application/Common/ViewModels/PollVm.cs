@@ -13,4 +13,10 @@ namespace Application.Common.ViewModels
             profile.CreateMap<PollOption, PollVm>()
                 .ForMember(f => f.Votes, f => f.MapFrom(s => s.Votes.Count));
     }
+
+    public class PollVoteVm
+    {
+        public string Option { get; set; }
+        public long PostId { get; set; }
+    }
 }

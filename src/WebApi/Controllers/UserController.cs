@@ -17,21 +17,15 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{username}")]
-        public async Task<IActionResult> GetUserByName(string username)
-        {
-            var result = await Mediator.Send(new GetUserQuery { Username = username });
-            return Ok(result);
-        }
+        public async Task<IActionResult> GetUserByName(string username) =>
+            Ok(await Mediator.Send(new GetUserQuery { Username = username }));
 
         [HttpGet("Post/{username}/{skip?}")]
-        public async Task<IActionResult> GetUserPosts(string username, DateTime? skip)
-        {
-            var result = await Mediator.Send(new GetUserPostsQuery
+        public async Task<IActionResult> GetUserPosts(string username, DateTime? skip) =>
+            Ok(await Mediator.Send(new GetUserPostsQuery
             {
                 Username = username,
                 Skip = skip ?? _date.MinDate
-            });
-            return Ok(result);
-        }
+            }));
     }
 }

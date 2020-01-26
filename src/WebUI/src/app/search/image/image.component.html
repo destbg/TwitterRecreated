@@ -1,0 +1,4 @@
+<app-post-list *ngIf="posts && posts.length !== 0" [posts]="posts"></app-post-list>
+<div class="text-center mt-5" *ngIf="posts && posts.length === 0">
+  <h3>Search yielded no image posts</h3>
+</div>

@@ -1,0 +1,45 @@
+<div *ngIf="optionsOverlay">
+  <div #div class="overlay-div"></div>
+  <div #list style="z-index: 2000" class="position-absolute list-group">
+    <button *ngIf="username !== post.user.username" class="list-group-item list-group-item-action">
+      <span>Stop Following @{{post.user.username}}</span>
+    </button>
+    <button *ngIf="username !== post.user.username" class="list-group-item list-group-item-action">
+      <span>Block @{{post.user.username}}</span>
+    </button>
+    <button *ngIf="username !== post.user.username" class="list-group-item list-group-item-action">
+      <span>Report Post</span>
+    </button>
+    <button (click)="deletePost();closeOverlay()" *ngIf="username === post.user.username"
+      class="list-group-item list-group-item-action">
+      <span>Delete Post</span>
+    </button>
+  </div>
+</div>
+<div *ngIf="replyOverlay">
+  <div #div class="overlay-div"></div>
+  <div #list style="z-index: 2000" class="position-absolute list-group">
+    <button (click)="repostWithComment();closeOverlay()" class="list-group-item list-group-item-action">
+      <span>Repost with comment</span>
+    </button>
+    <button (click)="repostPost();closeOverlay()" class="list-group-item list-group-item-action">
+      <span>Repost</span>
+    </button>
+  </div>
+</div>
+<div *ngIf="userOptionsOverlay">
+  <div #div class="overlay-div"></div>
+  <div #list style="z-index: 2000" class="position-absolute list-group">
+    <button *ngIf="router.url !== '/bookmark'" (click)="addToBookmarks();closeOverlay()"
+      class="list-group-item list-group-item-action">
+      <span>Add to bookmarks</span>
+    </button>
+    <button *ngIf="router.url === '/bookmark'" (click)="removeBookmark();closeOverlay()"
+      class="list-group-item list-group-item-action">
+      <span>Remove bookmark</span>
+    </button>
+    <button (click)="copyLinkToPost();closeOverlay()" class="list-group-item list-group-item-action">
+      <span>Copy link to post</span>
+    </button>
+  </div>
+</div>

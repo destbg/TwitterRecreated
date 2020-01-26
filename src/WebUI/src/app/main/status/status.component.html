@@ -1,0 +1,73 @@
+<div class="row m-0">
+  <div id="middle" class="col-xl-5 col-md-7 offset-xl-3 offset-md-1">
+    <div class="list-group mt-50px">
+      <div class="list-group-item p-2" *ngIf="post">
+        <div class="position-absolute" style="right: 10px;z-index: 10;" onclick="event.stopPropagation()">
+          <button (click)="openOptions($event.target)">
+            <img [src]="API_URL + 'img/chevron-down.png'" height="24">
+          </button>
+        </div>
+        <div class="row">
+          <div style="width: 46px;height: 46px" class="fit-img ml-4">
+            <img [src]="API_URL + 'avatar/' + post.user.image" alt=" ">
+          </div>
+          <span class="col">
+            <a [routerLink]="'/' + post.user.username">
+              <b>{{post.user.displayName}}</b>
+            </a>
+            <p class="text-muted m-0">@{{post.user.username}}</p>
+          </span>
+        </div>
+        <div class="row m-2">
+          <h4>
+            <app-post-content [content]="post.content"></app-post-content>
+          </h4>
+        </div>
+        <app-post-pinned [post]="post"></app-post-pinned>
+        <div class="row">
+          <p data-toggle="tooltip" data-placement="top" title={{post.postedOn}} class="ml-4 mb-0 text-muted">
+            {{post.postedOn | date:'MM/dd/yyyy h:mm a'}}
+          </p>
+        </div>
+        <hr>
+        <div class="row">
+          <span class="ml-4">{{post.reposts}}</span>
+          <span class="text-muted ml-1">re-posts</span>
+          <span class="ml-3">{{post.likes}}</span>
+          <span class="text-muted ml-1">likes</span>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-sm offset-1">
+            <button (click)="replyToUser()">
+              <img [src]="API_URL + 'img/message-text-outline.png'" height="24">
+            </button>
+          </div>
+          <div class="col">
+            <button (click)="openReplyOverlay($event.target)">
+              <img [src]="API_URL + 'img/twitter-retweet.png'" height="24">
+            </button>
+          </div>
+          <div class="col">
+            <button style="float: left;" class="d-inline mr-n5 ml-n5 mt-n4 mb-n5" (click)="likePost()"
+              [disabled]="this.username === this.post.user.username">
+              <div class="heart" (animationend)="likeAnimationEnd()" #heart></div>
+            </button>
+          </div>
+          <div class="col">
+            <button>
+              <img [src]="API_URL + 'img/arrow-expand-up.png'" height="24">
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="list-group-item text-center" *ngIf="!post">
+        <h3 class="mt-5 mb-5">This post doesn't exist or has been deleted</h3>
+      </div>
+      <app-post-list *ngIf="posts && posts.length !== 0 && post" [posts]="posts" [displayTop]="false"></app-post-list>
+    </div>
+  </div>
+  <app-top [text]="'Post'" id="middle-top" class="col-xl-5 col-md-7 list-group offset-md-1 offset-xl-3 position-fixed">
+  </app-top>
+  <app-right-side></app-right-side>
+</div>

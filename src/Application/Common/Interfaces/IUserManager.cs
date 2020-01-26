@@ -11,6 +11,7 @@ namespace Application.Common.Interfaces
         Task<(Result Result, AuthVm Auth)> CreateUserAsync(string userName, string email, string password);
         Task<Result> DeleteUserAsync(string userId);
         Task<(Result Result, AppUser User)> GetUserByUsername(string username);
+        Task<(Result Result, AppUser User)> GetUserById(string id);
         string NormalizeName(string name);
     }
 }

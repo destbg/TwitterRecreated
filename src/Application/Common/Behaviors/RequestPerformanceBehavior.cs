@@ -26,10 +26,10 @@ namespace Application.Common.Behaviors
 
             timer.Stop();
 
-            var name = typeof(TRequest).Name;
+            var name = typeof(TResponse).Name;
 
-            _logger.LogInformation("Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId}",
-                name, timer.ElapsedMilliseconds, _currentUserService.UserId);
+            _logger.LogInformation("Response [{Name}] ({ElapsedMilliseconds} milliseconds) {@UserId}",
+                name, timer.ElapsedMilliseconds, _currentUserService.UserId ?? _currentUserService.Ip);
 
             return response;
         }

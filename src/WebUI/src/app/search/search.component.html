@@ -1,0 +1,34 @@
+<app-nav-menu></app-nav-menu>
+<div class="row m-0">
+  <div id="middle" class="col-xl-5 col-md-7 offset-xl-3 offset-md-1">
+    <div class="list-group mt-50px">
+      <div class="list-group-item p-0">
+        <div class="m-2">
+          <input #search class="form-control" type="text" placeholder="Search" (keyup)="searchInput($event)" />
+        </div>
+        <div class="row mt-3 ml-1 mr-1">
+          <ul class="nav nav-tabs w-100">
+            <li class="nav-item w-25 m-0 p-0 text-center">
+              <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['./']">Popular</a>
+            </li>
+            <li class="nav-item w-25 m-0 p-0 text-center">
+              <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['user']">
+                People
+              </a>
+            </li>
+            <li class="nav-item w-25 m-0 p-0 text-center">
+              <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['image']">Images</a>
+            </li>
+            <li class="nav-item w-25 m-0 p-0 text-center">
+              <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['video']">Videos</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <app-top [text]="'Search'" id="middle-top"
+    class="col-xl-5 col-md-7 list-group offset-md-1 offset-xl-3 position-fixed"></app-top>
+  <app-right-side [hasSearch]="false"></app-right-side>
+</div>

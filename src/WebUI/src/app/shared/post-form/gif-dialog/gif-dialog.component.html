@@ -1,0 +1,25 @@
+<button (click)="closeDialog()" style="position: relative;top: -10px;left: -10px">
+  <img [src]="API_URL + 'img/close.png'" height="30">
+</button>
+<hr style="position: relative;right: -24px;left: -24px;margin-top: 0;width: 106.6%">
+<input class="form-control mb-2" type="text" placeholder="Search" [disabled]="!showSearch" />
+<div class="row" style="overflow-y: scroll;height: calc(100% - 100px)" *ngIf="gifCategories">
+  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 p-2 hover-image" style="height: 100px;text-align: center"
+    *ngFor="let gif of gifCategories" (click)="goToCategory(gif)">
+    <img [src]="gif.image" class="img-responsive rounded w-100 h-100" style="object-fit: cover">
+    <div class="overlay"></div>
+    <p
+      style="text-shadow: 0 1px 1px rgba(0,0,0,.6);position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%)">
+      {{gif.tag}}</p>
+  </div>
+</div>
+<div class="row" style="overflow-y: scroll;height: calc(100% - 100px)" *ngIf="gifs">
+  <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 hover-image p-2" style="height: 100px;text-align: center"
+    *ngFor="let gif of gifs" (click)="selectGif(gif)">
+    <img [src]="gif.tinyGif" class="img-responsive rounded w-100 h-100" style="object-fit: cover">
+    <div class="overlay"></div>
+  </div>
+</div>
+<div *ngIf="!gifCategories && !gifs" style="height: calc(100% - 100px)" class="center-content">
+  <mat-spinner></mat-spinner>
+</div>

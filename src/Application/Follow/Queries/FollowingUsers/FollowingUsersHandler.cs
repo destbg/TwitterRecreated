@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Follow.Queries.FollowingUsers
 {
-    public class FollowingUsersHandler : IRequestHandler<FollowingUsersQuery, IEnumerable<string>>
+    public class FollowingUsersHandler : IRequestHandler<FollowingUsersQuery, IReadOnlyList<string>>
     {
         private readonly IRepository<UserFollow> _userFollow;
         private readonly ICurrentUserService _currentUser;
@@ -21,7 +21,7 @@ namespace Application.Follow.Queries.FollowingUsers
             _currentUser = currentUser;
         }
 
-        public async Task<IEnumerable<string>> Handle(FollowingUsersQuery request, CancellationToken cancellationToken) =>
+        public async Task<IReadOnlyList<string>> Handle(FollowingUsersQuery request, CancellationToken cancellationToken) =>
             await _userFollow.GetAll()
                 .Where(w => w.FollowingId == _currentUser.UserId)
                 .Select(f => f.FollowingId)

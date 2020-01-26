@@ -17,9 +17,9 @@ namespace Application.Auth.Commands.LoginAuth
                 .MaximumLength(64)
                 .NotEmpty();
 
-            //RuleFor(f => f.Recaptcha)
-            //    .Matches("[0-9a-zA-Z_-]{40}")
-            //    .NotEmpty();
+            RuleFor(f => f.Recaptcha)
+                .Matches("[0-9a-zA-Z_-]{40}")
+                .NotEmpty();
         }
     }
 }

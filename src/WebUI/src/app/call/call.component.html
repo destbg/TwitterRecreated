@@ -1,0 +1,28 @@
+<div class="d-flex justify-content-between position-absolute bg-white text-black-50 align-items-center"
+  style="top: 10px;left: 10px; right: 10px;z-index: 2000" *ngIf="hasRequest">
+  <div style="width: 32px;height: 32px" class="fit-img">
+    <img [src]="API_URL + 'avatar/' + callRequest.user.image" alt=" ">
+  </div>
+  <span class="col">
+    <b>{{callRequest.user.displayName}}</b>
+    <p class="text-muted m-0">@{{callRequest.user.username}}</p>
+  </span>
+  <div>
+    <button (click)="denyRequest()" class="rounded-circle bg-danger">
+      <img [src]="API_URL + 'img/phone-hangup.png'">
+    </button>
+    <button (click)="acceptRequest()" class="rounded-circle bg-success">
+      <img [src]="API_URL + 'img/phone.png'">
+    </button>
+  </div>
+</div>
+<div class="card position-absolute t r l b" *ngIf="isInCall" [hidden]="peerStorage.isRequestingCall">
+  <video #myVideo style="max-height: 100px;"></video>
+  <video #otherVideo style="max-height: 100px;"></video>
+</div>
+<div *ngIf="peerStorage.isRequestingCall"
+  class="position-absolute t r l b d-flex justify-content-center align-items-center">
+  <span>You requested a call, awaiting response</span>
+  <mat-spinner></mat-spinner>
+  <span *ngIf="notOnline">User is not online right now to answer your call</span>
+</div>

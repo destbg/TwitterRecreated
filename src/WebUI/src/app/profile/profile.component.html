@@ -1,0 +1,77 @@
+<app-nav-menu *ngIf="username"></app-nav-menu>
+<div class="row m-0">
+  <div id="middle" class="col-xl-5 col-md-7 offset-xl-3 offset-md-1">
+    <div class="list-group mt-50px">
+      <div class="list-group-item p-0" *ngIf="user">
+        <div class="row-5">
+          <div id="thumbnail" #thumbnail>
+            <img id="thumbnail-img" #thumbnailimg [src]="API_URL + 'thumbnail/' + user.thumbnail" alt=" ">
+          </div>
+          <div style="width: 100px;height: 100px" class="mt-n5 ml-3 fit-img d-inline-block">
+            <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+          </div>
+          <div *ngIf="username && user.username !== username && userLoaded" class="float-right m-2">
+            <button class="btn btn-{{buttonCss()}}" (click)="followUser()">
+              <span *ngIf="!user.followed">Follow</span>
+              <span *ngIf="user.followed">Unfollow</span>
+            </button>
+          </div>
+          <div *ngIf="username && user.username === username && userLoaded" class="float-right m-2">
+            <button class="btn btn-outline-info" (click)="openSettingsDialog()">
+              <span>Edit profile</span>
+            </button>
+          </div>
+        </div>
+        <div class="row-4 pl-2">
+          <h3 class="m-0"><b>{{user.displayName}}</b></h3>
+          <p class="text-muted mb-2">@{{user.username}}</p>
+          <p>{{user.description}}</p>
+          <div class="row w-50" *ngIf="userLoaded">
+            <div class="col">
+              <span>{{user.following}}</span>
+              <span class="text-muted ml-1">following</span>
+            </div>
+            <div class="col">
+              <span>{{user.followers}}</span>
+              <span class="text-muted ml-1">followers</span>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3 ml-1 mr-1" *ngIf="userLoaded">
+          <ul class="nav nav-tabs w-100">
+            <li class="nav-item w-33 m-0 p-0 text-center">
+              <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['./']">Posts</a>
+            </li>
+            <li class="nav-item w-33 m-0 p-0 text-center">
+              <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['multimedia']">
+                Multimedia
+              </a>
+            </li>
+            <li class="nav-item w-33 m-0 p-0 text-center">
+              <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['liked']">Liked</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <router-outlet *ngIf="userLoaded"></router-outlet>
+    </div>
+  </div>
+  <div id="middle-top" class="col-xl-5 col-md-7 list-group offset-md-1 offset-xl-3 position-fixed">
+    <div class="top-view list-group-item d-flex justify-content-between align-items-center width-50" #topView>
+      <div *ngIf="userLoaded">
+        <button *ngIf="username && !historyStorage.isEmpty()" (click)="historyStorage.navigateBack()">
+          <img [src]="API_URL + 'img/arrow-left.png'" height="24">
+        </button>
+        <span class="ml-3">{{user.username}}</span>
+      </div>
+      <div *ngIf="username && user.username !== username && userLoaded" class="float-right m-2">
+        <button [hidden]="document.documentElement.scrollTop < 250" class="btn btn-{{buttonCss()}}"
+          (click)="followUser()">
+          <span *ngIf="!user.followed">Follow</span>
+          <span *ngIf="user.followed">Unfollow</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <app-right-side *ngIf="username"></app-right-side>
+</div>

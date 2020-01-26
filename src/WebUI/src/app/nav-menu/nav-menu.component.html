@@ -1,0 +1,135 @@
+<div *ngIf="phoneSized && user && showBottom" class="position-fixed" style="top: 6px; left: 6px;z-index: 15;">
+  <button (click)="expandPhoneMenu()">
+    <div style="width: 40px;height: 40px" class="fit-img">
+      <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+    </div>
+  </button>
+</div>
+<div *ngIf="showPhoneMenu && phoneSized" (click)="collapsePhoneMenu()"
+  style="right:0; left: 0; bottom: 0; top: 0;position: fixed; background-color: rgba(0, 0, 0, .2);z-index: 200;">
+</div>
+<div *ngIf="showPhoneMenu && phoneSized" class="phone-menu" #phoneMenu>
+  <button (click)="collapsePhoneMenu()" class="m-2">
+    <div style="width: 50px;height: 50px" class="fit-img">
+      <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+    </div>
+  </button>
+  <div class="ml-2">
+    {{user.email}}
+  </div>
+  <div class="text-muted ml-2">
+    @{{user.username}}
+  </div>
+  <hr>
+  <ul class="navbar-nav mr-auto mt-2">
+    <li class="nav-item m-2">
+      <a class="nav-link" [routerLink]="['/' + user.username]" (click)="collapsePhoneMenu()">
+        <img [src]="API_URL + 'img/account-outline.png'" height="36" />
+        <span style="font-size: 20px" class="ml-2 align-middle nav-text">Profile</span>
+      </a>
+    </li>
+    <li class="nav-item m-2">
+      <a class="nav-link" [routerLink]="['/bookmark']" (click)="collapsePhoneMenu()">
+        <img [src]="API_URL + 'img/bookmark-outline.png'" height="36" />
+        <span style="font-size: 20px" class="ml-2 align-middle nav-text">Bookmarks</span>
+      </a>
+    </li>
+    <li class="nav-item m-2">
+      <a class="nav-link" [routerLink]="['/auth/logout']" (click)="collapsePhoneMenu()">
+        <img [src]="API_URL + 'img/email-outline.png'" height="36" />
+        <span style="font-size: 20px" class="ml-2 align-middle nav-text">Logout</span>
+      </a>
+    </li>
+  </ul>
+  <hr>
+</div>
+<div *ngIf="user && !phoneSized" class="row w-100">
+  <div id="left-side" class="col-2 offset-xl-1 position-fixed" #leftSide>
+    <div class="mt-2">
+      <a [routerLink]="['/']">
+        <img src="favicon.ico" height="36" />
+      </a>
+    </div>
+    <ul class="navbar-nav mr-auto mt-2">
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/']">
+          <img [src]="API_URL + 'img/home.png'" height="36" />
+          <span style="font-size: 20px" class="ml-2 align-middle nav-text d-none d-xl-inline">Home</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/notification']">
+          <img [src]="API_URL + 'img/bell-outline.png'" height="36" />
+          <span style="font-size: 20px" class="ml-2 align-middle nav-text d-none d-xl-inline">Notifications</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/message/']">
+          <img [src]="API_URL + 'img/email-outline.png'" height="36" />
+          <span style="font-size: 20px" class="ml-2 align-middle nav-text d-none d-xl-inline">Message</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/bookmark']">
+          <img [src]="API_URL + 'img/bookmark-outline.png'" height="36" />
+          <span style="font-size: 20px" class="ml-2 align-middle nav-text d-none d-xl-inline">Bookmarks</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/auth/logout']">
+          <img [src]="API_URL + 'img/email-outline.png'" height="36" />
+          <span style="font-size: 20px" class="ml-2 align-middle nav-text d-none d-xl-inline">Logout</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/' + user.username]">
+          <div style="width: 36px;height: 36px" class="fit-img mb-n3 d-inline-block">
+            <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+          </div>
+          <span style="font-size: 20px" class="ml-2 align-middle nav-text d-none d-xl-inline">Profile</span>
+        </a>
+      </li>
+      <li class="nav-item mt-2">
+        <button class="btn btn-info w-75 d-none d-xl-inline" (click)="openPostDialog()">
+          Post
+        </button>
+        <button class="d-xl-none" (click)="openPostDialog()" style="height: 40px">
+          <div class="position-absolute rounded-circle"
+            style="background-color: #3498DB; width: 38px;height: 38px; z-index: -1"></div>
+          <img [src]="API_URL + 'img/pencil-outline.png'" height="36">
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+<div *ngIf="showBottom" class="fixed-bottom w-100 bottom-menu">
+  <ul class="nav nav-tabs w-100">
+    <li class="nav-item w-25 m-0 p-0 d-flex justify-content-center">
+      <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/']">
+        <img [src]="API_URL + 'img/home.png'" height="36" />
+      </a>
+    </li>
+    <li class="nav-item w-25 m-0 p-0 d-flex justify-content-center">
+      <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/search/ ']">
+        <img [src]="API_URL + 'img/magnify.png'" height="36" />
+      </a>
+    </li>
+    <li class="nav-item w-25 m-0 p-0 d-flex justify-content-center">
+      <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/notification']">
+        <img [src]="API_URL + 'img/bell-outline.png'" height="36" />
+      </a>
+    </li>
+    <li class="nav-item w-25 m-0 p-0 d-flex justify-content-center">
+      <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/message']">
+        <img [src]="API_URL + 'img/email-outline.png'" height="36" />
+      </a>
+    </li>
+  </ul>
+</div>
+<div *ngIf="showBottom && showPost" class="position-fixed" style="bottom: 70px;right: 10px;z-index: 100;">
+  <button (click)="openPostDialog()" style="height: 50px;width: 50px;">
+    <div class="position-absolute rounded-circle"
+      style="background-color: #3498DB; width: 48px;height: 48px; z-index: -1"></div>
+    <img [src]="API_URL + 'img/pencil-outline.png'" height="46">
+  </button>
+</div>

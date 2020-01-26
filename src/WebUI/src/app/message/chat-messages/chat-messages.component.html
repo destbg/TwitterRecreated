@@ -1,0 +1,92 @@
+<div class="card h-100" *ngIf="messageStorage.selectedChat">
+  <h3 class="card-header">
+    <button *ngIf="messageStorage.phoneSized" class="d-inline-block text-nowrap overflow-hidden"
+      style="max-width: calc(100% - 150px);text-overflow: ellipsis" (click)="historyStorage.navigateBack()">
+      <img [src]="API_URL + 'img/arrow-left.png'" height="24">
+    </button>
+    <span *ngIf="messageStorage.selectedChat.name" class="ml-2">
+      {{messageStorage.selectedChat.name}}
+    </span>
+    <span *ngIf="!messageStorage.selectedChat.name && getChatUser() as user" class="ml-2">
+      {{user.displayName}}
+    </span>
+    <div class="float-right">
+      <div class="d-inline" *ngIf="!messageStorage.selectedChat.isGroup">
+        <button (click)="callUser()" class="mr-3">
+          <img [src]="API_URL + 'img/phone.png'" height="30">
+        </button>
+        <button (click)="callUser()" class="mr-3">
+          <img [src]="API_URL + 'img/camera-wireless-outline.png'" height="30">
+        </button>
+      </div>
+      <a [routerLink]="['options']">
+        <img [src]="API_URL + 'img/settings-outline.png'" height="30">
+      </a>
+    </div>
+  </h3>
+  <div class="card-body message-box" #messagesDiv>
+    <div class="text-center" *ngIf="messageStorage.hasReachedEnd">
+      Let this be the beginning of something beautiful {{joinUsers()}}
+    </div>
+    <div *ngFor="let message of messageStorage.messages">
+      <div *ngIf="message.user.username !== username" class="row w-100 pl-4 mt-2">
+        <div data-toggle="tooltip" data-placement="top" title={{message.user.displayName}}
+          style="width: 32px;height: 32px" class="fit-img m-2">
+          <img [src]="API_URL + 'avatar/' + message.user.image" alt=" ">
+        </div>
+        <div class="message" [ngStyle]="{ 'background-color': othersColor }">
+          {{message.message}}
+        </div>
+      </div>
+      <div *ngIf="message.user.username === username" class="row w-100 mt-2"
+        style="display: flex; justify-content: flex-end">
+        <div class="message" [ngStyle]="{ 'background-color': selfColor }">
+          {{message.message}}
+        </div>
+        <div data-toggle="tooltip" data-placement="top" title={{message.user.displayName}}
+          style="width: 32px;height: 32px" class="fit-img m-2">
+          <img [src]="API_URL + 'avatar/' + message.user.image" alt=" ">
+        </div>
+      </div>
+      <div class="position-relative d-flex justify-content-end mb-1">
+        <div data-toggle="tooltip" data-placement="top" title={{user.displayName}} style="width: 16px;height: 16px"
+          class="fit-img m-1" *ngFor="let user of message.users">
+          <img [src]="API_URL + 'avatar/' + user.image" alt=" " style="margin-top: -9px;">
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let message of messageStorage.previewMessages">
+      <div class="row w-100 mt-2" style="display: flex; justify-content: flex-end">
+        <div class="message" [ngStyle]="{ 'background-color': selfColor }">
+          {{message.message}}
+        </div>
+        <div style="width: 32px;height: 32px" class="fit-img m-2">
+          <img [src]="API_URL + 'avatar/' + message.image" alt=" ">
+        </div>
+      </div>
+      <div class="position-relative d-flex justify-content-end mb-1">
+        <div style="width: 16px;height: 16px" class="fit-img m-1">
+          <div class="rounded-circle" style="margin-top: -9px;border: aqua solid 2px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer p-0">
+    <div *ngIf="messageStorage.usersTyping" class="position-absolute text-muted" style="margin-top: -30px; left: 10px">
+      {{joinUsersTyping()}} typing...
+    </div>
+    <textarea class="text-input" #textInput (keydown)="keyDown($event)" (input)="textChange()"
+      placeholder="Type a message"></textarea>
+    <div class="d-inline-block position-relative" style="bottom: 10px">
+      <div class="row d-flex justify-content-center">
+        <button (click)="emojiToggle = !emojiToggle" [(emojiPickerIf)]="emojiToggle" [emojiPickerDirection]="'top'"
+          (emojiPickerSelect)="handleSelection($event)" class="mb-1">
+          <img [src]="API_URL + 'img/sticker-emoji.png'" height="24">
+        </button>
+      </div>
+      <div class="row">
+        <button class="btn btn-info" (click)="sendMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>

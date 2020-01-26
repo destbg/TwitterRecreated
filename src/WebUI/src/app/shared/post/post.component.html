@@ -1,0 +1,72 @@
+<button *ngIf="post" (click)="navigateToPost()" class="list-group-item list-group-item-action p-2">
+  <div class="position-absolute" style="right: 10px;z-index: 5;" onclick="event.stopPropagation()">
+    <button (click)="openOptions($event.target)">
+      <img [src]="API_URL + 'img/chevron-down.png'" height="24">
+    </button>
+  </div>
+  <div class="row" *ngIf="displayTop && (post.reply || post.reposters || post.likers)"
+    onclick="event.stopPropagation()">
+    <a class="text-muted ml-5 pl-3 mb-1" *ngIf="post.reposters">
+      <img [src]="API_URL + 'img/twitter-retweet.png'" height="14">
+      <small class="ml-2">Reposted by {{joinReposters()}}</small>
+    </a>
+    <a class="text-muted ml-5 pl-3 mb-1" *ngIf="post.likers && !post.reposters">
+      <img [src]="API_URL + 'img/heart.png'" height="14">
+      <small class="ml-2">Liked by {{joinLikers()}}</small>
+    </a>
+    <a data-toggle="tooltip" data-placement="bottom" [title]="post.reply.content"
+      [routerLink]="'/status/' + post.reply.postId" class="text-muted ml-5 pl-3 mb-1"
+      *ngIf="post.reply && !post.reposters && !post.likers">
+      <img [src]="API_URL + 'img/message-text-outline.png'" height="14">
+      <small class="ml-2">Reply to {{post.reply.username}}</small>
+    </a>
+  </div>
+  <div class="row">
+    <div class="col-1" style="min-width: 50px;">
+      <div style="width: 46px;height: 46px" class="fit-img">
+        <img [src]="API_URL + 'avatar/' + post.user.image" alt=" ">
+      </div>
+    </div>
+    <div class="col">
+      <a [routerLink]="'/' + post.user.username" onclick="event.stopPropagation()">
+        <b class="tooltips">{{post.user.displayName}}</b>
+        <label class="m-0 text-muted">
+          <small class="ml-1">@{{post.user.username}}</small>
+          <span class="ml-1">·</span>
+          <small data-toggle="tooltip" data-placement="top" [title]="post.postedOn" class="ml-1" appTime
+            [date]="post.postedOn"></small>
+        </label>
+      </a>
+      <p>
+        <app-post-content [content]="post.content"></app-post-content>
+      </p>
+    </div>
+  </div>
+  <app-post-pinned [post]="post"></app-post-pinned>
+  <div class="row" onclick="event.stopPropagation()">
+    <div class="col offset-sm-1">
+      <button (click)="replyToUser()" class="d-inline-block">
+        <img [src]="API_URL + 'img/message-text-outline.png'" height="24">
+      </button>
+      <app-post-number [number]="post.comments"></app-post-number>
+    </div>
+    <div class="col">
+      <button (click)="openReplyOverlay($event.target)" class="d-inline-block">
+        <img [src]="API_URL + 'img/twitter-retweet.png'" height="24">
+      </button>
+      <app-post-number [number]="post.reposts"></app-post-number>
+    </div>
+    <div class="col">
+      <button style="float: left" class="d-inline mr-n5 ml-n5 mt-n4 mb-n5" (click)="likePost()"
+        [disabled]="username === this.post.user.username">
+        <div class="heart" (animationend)="likeAnimationEnd()" #heart></div>
+      </button>
+      <app-post-number [number]="post.likes"></app-post-number>
+    </div>
+    <div class="col">
+      <button #userOptions (click)="openUserOptionsOverlay(userOptions)">
+        <img [src]="API_URL + 'img/arrow-expand-up.png'" height="24">
+      </button>
+    </div>
+  </div>
+</button>

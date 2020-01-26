@@ -103,6 +103,14 @@ namespace Infrastructure.Identity
                 : (Result.Success(), user);
         }
 
+        public async Task<(Result Result, AppUser User)> GetUserById(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            return user == null
+                ? (Result.Failure(), default)
+                : (Result.Success(), user);
+        }
+
         public string NormalizeName(string name) =>
             _userManager.NormalizeName(name);
 

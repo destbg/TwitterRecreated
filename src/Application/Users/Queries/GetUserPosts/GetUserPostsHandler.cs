@@ -27,7 +27,7 @@ namespace Application.Users.Queries.GetUserPosts
         public async Task<IEnumerable<PostVm>> Handle(GetUserPostsQuery request, CancellationToken cancellationToken) =>
             await _posts.GetAll()
                 .ProjectTo<PostVm>(_mapper.ConfigurationProvider)
-                .Where(f => f.PostedOn > request.Skip)
+                .Where(f => f.PostedOn > request.Skip && f.User.Username == request.Username)
                 .Take(50)
                 .ToListAsync(cancellationToken);
     }

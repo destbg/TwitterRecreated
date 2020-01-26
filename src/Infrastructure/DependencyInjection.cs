@@ -20,6 +20,8 @@ namespace Infrastructure
             services.AddScoped<IUserManager, UserManagerService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IDateTime, UniversalDateTime>();
+            services.AddTransient<IImageService, ImageService>();
+            services.AddTransient<IVideoService, VideoService>();
 
             services.AddDefaultIdentity<AppUser>(opt =>
             {

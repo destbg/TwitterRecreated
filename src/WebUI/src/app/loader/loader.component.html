@@ -1,0 +1,6 @@
+<div *ngIf="loading" class="progress position-absolute" style="top: 0;left: 0;right: 0;z-index: 100;">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div>
+<div *ngIf="!postStorage.hasProcessed" class="center-content loader-background">
+  <mat-spinner></mat-spinner>
+</div>

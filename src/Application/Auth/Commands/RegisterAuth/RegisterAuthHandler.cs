@@ -26,14 +26,14 @@ namespace Application.Auth.Commands.RegisterAuth
 
         public async Task<AuthVm> Handle(RegisterAuthCommand request, CancellationToken cancellationToken)
         {
-            //using (var client = new HttpClient())
-            //{
-            //    var recaptcha = await client.GetAsync($"https://www.google.com/recaptcha/api/siteverify?secret={_configuration.GetValue<string>("RecaptchaKey")}&response={request.Recaptcha}&remoteip=${_currentUser.Ip}");
-            //    var data = JsonConvert.DeserializeObject<Recaptcha>(await recaptcha.Content.ReadAsStringAsync());
+            using (var client = new HttpClient())
+            {
+                var recaptcha = await client.GetAsync($"https://www.google.com/recaptcha/api/siteverify?secret={_configuration.GetValue<string>("RecaptchaKey")}&response={request.Recaptcha}&remoteip=${_currentUser.Ip}");
+                var data = JsonConvert.DeserializeObject<Recaptcha>(await recaptcha.Content.ReadAsStringAsync());
 
-            //    if (!data.Success)
-            //        return default;
-            //}
+                if (!data.Success)
+                    return default;
+            }
 
             var (Result, Auth) = await _manager.CreateUserAsync(request.Username, request.Email, request.Password);
             return Result.Succeeded ? Auth : default;

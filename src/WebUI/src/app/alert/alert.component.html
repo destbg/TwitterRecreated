@@ -1,0 +1,6 @@
+<div *ngFor="let alert of alerts" class="{{cssClass(alert)}} alert-dismissable">
+  <span class="pr-4">{{alert.message}}</span>
+  <a class="close alert-close" (click)="removeAlert(alert)">
+    <img [src]="API_URL + 'img/close.png'" height="30">
+  </a>
+</div>

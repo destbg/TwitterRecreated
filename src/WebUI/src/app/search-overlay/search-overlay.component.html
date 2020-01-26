@@ -1,0 +1,19 @@
+<div #list style="z-index: 2000;max-height: 200px" class="position-absolute list-group" *ngIf="hashtagOverlay">
+  <button class="list-group-item list-group-item-action text-left" *ngFor="let hashtag of hashtags">
+    <span>{{hashtag.tag}}</span>
+  </button>
+</div>
+<div #list style="z-index: 2000;max-height: 200px" class="position-absolute list-group" *ngIf="atOverlay">
+  <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+    *ngFor="let user of users">
+    <div style="width: 32px;height: 32px" class="fit-img">
+      <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+    </div>
+    <span class="col">
+      <a [routerLink]="'/' + user.username">
+        <b>{{user.displayName}}</b>
+      </a>
+      <p class="text-muted m-0">@{{user.username}}</p>
+    </span>
+  </button>
+</div>

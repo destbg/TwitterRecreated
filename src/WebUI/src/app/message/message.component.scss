@@ -1,0 +1,17 @@
+.card {
+  border: 0 !important;
+  border-radius: 0 !important;
+}
+
+.group-box {
+  overflow-y: scroll;
+  height: calc(100% - 50px) !important;
+  max-height: calc(100% - 50px) !important;
+}
+
+.crop-text {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-height: 22.5px;
+}

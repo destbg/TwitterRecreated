@@ -1,0 +1,54 @@
+<div *ngIf="post">
+  <div *ngIf="images" class="row offset-1 mb-3 image-container" onclick="event.stopPropagation()">
+    <div class="col-6 p-0" *ngFor="let image of images; let i = index">
+      <button (click)="openImage(i)" class="w-100 h-100">
+        <img [src]="image.src" class="img-responsive w-100 h-100" style="object-fit: cover">
+      </button>
+    </div>
+  </div>
+  <div *ngIf="!images && post.images && post.images.length === 1" class="row offset-1 mb-3"
+    onclick="event.stopPropagation()">
+    <img [src]="post.images[0]" class="img-responsive post-gif">
+  </div>
+  <div *ngIf="post.video" class="row offset-1 mb-3 mr-3" onclick="event.stopPropagation()">
+    <video #vid class="video-js" *ngIf="post.video.includes('.')">
+      <source [src]="API_URL + 'video/' + post.video" type="video/mp4" />
+    </video>
+    <iframe *ngIf="!post.video.includes('.')" [src]="videoLink" style="width: 100%" height="300px" frameBorder="0"
+      allowFullscreen></iframe>
+  </div>
+  <div *ngIf="post.poll.length !== 0" class="row offset-1 mb-3 mr-3" onclick="event.stopPropagation()">
+    <div *ngIf="post.hasVoted || pollEnded" class="w-100">
+      <div *ngFor="let option of post.poll; let i = index" class="w-100">
+        <p style="text-align: left;font-size: medium; position: absolute;">
+          <span class="ml-3"><b>{{calcPercentage(i, progressBar)}}%</b></span>
+          <span class="pl-2">{{option.option}}</span>
+        </p>
+        <div class="progress w-100 m-2" style="height: 25px">
+          <div class="progress-bar bg-info" role="progressbar" #progressBar>
+          </div>
+        </div>
+      </div>
+      <span class="text-muted ml-2">{{totalVotes}} votes</span>
+      <span *ngIf="pollEnded" class="text-muted ml-2">Ended {{pollEndDate}} ago</span>
+      <span *ngIf="!pollEnded" class="text-muted ml-2">Ends in {{pollEndDate}}</span>
+    </div>
+    <div *ngIf="!post.hasVoted && !pollEnded" class="card w-100">
+      <div class="form-group m-3">
+        <div class="custom-control custom-radio" *ngFor="let option of post.poll; let i = index">
+          <input type="radio" [id]="'pollRadio' + i" name="pollRadio" class="custom-control-input"
+            (change)="selectOption(option.option)">
+          <label class="custom-control-label" [for]="'pollRadio' + i">{{option.option}}</label>
+        </div>
+      </div>
+      <div class="card-footer">
+        <button class="btn btn-outline-primary" (click)="voteOnOption()">
+          Vote
+        </button>
+        <span class="text-muted ml-2">{{totalVotes}} votes</span>
+        <span class="text-muted ml-2">Ends in {{pollEndDate}}</span>
+      </div>
+    </div>
+  </div>
+  <app-repost *ngIf="post.repost" [repost]="post.repost" [user]="post.repost.user"></app-repost>
+</div>

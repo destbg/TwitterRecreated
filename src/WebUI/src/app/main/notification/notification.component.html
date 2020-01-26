@@ -1,0 +1,107 @@
+<div class="row m-0">
+  <div id="middle" class="col-xl-5 col-md-7 offset-xl-3 offset-md-1">
+    <div class="list-group mt-50px">
+      <div class="list-group-item p-2" *ngFor="let notification of notifications">
+        <div *ngIf="notification.type === notificationType.like" class="row">
+          <div class="col-1" style="min-width: 50px;">
+            <img [src]="API_URL + 'img/star-four-points.png'" height="34" class="ml-2">
+          </div>
+          <div class="col">
+            <img class="float-right" [src]="API_URL + 'img/chevron-down.png'" height="24">
+            <span>
+              <div style="width: 34px;height: 34px" class="fit-img">
+                <img [src]="API_URL + 'avatar/' + notification.user.image" alt=" ">
+              </div>
+              <p>
+                <b>{{notification.user.displayName}} </b>
+                liked a post from
+                <b> {{notification.post.user.displayName}}</b>
+              </p>
+            </span>
+            <p class="text-muted">
+              {{notification.post.content}}
+            </p>
+          </div>
+        </div>
+        <div *ngIf="notification.type === notificationType.post" class="row">
+          <div class="col-1" style="min-width: 50px;">
+            <img [src]="API_URL + 'img/star-four-points.png'" height="34" class="ml-2">
+          </div>
+          <div class="col">
+            <img class="float-right" [src]="API_URL + 'img/chevron-down.png'" height="24">
+            <span>
+              <div style="width: 34px;height: 34px" class="fit-img">
+                <img [src]="API_URL +'avatar/' + notification.post.user.image" alt=" ">
+              </div>
+              <p>Recent post from <b>{{notification.post.user.displayName}}</b></p>
+            </span>
+            <p class="text-muted">
+              {{notification.post.content}}
+            </p>
+          </div>
+        </div>
+        <div *ngIf="notification.type === notificationType.reply" class="row">
+          <div class="col-1" style="min-width: 50px;">
+            <img [src]="API_URL + 'img/star-four-points.png'" height="34" class="ml-2">
+          </div>
+          <div class="col">
+            <img class="float-right" [src]="API_URL + 'img/chevron-down.png'" height="24">
+            <span>
+              <div style="width: 34px;height: 34px" class="fit-img">
+                <img [src]="API_URL + 'avatar/' + notification.user.image" alt=" ">
+              </div>
+              <p>
+                <b>{{notification.user.displayName}} </b>
+                replied to
+                <b> {{notification.post.user.displayName}}</b>
+              </p>
+            </span>
+            <p class="text-muted">
+              {{notification.post.content}}
+            </p>
+          </div>
+        </div>
+        <div *ngIf="notification.type === notificationType.follow" class="row">
+          <div class="col-1" style="min-width: 50px;">
+            <img [src]="API_URL + 'img/star-four-points.png'" height="34" class="ml-2">
+          </div>
+          <div class="col">
+            <img class="float-right" [src]="API_URL + 'img/chevron-down.png'" height="24">
+            <span>
+              <div style="width: 34px;height: 34px" class="fit-img">
+                <img [src]="API_URL + 'avatar/' + notification.user.image" alt=" ">
+              </div>
+              <p>
+                <b>{{notification.user.displayName}} </b>
+                followed you
+              </p>
+            </span>
+          </div>
+        </div>
+        <div *ngIf="notification.type === notificationType.unFollow" class="row">
+          <div class="col-1" style="min-width: 50px;">
+            <img [src]="API_URL + 'img/star-four-points.png'" height="34" class="ml-2">
+          </div>
+          <div class="col">
+            <img class="float-right" [src]="API_URL + 'img/chevron-down.png'" height="24">
+            <span>
+              <div style="width: 34px;height: 34px" class="fit-img">
+                <img [src]="API_URL + 'avatar/' + notification.user.image" alt=" ">
+              </div>
+              <p>
+                <b>{{notification.user.displayName}} </b>
+                un-followed you
+              </p>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-5" *ngIf="notifications && notifications.length === 0">
+        <h3>You have no notifications to look at yet</h3>
+      </div>
+    </div>
+  </div>
+  <app-top [text]="'Notifications'" id="middle-top"
+    class="col-xl-5 col-md-7 list-group offset-md-1 offset-xl-3 position-fixed"></app-top>
+  <app-right-side></app-right-side>
+</div>

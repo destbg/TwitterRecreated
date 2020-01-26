@@ -1,0 +1,24 @@
+<button *ngIf="user" (click)="navigateToRepost()" class="row offset-1 mb-3 mr-3 p-2 card"
+  onclick="event.stopPropagation()">
+  <div class="row">
+    <div class="col-1" style="min-width: 50px;">
+      <div style="width: 46px;height: 46px" class="fit-img">
+        <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+      </div>
+    </div>
+    <div class="col">
+      <a [routerLink]="'/' + user.username" onclick="event.stopPropagation()">
+        <b class="tooltips">{{user.displayName}}</b>
+        <label class="m-0 text-muted">
+          <small class="ml-1">@{{user.username}}</small>
+          <span class="ml-1">·</span>
+          <small data-toggle="tooltip" data-placement="top" [title]="repost.postedOn" class="ml-1" appTime
+            [date]="repost.postedOn"></small>
+        </label>
+      </a>
+      <p>
+        <app-post-content [content]="repost.content"></app-post-content>
+      </p>
+    </div>
+  </div>
+</button>

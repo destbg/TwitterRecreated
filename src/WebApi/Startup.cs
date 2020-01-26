@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using Persistence;
 using System.Text;
 using WebApi.Common;
+using WebApi.Hubs;
 using WebApi.Services;
 
 namespace WebApi
@@ -40,15 +41,24 @@ namespace WebApi
                 .AddDbContextCheck<TwitterDbContext>();
 
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddTransient<IMainHubService, MainHubService>();
 
             services.AddHttpContextAccessor();
+            services.AddCors(f => f.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin();
+            }));
+
+            services.AddSignalR()
+                .AddJsonProtocol();
 
             services
                 .AddControllers()
                 .AddNewtonsoftJson()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<ITwitterDbContext>());
+                .AddFluentValidation(f => f.RegisterValidatorsFromAssemblyContaining<ITwitterDbContext>());
 
-            // Customise default API behaviour
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
@@ -67,6 +77,7 @@ namespace WebApi
         {
             if (Environment.IsDevelopment())
             {
+                app.UseCors("MyPolicy");
                 app.UseDeveloperExceptionPage();
                 app.UseDatabaseErrorPage();
                 RegisteredServicesPage(app);
@@ -78,10 +89,12 @@ namespace WebApi
                 app.UseHsts();
             }
 
+            app.UseWebSocketMiddleware();
             app.UseCustomExceptionHandler();
             app.UseHealthChecks("/health");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseDefaultFiles();
 
             app.UseOpenApi();
 
@@ -101,6 +114,7 @@ namespace WebApi
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
+                endpoints.MapHub<MainHub>("/main");
                 endpoints.MapControllers();
             });
         }

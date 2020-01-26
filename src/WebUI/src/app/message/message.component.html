@@ -1,0 +1,67 @@
+<app-nav-menu [showPost]="false"></app-nav-menu>
+<div class="row m-0" style="height: 100%;" (window:resize)="onResize()">
+  <div id="middle" class="col-md-7 col-xl-5 offset-xl-3 offset-md-1 p-0">
+    <router-outlet></router-outlet>
+  </div>
+  <div *ngIf="!messageStorage.phoneSized || !messageStorage.messageTab"
+    [class]="messageStorage.phoneSized ? 'position-absolute col-md-5 offset-xl-3 offset-md-1 p-0' : 'col-xl-3 col-4 p-0'">
+    <div class="card h-100">
+      <div class="card-header p-0 position-relative" style="min-height: 50px">
+        <button *ngIf="!messageStorage.phoneSized" class="btn btn-info m-1 mb-5" (click)="openDialog()">
+          Add Chat
+        </button>
+        <div class="row ml-1 pr-2 position-absolute w-100" style="bottom: 0">
+          <ul class="nav nav-tabs w-100">
+            <li class="nav-item w-50 m-0 p-0 d-flex justify-content-center">
+              <button class="nav-link">
+                Chats
+              </button>
+            </li>
+            <li class="nav-item w-50 m-0 p-0 d-flex justify-content-center">
+              <button class="nav-link">
+                Pending
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="card-body group-box p-0">
+        <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" [routerLink]="[chat.id]"
+          *ngFor="let chat of messageStorage.chats; let i = index">
+          <div *ngIf="chat.isGroup"
+            class="list-group-item d-flex align-items-center{{chat.newMessage ? ' bg-dark-warn' : ''}}">
+            <div style="width: 32px;height: 32px" class="fit-img">
+              <img [src]="API_URL + 'group/' + chat.image" alt=" ">
+            </div>
+            <span class="col">
+              <b>{{chat.name}}</b>
+              <p class="text-muted m-0 crop-text">
+                <label>{{chat.lastMessage}}</label>
+              </p>
+            </span>
+          </div>
+          <div *ngIf="!chat.isGroup && getChatUser(i) as user"
+            class="list-group-item d-flex align-items-center{{chat.newMessage ? ' bg-dark-warn' : ''}}">
+            <div style="width: 32px;height: 32px" class="fit-img">
+              <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+            </div>
+            <span class="col">
+              <b>{{user.displayName}}</b>
+              <p class="text-muted m-0 crop-text">
+                <label>{{chat.lastMessage}}</label>
+              </p>
+            </span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="messageStorage.phoneSized && !messageStorage.messageTab" class="position-fixed"
+  style="bottom: 70px;right: 10px;z-index: 100;">
+  <button (click)="openDialog()" style="height: 50px;width: 50px;">
+    <div class="position-absolute rounded-circle"
+      style="background-color: #3498DB; width: 48px;height: 48px; z-index: -1"></div>
+    <img [src]="API_URL + 'img/email-plus-outline.png'" height="40" style="margin-top: 2px;">
+  </button>
+</div>

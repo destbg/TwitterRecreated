@@ -1,0 +1,19 @@
+<ul *ngIf="users && users.length !== 0" class="list-group list-group-flush">
+  <li class="list-group-item d-flex justify-content-between align-items-center"
+    *ngFor="let user of users; let i = index">
+    <img [src]="API_URL + 'avatar/' + user.image" class="rounded-circle" height="32">
+    <span class="col">
+      <a [routerLink]="'/' + user.username">
+        <b>{{user.displayName}}</b>
+      </a>
+      <p class="text-muted m-0">@{{user.username}}</p>
+    </span>
+    <button class="btn btn-{{buttonCss(i)}}" (click)="followUser(i)">
+      <span *ngIf="!user.followed">Follow</span>
+      <span *ngIf="user.followed">Unfollow</span>
+    </button>
+  </li>
+</ul>
+<div class="text-center mt-5" *ngIf="users && users.length === 0">
+  <h3>Search yielded no users</h3>
+</div>

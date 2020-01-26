@@ -1,0 +1,19 @@
+<div class="row m-0">
+  <div id="middle" class="col-xl-5 col-md-7 offset-xl-3 offset-md-1">
+    <div class="list-group mt-50px">
+      <div id="tweet-box" class="list-group-item p-2 d-none d-md-inline">
+        <app-post-form></app-post-form>
+      </div>
+      <app-post *ngFor="let post of postStorage.posts" [post]="post" [username]="username"></app-post>
+      <div class="progress" *ngIf="!postStorage.posts && !postStorage.hasReachedEnd">
+        <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 100%"></div>
+      </div>
+      <div class="text-center mt-5" *ngIf="!postStorage.posts && postStorage.hasReachedEnd">
+        <h3>You have no posts to look at yet</h3>
+      </div>
+    </div>
+  </div>
+  <app-top [text]="'Home'" [showBack]="false" id="middle-top"
+    class="col-xl-5 col-md-7 list-group offset-md-1 offset-xl-3 position-fixed"></app-top>
+  <app-right-side></app-right-side>
+</div>

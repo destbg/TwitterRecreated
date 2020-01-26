@@ -1,0 +1,9 @@
+<span *ngFor="let content of contentList; let i = index">
+  <span *ngIf="content.syntaxType === 1" [innerText]="content.content"></span>
+  <span *ngIf="content.syntaxType === 2" onclick="event.stopPropagation()">
+    <a [routerLink]="'/search/' + encodeContentToUrl(i)">{{content.content}}</a>
+  </span>
+  <span *ngIf="content.syntaxType === 3" onclick="event.stopPropagation()">
+    <a [routerLink]="'/' + content.content.substring(1)">{{content.content}}</a>
+  </span>
+</span>

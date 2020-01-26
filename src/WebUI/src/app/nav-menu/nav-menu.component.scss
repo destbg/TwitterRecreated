@@ -1,0 +1,21 @@
+.bottom-menu {
+  z-index: 100;
+  background-color: #222;
+  border: 1px solid #444;
+}
+
+.phone-menu {
+  z-index: 2000;
+  transform-style: flat;
+  transition: transform 200ms;
+  position: absolute;
+  width: 300px;
+  left: -300px;
+  height: 100%;
+  text-align: left;
+  background-color: #222;
+}
+
+.expanded {
+  transform: translateX(300px);
+}

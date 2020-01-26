@@ -1,0 +1,24 @@
+<button (click)="closeDialog()" style="position: relative;top: -10px;left: -10px">
+  <img [src]="API_URL + 'img/close.png'" height="30">
+</button>
+<hr style="position: relative;right: -24px;left: -24px;margin-top: 0;width: 106.6%">
+<div>
+  <h4>Add users to group</h4>
+  <ul class="list-group list-group-flush">
+    <button class="list-group-item d-flex justify-content-between align-items-center text-left"
+      *ngFor="let user of users; let i = index">
+      <div style="width: 32px;height: 32px" class="fit-img">
+        <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+      </div>
+      <span class="col">
+        <a [routerLink]="'/' + user.username">
+          <b>{{user.displayName}}</b>
+        </a>
+        <p class="text-muted m-0">@{{user.username}}</p>
+      </span>
+      <button type="button" class="btn btn-outline-info" (click)="addUser(i)">
+        <span><b>Add User</b></span>
+      </button>
+    </button>
+  </ul>
+</div>

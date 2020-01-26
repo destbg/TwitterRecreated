@@ -1,0 +1,4 @@
+<app-post-list *ngIf="posts && posts.length !== 0" [posts]="posts"></app-post-list>
+<div class="text-center mt-5" *ngIf="posts && posts.length === 0">
+  <h3>User has no multimedia posts to look at yet</h3>
+</div>
