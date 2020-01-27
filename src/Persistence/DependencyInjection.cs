@@ -20,6 +20,7 @@ namespace Persistence
             services.AddTransient<ILikedPostRepository, LikedPostRepository>();
             services.AddTransient<IPostRepository, PostRepository>();
             services.AddTransient<IUserFollowRepository, UserFollowRepository>();
+            services.AddTransient<IHashTagRepository, HashTagRepository>();
 
             return services;
         }

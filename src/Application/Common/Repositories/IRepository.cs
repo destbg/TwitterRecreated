@@ -9,7 +9,6 @@ namespace Application.Common.Repositories
 {
     public interface IRepository<T>
     {
-        Task<IEnumerable<T>> GetAll(CancellationToken token);
         Task<T> GetById(object id, CancellationToken token);
         Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expr, CancellationToken token);
         Task<Result> Create(T entity, CancellationToken token);

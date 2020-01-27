@@ -21,9 +21,6 @@ namespace Persistence.Common
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<IEnumerable<T>> GetAll(CancellationToken token) =>
-            await _context.Set<T>().AsNoTracking().ToListAsync(token);
-
         public async Task<T> GetById(object id, CancellationToken token) =>
             await _context.Set<T>().FindAsync(new[] { id }, token);
 

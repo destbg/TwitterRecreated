@@ -10,5 +10,7 @@ namespace Application.Common.Repositories
     {
         Task<IEnumerable<UserShortVm>> FollowingFollowers(string userId, CancellationToken token);
         Task<IReadOnlyList<string>> FollowingUsers(string userId, CancellationToken token);
+        Task<IEnumerable<UserFollow>> FollowingAndFollowers(string userId, CancellationToken token);
+        Task<IEnumerable<UserShortVm>> Suggestions(string userId, CancellationToken token);
     }
 }

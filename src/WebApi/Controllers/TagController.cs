@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using Application.Tags.Queries.TopTags;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
 {
@@ -8,6 +8,6 @@ namespace WebApi.Controllers
     {
         [HttpGet]
         public async Task<IActionResult> GetTopTags() =>
-            Ok(Array.Empty<object>());
+            Ok(await Mediator.Send(new TopTagsQuery()));
     }
 }

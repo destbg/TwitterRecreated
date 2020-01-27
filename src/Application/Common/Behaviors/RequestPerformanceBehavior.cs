@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,7 +27,10 @@ namespace Application.Common.Behaviors
 
             timer.Stop();
 
-            var name = typeof(TResponse).Name;
+            var type = typeof(TResponse);
+
+            var name = !type.IsGenericType ? type.Name
+                : $"{type.Name.Replace("`" + type.Name[^1], "")}<{string.Join(", ", type.GenericTypeArguments.Select(f => f.Name))}>";
 
             _logger.LogInformation("Response [{Name}] ({ElapsedMilliseconds} milliseconds) {@UserId}",
                 name, timer.ElapsedMilliseconds, _currentUserService.UserId ?? _currentUserService.Ip);

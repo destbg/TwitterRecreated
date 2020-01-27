@@ -34,4 +34,16 @@ namespace Application.Common.ViewModels
             profile.CreateMap<AppUser, UserShortVm>()
                 .ForMember(f => f.Username, f => f.MapFrom(s => s.UserName));
     }
+
+    public class UserFollowVm : IMapFrom<AppUser>
+    {
+        public string Username { get; set; }
+        public string DisplayName { get; set; }
+        public string Image { get; set; }
+        public bool Following { get; set; }
+
+        public void Mapping(Profile profile) =>
+            profile.CreateMap<AppUser, UserShortVm>()
+                .ForMember(f => f.Username, f => f.MapFrom(s => s.UserName));
+    }
 }

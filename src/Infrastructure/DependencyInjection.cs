@@ -22,6 +22,7 @@ namespace Infrastructure
             services.AddTransient<IDateTime, UniversalDateTime>();
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IVideoService, VideoService>();
+            services.AddTransient<ICountryService, CountryService>();
 
             services.AddDefaultIdentity<AppUser>(opt =>
             {

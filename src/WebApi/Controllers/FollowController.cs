@@ -1,10 +1,10 @@
-﻿using Application.Follow.Command.FollowUser;
+﻿using System.Threading.Tasks;
+using Application.Follow.Command.FollowUser;
 using Application.Follow.Queries.FollowingFollowers;
 using Application.Follow.Queries.FollowingUsers;
+using Application.Follow.Queries.Suggestions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace WebApi.Controllers
 {
@@ -28,6 +28,6 @@ namespace WebApi.Controllers
 
         [HttpGet("Suggestions")]
         public async Task<IActionResult> FollowersFollowers() =>
-            Ok(Array.Empty<object>());
+            Ok(await Mediator.Send(new SuggestionsQuery()));
     }
 }
