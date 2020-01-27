@@ -1,9 +1,12 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
+using Application.Common.Repositories;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,18 +14,21 @@ namespace Persistence.Common
 {
     public class GenericRepository<T> : IRepository<T> where T : class
     {
-        private readonly ITwitterDbContext _context;
+        protected readonly ITwitterDbContext _context;
 
         public GenericRepository(ITwitterDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public IQueryable<T> GetAll() =>
-            _context.Set<T>().AsNoTracking();
+        public async Task<IEnumerable<T>> GetAll(CancellationToken token) =>
+            await _context.Set<T>().AsNoTracking().ToListAsync(token);
 
-        public DbSet<T> GetSet() =>
-            _context.Set<T>();
+        public async Task<T> GetById(object id, CancellationToken token) =>
+            await _context.Set<T>().FindAsync(new[] { id }, token);
+
+        public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expr, CancellationToken token) =>
+            await _context.Set<T>().AsNoTracking().Where(expr).ToListAsync(token);
 
         public Task<Result> Create(T entity, CancellationToken token) =>
             HandleAction(async () =>
@@ -53,7 +59,7 @@ namespace Persistence.Common
                 await _context.SaveChangesAsync(token);
             });
 
-        private async Task<Result> HandleAction(Func<Task> action)
+        protected async Task<Result> HandleAction(Func<Task> action)
         {
             try
             {

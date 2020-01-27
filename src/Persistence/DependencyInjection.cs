@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces;
+using Application.Common.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +17,9 @@ namespace Persistence
 
             services.AddScoped<ITwitterDbContext>(provider => provider.GetService<TwitterDbContext>());
 
-            services.AddTransient(typeof(IRepository<>), typeof(GenericRepository<>));
+            services.AddTransient<ILikedPostRepository, LikedPostRepository>();
+            services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<IUserFollowRepository, UserFollowRepository>();
 
             return services;
         }

@@ -16,6 +16,7 @@ namespace Application.Common.ViewModels
         public DateTime CreatedOn { get; set; }
         public string Image { get; set; }
         public string Thumbnail { get; set; }
+        public bool Verified { get; set; }
 
         public void Mapping(Profile profile) =>
             profile.CreateMap<AppUser, UserVm>()

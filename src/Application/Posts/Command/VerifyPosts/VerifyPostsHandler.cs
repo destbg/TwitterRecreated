@@ -1,9 +1,6 @@
-﻿using Application.Common.Interfaces;
-using Domain.Entities;
+﻿using Application.Common.Repositories;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -11,14 +8,14 @@ namespace Application.Posts.Command.VerifyPosts
 {
     public class VerifyPostsHandler : IRequestHandler<VerifyPostsCommand, bool>
     {
-        private readonly IRepository<Post> _post;
+        private readonly IPostRepository _post;
 
-        public VerifyPostsHandler(IRepository<Post> post)
+        public VerifyPostsHandler(IPostRepository post)
         {
             _post = post ?? throw new ArgumentNullException(nameof(post));
         }
 
         public async Task<bool> Handle(VerifyPostsCommand request, CancellationToken cancellationToken) =>
-            await _post.GetAll().CountAsync(f => request.PostIds.Contains(f.Id), cancellationToken) == request.PostIds.Length;
+            await _post.VerifyPosts(request.PostIds, cancellationToken);
     }
 }

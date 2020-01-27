@@ -1,13 +1,8 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Repositories;
 using Application.Common.ViewModels;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,20 +10,14 @@ namespace Application.Users.Queries.GetUserPosts
 {
     public class GetUserPostsHandler : IRequestHandler<GetUserPostsQuery, IEnumerable<PostVm>>
     {
-        private readonly IRepository<Post> _posts;
-        private readonly IMapper _mapper;
+        private readonly IPostRepository _posts;
 
-        public GetUserPostsHandler(IRepository<Post> posts, IMapper mapper)
+        public GetUserPostsHandler(IPostRepository posts)
         {
             _posts = posts ?? throw new ArgumentNullException(nameof(posts));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<IEnumerable<PostVm>> Handle(GetUserPostsQuery request, CancellationToken cancellationToken) =>
-            await _posts.GetAll()
-                .ProjectTo<PostVm>(_mapper.ConfigurationProvider)
-                .Where(f => f.PostedOn > request.Skip && f.User.Username == request.Username)
-                .Take(50)
-                .ToListAsync(cancellationToken);
+            await _posts.UserPosts(request.Skip, request.Username, cancellationToken);
     }
 }

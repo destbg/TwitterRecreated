@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
+using Application.Common.Repositories;
 using Application.Common.Validators;
 using Application.Common.ViewModels;
 using AutoMapper;
@@ -14,7 +15,7 @@ namespace Application.Posts.Command.CreatePost
 {
     public class CreatePostHandler : IRequestHandler<CreatePostCommand>
     {
-        private readonly IRepository<Post> _post;
+        private readonly IPostRepository _post;
         private readonly ICurrentUserService _currentUser;
         private readonly IDateTime _dateTime;
         private readonly IImageService _imageService;
@@ -22,7 +23,7 @@ namespace Application.Posts.Command.CreatePost
         private readonly IMapper _mapper;
         private readonly IMainHubService _mainHub;
 
-        public CreatePostHandler(IRepository<Post> post, ICurrentUserService currentUser, IDateTime dateTime, IImageService imageService, IVideoService videoService, IMapper mapper, IMainHubService mainHub)
+        public CreatePostHandler(IPostRepository post, ICurrentUserService currentUser, IDateTime dateTime, IImageService imageService, IVideoService videoService, IMapper mapper, IMainHubService mainHub)
         {
             _post = post ?? throw new ArgumentNullException(nameof(post));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));

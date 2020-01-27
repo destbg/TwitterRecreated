@@ -1,5 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Repositories;
 using Domain.Entities;
 using MediatR;
 using System;
@@ -10,11 +11,11 @@ namespace Application.Follow.Command.FollowUser
 {
     public class FollowUserHandler : IRequestHandler<FollowUserCommand>
     {
-        private readonly IRepository<UserFollow> _userFollow;
+        private readonly IUserFollowRepository _userFollow;
         private readonly IUserManager _userManager;
         private readonly ICurrentUserService _currentUser;
 
-        public FollowUserHandler(IRepository<UserFollow> userFollow, IUserManager userManager, ICurrentUserService currentUser)
+        public FollowUserHandler(IUserFollowRepository userFollow, IUserManager userManager, ICurrentUserService currentUser)
         {
             _userFollow = userFollow ?? throw new ArgumentNullException(nameof(userFollow));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));

@@ -3,6 +3,7 @@ using Application.Follow.Queries.FollowingFollowers;
 using Application.Follow.Queries.FollowingUsers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace WebApi.Controllers
@@ -25,8 +26,8 @@ namespace WebApi.Controllers
         public async Task<IActionResult> FollowingFollowers(FollowingFollowersQuery command) =>
             Ok(await Mediator.Send(command));
 
-        //[HttpGet("Suggestions")]
-        //public async Task<IActionResult> FollowersFollowers(FollowersFollowersQuery command) =>
-        //    Ok(await Mediator.Send(command));
+        [HttpGet("Suggestions")]
+        public async Task<IActionResult> FollowersFollowers() =>
+            Ok(Array.Empty<object>());
     }
 }

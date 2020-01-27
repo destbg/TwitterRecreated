@@ -3,16 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { IPost } from '../model/post.model';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PostService {
-  constructor(
-    private readonly http: HttpClient,
-    private readonly authService: AuthService,
-  ) {}
+  constructor(private readonly http: HttpClient) {}
 
   public getPosts(skip?: Date): Observable<IPost[]> {
     return this.skipPosts(`post`, skip);
@@ -57,16 +53,11 @@ export class PostService {
   }
 
   public getPost(id: number): Observable<IPost> {
-    // TODO: Add not authenticated result
     return this.http.get<IPost>(`${environment.API_URL}post/${id}`);
   }
 
   public getUserPosts(username: string, skip?: Date): Observable<IPost[]> {
-    if (this.authService.isAuthenticated()) {
-      return this.skipPosts(`user/post/auth/${username}`, skip);
-    } else {
-      return this.skipPosts(`user/post/${username}`, skip);
-    }
+    return this.skipPosts(`user/post/${username}`, skip);
   }
 
   public getUserLikedPosts(username: string, skip?: Date): Observable<IPost[]> {
