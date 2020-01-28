@@ -142,6 +142,9 @@ namespace Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime>("AddedOn")
+                        .HasColumnType("datetime2");
+
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
 
@@ -256,6 +259,9 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("LikedOn")
+                        .HasColumnType("datetime2");
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
@@ -387,6 +393,8 @@ namespace Persistence.Migrations
                         .HasMaxLength(36);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OptionId");
 
                     b.HasIndex("UserId");
 
@@ -829,6 +837,12 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.PollVote", b =>
                 {
+                    b.HasOne("Domain.Entities.PollOption", "Option")
+                        .WithMany("Votes")
+                        .HasForeignKey("OptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")

@@ -8,6 +8,7 @@ namespace Application.Common.Repositories
 {
     public interface IHashTagRepository : IRepository<HashTag>
     {
-        Task<IEnumerable<HashTagVm>> GetTopTags(string country, CancellationToken token);
+        Task<List<HashTagVm>> GetTopTags(string country, CancellationToken token);
+        Task<List<HashTagVm>> SearchTags(string search, CancellationToken token);
     }
 }

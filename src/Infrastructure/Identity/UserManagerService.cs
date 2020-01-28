@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -8,9 +9,11 @@ using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Common.ViewModels;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Common;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
@@ -95,21 +98,23 @@ namespace Infrastructure.Identity
             return result.ToApplicationResult();
         }
 
-        public async Task<(Result Result, AppUser User)> GetUserByUsername(string username)
-        {
-            var user = await _userManager.FindByNameAsync(username);
-            return user == null
-                ? (Result.Failure(), default)
-                : (Result.Success(), user);
-        }
+        public Task<AppUser> GetUserByUsername(string username) =>
+            _userManager.FindByNameAsync(username);
 
-        public async Task<(Result Result, AppUser User)> GetUserById(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            return user == null
-                ? (Result.Failure(), default)
-                : (Result.Success(), user);
-        }
+        public Task<AppUser> GetUserById(string id) =>
+            _userManager.FindByIdAsync(id);
+
+        public Task<List<UserFollowVm>> SeachUsers(string search) =>
+            _userManager.Users
+                .Where(f => EF.Functions.Like(f.NormalizedEmail, '%' + NormalizeName(search) + '%') ||
+                    EF.Functions.Like(f.DisplayName, '%' + NormalizeName(search) + '%'))
+                .ProjectTo<UserFollowVm>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+        public Task<List<AppUser>> ValidateUsersnames(IEnumerable<string> usernames) =>
+            _userManager.Users
+                .Where(f => usernames.Contains(f.UserName))
+                .ToListAsync();
 
         public string NormalizeName(string name) =>
             _userManager.NormalizeName(name);

@@ -39,5 +39,14 @@ namespace Application.Common.Validators
                 else if (!files.TrueForAll(f => f.ContentType.StartsWith("image")))
                     context.AddFailure("You can only upload video, images or gif");
             });
+
+        public static IRuleBuilderInitial<T, string> IsValidPostText<T>(this IRuleBuilder<T, string> ruleBuilder) =>
+            ruleBuilder.Custom((content, context) =>
+            {
+                if (string.IsNullOrEmpty(content))
+                    return;
+                if (content.Split('\n').Length > 10)
+                    context.AddFailure("Text contains too many new lines");
+            });
     }
 }

@@ -24,7 +24,7 @@ export class PostService {
     if (files) {
       const formData = new FormData();
       for (let i = 0; i < files.length; i++) {
-        formData.append('file', files.item(i));
+        formData.append('files', files.item(i));
       }
       if (replyId) {
         formData.append('replyId', replyId.toString());

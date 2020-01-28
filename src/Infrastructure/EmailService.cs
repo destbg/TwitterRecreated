@@ -1,5 +1,5 @@
 ﻿using Application.Common.Interfaces;
-using Application.Email.Models;
+using Application.Common.Models;
 using System.Threading.Tasks;
 
 namespace Infrastructure

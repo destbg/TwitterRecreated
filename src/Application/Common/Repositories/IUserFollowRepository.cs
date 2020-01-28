@@ -8,9 +8,9 @@ namespace Application.Common.Repositories
 {
     public interface IUserFollowRepository : IRepository<UserFollow>
     {
-        Task<IEnumerable<UserShortVm>> FollowingFollowers(string userId, CancellationToken token);
-        Task<IReadOnlyList<string>> FollowingUsers(string userId, CancellationToken token);
-        Task<IEnumerable<UserFollow>> FollowingAndFollowers(string userId, CancellationToken token);
-        Task<IEnumerable<UserShortVm>> Suggestions(string userId, CancellationToken token);
+        Task<List<UserShortVm>> FollowingFollowers(string userId, CancellationToken token);
+        Task<List<string>> FollowingUsers(string userId, CancellationToken token);
+        Task<List<UserFollow>> FollowingAndFollowers(string userId, CancellationToken token);
+        Task<List<UserShortVm>> Suggestions(string userId, CancellationToken token);
     }
 }

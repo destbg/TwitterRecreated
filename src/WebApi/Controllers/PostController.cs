@@ -29,7 +29,7 @@ namespace WebApi.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CreatePost(CreatePostCommand command)
+        public async Task<IActionResult> CreatePost([FromBody]CreatePostCommand command)
         {
             await Mediator.Send(command);
             return NoContent();

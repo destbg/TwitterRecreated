@@ -33,7 +33,8 @@
   <div class="col-1 offset-1 mt-1">
     <label for="upload" [class]="(poll || images && images.length > 0 || video || repost ? '' : 'pointer')">
       <img [src]="API_URL + 'img/image-outline.png'" height="24">
-      <input multiple type="file" id="upload" style="display:none" (change)="handleFileInput($event.target.files)"
+      <input #fileInput multiple type="file" id="upload" style="display:none"
+        (change)="handleFileInput($event.target.files)"
         [disabled]="poll || images && images.length > 0 || video || repost">
     </label>
   </div>

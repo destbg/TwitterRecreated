@@ -61,7 +61,7 @@ export class PostStorage {
     socketService.hubConnection.on('deletedPost', (id: number) => {
       this.handleDeletedPost(id);
     });
-    socketService.hubConnection.on('newPost', (post: any) => {
+    socketService.hubConnection.on('newPost', (post: IPost) => {
       this.handleNewPost(post);
     });
   }

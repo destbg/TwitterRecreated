@@ -43,6 +43,8 @@ export class PostFormComponent implements OnInit {
   private readonly postInput: ElementRef<HTMLTextAreaElement>;
   @ViewChild('appPoll', { static: false })
   private readonly appPoll: PollComponent;
+  @ViewChild('fileInput', { static: false })
+  private readonly fileInput: ElementRef<HTMLInputElement>;
 
   constructor(
     private readonly authService: AuthService,
@@ -130,6 +132,9 @@ export class PostFormComponent implements OnInit {
     this.poll = false;
     this.video = undefined;
     this.images = [];
+    this.fileInput.nativeElement.value = '';
+    const fileEvent = new Event('change');
+    this.fileInput.nativeElement.dispatchEvent(fileEvent);
     this.submitted = false;
   }
 

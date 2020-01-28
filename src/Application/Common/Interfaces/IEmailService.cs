@@ -1,4 +1,4 @@
-﻿using Application.Email.Models;
+﻿using Application.Common.Models;
 using System.Threading.Tasks;
 
 namespace Application.Common.Interfaces

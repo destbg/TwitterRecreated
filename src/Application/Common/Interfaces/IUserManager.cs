@@ -1,6 +1,7 @@
 ﻿using Application.Common.Models;
 using Application.Common.ViewModels;
 using Domain.Entities;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Application.Common.Interfaces
@@ -10,8 +11,10 @@ namespace Application.Common.Interfaces
         Task<(Result Result, AuthVm Auth)> LoginUserAsync(string username, string password);
         Task<(Result Result, AuthVm Auth)> CreateUserAsync(string userName, string email, string password);
         Task<Result> DeleteUserAsync(string userId);
-        Task<(Result Result, AppUser User)> GetUserByUsername(string username);
-        Task<(Result Result, AppUser User)> GetUserById(string id);
+        Task<AppUser> GetUserByUsername(string username);
+        Task<AppUser> GetUserById(string id);
+        Task<List<UserFollowVm>> SeachUsers(string search);
+        Task<List<AppUser>> ValidateUsersnames(IEnumerable<string> usernames);
         string NormalizeName(string name);
     }
 }

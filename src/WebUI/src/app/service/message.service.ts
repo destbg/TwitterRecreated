@@ -29,22 +29,19 @@ export class MessageService {
   }
 
   public getChats(): Observable<IChat[]> {
-    return this.http.get<IChat[]>(`${environment.API_URL}message/chat`);
+    return this.http.get<IChat[]>(`${environment.API_URL}chat`);
   }
 
   public createGroupChat(users: string[]): Observable<IChat> {
-    return this.http.post<IChat>(`${environment.API_URL}message/groupchat`, {
+    return this.http.post<IChat>(`${environment.API_URL}chat/group`, {
       users,
     });
   }
 
   public createChat(username: string): Observable<IChat | string> {
-    return this.http.post<IChat | string>(
-      `${environment.API_URL}message/chat`,
-      {
-        username,
-      },
-    );
+    return this.http.post<IChat | string>(`${environment.API_URL}chat`, {
+      username,
+    });
   }
 
   public changeColors(
@@ -53,7 +50,7 @@ export class MessageService {
     othersColor: string,
   ): void {
     this.http
-      .post(`${environment.API_URL}message/color`, {
+      .post(`${environment.API_URL}chat/color`, {
         chatId,
         selfColor,
         othersColor,

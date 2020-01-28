@@ -17,10 +17,17 @@ namespace Persistence
 
             services.AddScoped<ITwitterDbContext>(provider => provider.GetService<TwitterDbContext>());
 
-            services.AddTransient<ILikedPostRepository, LikedPostRepository>();
-            services.AddTransient<IPostRepository, PostRepository>();
-            services.AddTransient<IUserFollowRepository, UserFollowRepository>();
-            services.AddTransient<IHashTagRepository, HashTagRepository>();
+            services.AddScoped<ILikedPostRepository, LikedPostRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<IUserFollowRepository, UserFollowRepository>();
+            services.AddScoped<IHashTagRepository, HashTagRepository>();
+            services.AddScoped<IBookmarkRepository, BookmarkRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<IPollOptionRepository, PollOptionRepository>();
+            services.AddScoped<IPollVoteRepository, PollVoteRepository>();
+            services.AddScoped<IChatRepository, ChatRepository>();
+            services.AddScoped<IChatUserRepository, ChatUserRepository>();
+            services.AddScoped<IMessageRepository, MessageRepository>();
 
             return services;
         }

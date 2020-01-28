@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Common
 {
-    public class UserFollowRepository : GenericRepository<UserFollow>, IUserFollowRepository
+    public class UserFollowRepository : BaseRepository<UserFollow>, IUserFollowRepository
     {
         private readonly IMapper _mapper;
 
@@ -22,26 +22,26 @@ namespace Persistence.Common
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<UserShortVm>> FollowingFollowers(string userId, CancellationToken token) =>
-            await _context.UserFollowers
+        public Task<List<UserShortVm>> FollowingFollowers(string userId, CancellationToken token) =>
+            _context.UserFollowers
                 .Where(f => f.FollowerId == userId)
                 .Select(f => f.Following)
                 .ProjectTo<UserShortVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
 
-        public async Task<IReadOnlyList<string>> FollowingUsers(string userId, CancellationToken token) =>
-            await _context.UserFollowers
+        public Task<List<string>> FollowingUsers(string userId, CancellationToken token) =>
+            _context.UserFollowers
                 .Where(w => w.FollowerId == userId)
                 .Select(f => f.FollowingId)
                 .ToListAsync(token);
 
-        public async Task<IEnumerable<UserFollow>> FollowingAndFollowers(string userId, CancellationToken token) =>
-            await _context.UserFollowers
+        public Task<List<UserFollow>> FollowingAndFollowers(string userId, CancellationToken token) =>
+            _context.UserFollowers
                 .Where(f => f.FollowerId == userId || f.FollowingId == userId)
                 .ToListAsync(token);
 
-        public async Task<IEnumerable<UserShortVm>> Suggestions(string userId, CancellationToken token) =>
-            await _context.UserFollowers
+        public Task<List<UserShortVm>> Suggestions(string userId, CancellationToken token) =>
+            _context.UserFollowers
                 .Where(f => f.FollowerId != userId && f.FollowingId != userId)
                 .Select(f => f.Following)
                 .OrderByDescending(f => f.Followers)

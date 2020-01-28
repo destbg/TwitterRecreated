@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Persistence.Common
 {
-    public class HashTagRepository : GenericRepository<HashTag>, IHashTagRepository
+    public class HashTagRepository : BaseRepository<HashTag>, IHashTagRepository
     {
         private readonly IMapper _mapper;
 
@@ -22,9 +22,15 @@ namespace Persistence.Common
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public async Task<IEnumerable<HashTagVm>> GetTopTags(string country, CancellationToken token) =>
-            await _context.HashTags
+        public Task<List<HashTagVm>> GetTopTags(string country, CancellationToken token) =>
+            _context.HashTags
                 .Where(f => f.Country == country)
+                .ProjectTo<HashTagVm>(_mapper.ConfigurationProvider)
+                .ToListAsync(token);
+
+        public Task<List<HashTagVm>> SearchTags(string search, CancellationToken token) =>
+            _context.HashTags
+                .Where(f => EF.Functions.Like(f.Tag, '%' + search + '%'))
                 .ProjectTo<HashTagVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
     }
