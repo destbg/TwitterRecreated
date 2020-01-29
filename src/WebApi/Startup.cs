@@ -1,3 +1,4 @@
+using System.Text;
 using Application;
 using Application.Common.Interfaces;
 using FluentValidation.AspNetCore;
@@ -10,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Persistence;
-using System.Text;
 using WebApi.Common;
 using WebApi.Hubs;
 using WebApi.Services;

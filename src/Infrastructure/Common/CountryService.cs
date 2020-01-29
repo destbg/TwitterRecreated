@@ -6,7 +6,7 @@ using Application.Common.Models;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
-namespace Infrastructure
+namespace Infrastructure.Common
 {
     public class CountryService : ICountryService
     {

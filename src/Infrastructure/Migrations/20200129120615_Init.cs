@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Persistence.Migrations
+namespace Infrastructure.Migrations
 {
     public partial class Init : Migration
     {
@@ -61,9 +61,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     Image = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     IsGroup = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -94,6 +95,8 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     Tag = table.Column<string>(maxLength: 50, nullable: false),
                     Country = table.Column<string>(type: "char(2)", fixedLength: true, maxLength: 2, nullable: false),
                     Posts = table.Column<int>(nullable: false)
@@ -227,64 +230,22 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChatUsers",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
-                    ChatId = table.Column<long>(nullable: false),
-                    IsModerator = table.Column<bool>(nullable: true),
-                    SelfColor = table.Column<string>(type: "char(6)", fixedLength: true, maxLength: 6, nullable: false),
-                    OthersColor = table.Column<string>(type: "char(6)", fixedLength: true, maxLength: 6, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ChatUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ChatUsers_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PollVotes",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OptionId = table.Column<long>(nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PollVotes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PollVotes_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     Content = table.Column<string>(maxLength: 250, nullable: false),
-                    PollEnd = table.Column<DateTime>(nullable: true),
+                    PollEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Video = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
                     UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
                     ReplyId = table.Column<long>(nullable: true),
                     RepostId = table.Column<long>(nullable: true),
                     Reposts = table.Column<int>(nullable: false),
                     Likes = table.Column<int>(nullable: false),
-                    Comments = table.Column<int>(nullable: false),
-                    PostedOn = table.Column<DateTime>(type: "datetime", nullable: false)
+                    Comments = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -294,7 +255,13 @@ namespace Persistence.Migrations
                         column: x => x.ReplyId,
                         principalTable: "Posts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Posts_Posts_RepostId",
+                        column: x => x.RepostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Posts_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -309,6 +276,8 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     FollowerId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
                     FollowingId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
                 },
@@ -330,16 +299,48 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChatUsers",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    ChatId = table.Column<long>(nullable: false),
+                    IsModerator = table.Column<bool>(nullable: true),
+                    SelfColor = table.Column<string>(type: "char(6)", fixedLength: true, maxLength: 6, nullable: false),
+                    OthersColor = table.Column<string>(type: "char(6)", fixedLength: true, maxLength: 6, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChatUsers_Chats_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_ChatUsers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Messages",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     Msg = table.Column<string>(maxLength: 250, nullable: false),
                     UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
                     ChatId = table.Column<long>(nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
-                    EditedAt = table.Column<DateTime>(nullable: true)
+                    EditedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -364,6 +365,8 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     PostId = table.Column<long>(nullable: false),
                     UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
                 },
@@ -390,6 +393,8 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
                     PostId = table.Column<long>(nullable: false)
                 },
@@ -416,11 +421,12 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     ForUserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
                     UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
                     PostId = table.Column<long>(nullable: true),
-                    NotificationType = table.Column<int>(nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false)
+                    NotificationType = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -430,7 +436,7 @@ namespace Persistence.Migrations
                         column: x => x.PostId,
                         principalTable: "Posts",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Notifications_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -455,8 +461,7 @@ namespace Persistence.Migrations
                         name: "FK_PollOptions_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -475,8 +480,7 @@ namespace Persistence.Migrations
                         name: "FK_PostImages_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -485,22 +489,50 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     PostId = table.Column<long>(nullable: false),
+                    PostId1 = table.Column<long>(nullable: true),
                     UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
-                    Content = table.Column<string>(maxLength: 250, nullable: false),
-                    PostedOn = table.Column<DateTime>(type: "datetime", nullable: false)
+                    Content = table.Column<string>(maxLength: 250, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Reposts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Reposts_Posts_PostId",
-                        column: x => x.PostId,
+                        name: "FK_Reposts_Posts_PostId1",
+                        column: x => x.PostId1,
                         principalTable: "Posts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Reposts_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PollVotes",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OptionId = table.Column<long>(nullable: false),
+                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PollVotes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PollVotes_PollOptions_OptionId",
+                        column: x => x.OptionId,
+                        principalTable: "PollOptions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_PollVotes_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -553,6 +585,11 @@ namespace Persistence.Migrations
                 name: "IX_Bookmarks_UserId",
                 table: "Bookmarks",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatUsers_ChatId",
+                table: "ChatUsers",
+                column: "ChatId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatUsers_UserId",
@@ -616,6 +653,11 @@ namespace Persistence.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PollVotes_OptionId",
+                table: "PollVotes",
+                column: "OptionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PollVotes_UserId",
                 table: "PollVotes",
                 column: "UserId");
@@ -628,7 +670,16 @@ namespace Persistence.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_ReplyId",
                 table: "Posts",
-                column: "ReplyId");
+                column: "ReplyId",
+                unique: true,
+                filter: "[ReplyId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_RepostId",
+                table: "Posts",
+                column: "RepostId",
+                unique: true,
+                filter: "[RepostId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_UserId",
@@ -636,10 +687,9 @@ namespace Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Reposts_PostId",
+                name: "IX_Reposts_PostId1",
                 table: "Reposts",
-                column: "PostId",
-                unique: true);
+                column: "PostId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Reposts_UserId",
@@ -699,9 +749,6 @@ namespace Persistence.Migrations
                 name: "PersistedGrants");
 
             migrationBuilder.DropTable(
-                name: "PollOptions");
-
-            migrationBuilder.DropTable(
                 name: "PollVotes");
 
             migrationBuilder.DropTable(
@@ -718,6 +765,9 @@ namespace Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Chats");
+
+            migrationBuilder.DropTable(
+                name: "PollOptions");
 
             migrationBuilder.DropTable(
                 name: "Posts");

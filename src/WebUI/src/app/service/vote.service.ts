@@ -8,11 +8,10 @@ import { environment } from 'src/environments/environment';
 export class VoteService {
   constructor(private readonly http: HttpClient) {}
 
-  public voteOnPost(postId: number, option: string): void {
+  public voteOnPost(optionId: number): void {
     this.http
       .post(`${environment.API_URL}vote`, {
-        postId,
-        option,
+        optionId,
       })
       .subscribe((s: any) => s);
   }

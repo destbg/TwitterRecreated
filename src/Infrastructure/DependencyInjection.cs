@@ -1,6 +1,9 @@
-﻿using Application.Common.Interfaces;
+﻿using System;
+using System.Text;
+using Application.Common.Interfaces;
 using Common;
 using Domain.Entities;
+using Infrastructure.Common;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -8,8 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Persistence;
-using System;
-using System.Text;
 
 namespace Infrastructure
 {

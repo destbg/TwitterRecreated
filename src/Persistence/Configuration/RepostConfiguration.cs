@@ -10,17 +10,22 @@ namespace Persistence.Configuration
         {
             builder.Property(f => f.Content)
                 .HasMaxLength(250)
-                .IsRequired();
-
-            builder.Property(f => f.PostedOn)
-                .HasColumnType("datetime")
-                .IsRequired();
+                .IsRequired(false);
 
             builder.Property(f => f.UserId)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(36)
                 .HasColumnType("char(36)");
+
+            builder.Property(f => f.CreatedOn)
+                .IsRequired()
+                .HasColumnType("datetime");
+
+            builder.Property(f => f.CreatedByIp)
+                .IsRequired()
+                .HasMaxLength(15)
+                .HasColumnType("varchar(15)");
         }
     }
 }

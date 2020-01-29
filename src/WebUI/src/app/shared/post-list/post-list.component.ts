@@ -64,7 +64,7 @@ export class PostListComponent implements OnInit, OnDestroy {
         if (index !== -1) {
           const post = this.posts[index];
           const pollIndex = post.poll.findIndex(
-            (f: IPoll) => f.option === pollVoted.option,
+            (f: IPoll) => f.id === pollVoted.optionId,
           );
           if (pollIndex !== -1) {
             post.poll[index].votes++;

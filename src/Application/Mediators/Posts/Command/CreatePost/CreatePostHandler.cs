@@ -17,18 +17,16 @@ namespace Application.Posts.Command.CreatePost
     {
         private readonly IPostRepository _post;
         private readonly ICurrentUserService _currentUser;
-        private readonly IDateTime _dateTime;
         private readonly IImageService _imageService;
         private readonly IVideoService _videoService;
         private readonly IMapper _mapper;
         private readonly IMainHubService _mainHub;
         private readonly IUserManager _userManager;
 
-        public CreatePostHandler(IPostRepository post, ICurrentUserService currentUser, IDateTime dateTime, IImageService imageService, IVideoService videoService, IMapper mapper, IMainHubService mainHub, IUserManager userManager)
+        public CreatePostHandler(IPostRepository post, ICurrentUserService currentUser, IImageService imageService, IVideoService videoService, IMapper mapper, IMainHubService mainHub, IUserManager userManager)
         {
             _post = post ?? throw new ArgumentNullException(nameof(post));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
-            _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
             _imageService = imageService ?? throw new ArgumentNullException(nameof(imageService));
             _videoService = videoService ?? throw new ArgumentNullException(nameof(videoService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -49,7 +47,6 @@ namespace Application.Posts.Command.CreatePost
                 Content = request.Content,
                 UserId = _currentUser.UserId,
                 PollEnd = request.PollEnd,
-                PostedOn = _dateTime.Now,
                 Video = videoLink,
                 User = await _userManager.GetUserById(_currentUser.UserId)
             };

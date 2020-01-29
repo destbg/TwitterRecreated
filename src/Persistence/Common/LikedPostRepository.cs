@@ -29,7 +29,7 @@ namespace Persistence.Common
         public Task<List<PostVm>> UserPosts(string username, DateTime skip, CancellationToken token) =>
             _context.LikedPosts
                 .Include(f => f.User)
-                .Where(f => f.User.UserName == username && f.LikedOn > skip)
+                .Where(f => f.User.UserName == username && f.CreatedOn > skip)
                 .Select(f => f.Post)
                 .ProjectTo<PostVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);

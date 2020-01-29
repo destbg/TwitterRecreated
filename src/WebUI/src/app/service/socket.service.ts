@@ -35,10 +35,6 @@ export class SocketService {
         .start()
         .catch(err => console.log('Error while starting connection: ' + err));
     }
-    // if (!this.ioSocket.connected) {
-    //   this.ioSocket.query.Authorization = this.authService.currentUserTokenValue;
-    //   this.connect();
-    // }
   }
 
   public followPosts(postIds: number[]): void {

@@ -41,9 +41,6 @@ export class StatusComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    if (!this.authService.isAuthenticated()) {
-      return;
-    }
     this.username = this.authService.currentUserValue.username;
     this.route.data.subscribe(async (routerData: Data) => {
       this.posts = routerData.posts;

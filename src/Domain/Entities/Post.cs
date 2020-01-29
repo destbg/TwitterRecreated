@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Domain.Common;
 
 namespace Domain.Entities
 {
-    public class Post
+    public class Post : AuditableEntity
     {
         public Post()
         {
@@ -20,11 +21,10 @@ namespace Domain.Entities
         public long? ReplyId { get; set; }
         public Post Reply { get; set; }
         public long? RepostId { get; set; }
-        public Repost Repost { get; set; }
+        public Post Repost { get; set; }
         public int Reposts { get; set; }
         public int Likes { get; set; }
         public int Comments { get; set; }
-        public DateTime PostedOn { get; set; }
 
         public ICollection<PollOption> Poll { get; set; }
         public ICollection<PostImage> Images { get; set; }

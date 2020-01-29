@@ -25,7 +25,7 @@ export class PostPinnedComponent implements OnInit, AfterViewInit, OnDestroy {
   private timer: Subscription;
   @Input() post: IPost;
   videoLink: SafeResourceUrl;
-  option: string;
+  optionId: number;
   pollEnded: boolean;
   pollEndDate: string;
   totalVotes: number;
@@ -50,7 +50,7 @@ export class PostPinnedComponent implements OnInit, AfterViewInit, OnDestroy {
         'https://www.youtube.com/embed/' + this.post.video,
       );
     }
-    if (this.post.poll.length !== 0) {
+    if (!this.post.poll || this.post.poll.length !== 0) {
       this.totalVotes = this.calcTotalVotes();
       this.pollEnded = moment(this.post.pollEnd).diff(moment()) < 0;
       if (this.pollEnded) {
@@ -114,17 +114,17 @@ export class PostPinnedComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  selectOption(option: string): void {
-    this.option = option;
+  selectOption(optionId: number): void {
+    this.optionId = optionId;
   }
 
   voteOnOption(): void {
-    if (!this.option) {
+    if (!this.optionId) {
       alert('You need to select an option before you can vote');
       return;
     }
     this.post.hasVoted = true;
-    this.voteService.voteOnPost(this.post.id, this.option);
+    this.voteService.voteOnPost(this.optionId);
   }
 
   calcPercentage(index: number, progressBar: HTMLDivElement): number {

@@ -19,11 +19,8 @@ namespace Persistence.Configuration
                 .HasColumnType("char(36)");
 
             builder.Property(f => f.PollEnd)
-                .IsRequired(false);
-
-            builder.Property(f => f.PostedOn)
-                .HasColumnType("datetime")
-                .IsRequired();
+                .IsRequired(false)
+                .HasColumnType("datetime2");
 
             builder.Property(f => f.Video)
                 .HasMaxLength(100)
@@ -31,9 +28,19 @@ namespace Persistence.Configuration
                 .HasColumnType("varchar(100)");
 
             builder.HasOne(f => f.Repost)
-                .WithOne(f => f.Post)
-                .HasForeignKey<Repost>(b => b.PostId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .WithOne();
+
+            builder.HasOne(f => f.Reply)
+                .WithOne();
+
+            builder.Property(f => f.CreatedOn)
+                .IsRequired()
+                .HasColumnType("datetime");
+
+            builder.Property(f => f.CreatedByIp)
+                .IsRequired()
+                .HasMaxLength(15)
+                .HasColumnType("varchar(15)");
         }
     }
 }

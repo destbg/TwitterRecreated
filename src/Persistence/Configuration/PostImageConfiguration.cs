@@ -16,7 +16,7 @@ namespace Persistence.Configuration
             builder.HasOne(f => f.Post)
                 .WithMany(f => f.Images)
                 .HasForeignKey(f => f.PostId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

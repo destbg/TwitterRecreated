@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistence;
 
-namespace Persistence.Migrations
+namespace Infrastructure.Migrations
 {
     [DbContext(typeof(TwitterDbContext))]
-    partial class TwitterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200129120615_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,8 +144,13 @@ namespace Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("AddedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
@@ -169,6 +176,11 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime");
@@ -199,6 +211,14 @@ namespace Persistence.Migrations
                     b.Property<long>("ChatId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
                     b.Property<bool?>("IsModerator")
                         .HasColumnType("bit");
 
@@ -222,6 +242,8 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ChatId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("ChatUsers");
@@ -239,6 +261,14 @@ namespace Persistence.Migrations
                         .HasColumnType("char(2)")
                         .IsFixedLength(true)
                         .HasMaxLength(2);
+
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
 
                     b.Property<int>("Posts")
                         .HasColumnType("int");
@@ -260,8 +290,13 @@ namespace Persistence.Migrations
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("LikedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
@@ -291,10 +326,15 @@ namespace Persistence.Migrations
                     b.Property<long>("ChatId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("CreatedAt")
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime");
 
-                    b.Property<DateTime?>("EditedAt")
+                    b.Property<DateTime?>("EditedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Msg")
@@ -323,6 +363,11 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime");
@@ -416,14 +461,19 @@ namespace Persistence.Migrations
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
 
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
                     b.Property<int>("Likes")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("PollEnd")
                         .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("PostedOn")
-                        .HasColumnType("datetime");
 
                     b.Property<long?>("ReplyId")
                         .HasColumnType("bigint");
@@ -446,7 +496,13 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ReplyId");
+                    b.HasIndex("ReplyId")
+                        .IsUnique()
+                        .HasFilter("[ReplyId] IS NOT NULL");
+
+                    b.HasIndex("RepostId")
+                        .IsUnique()
+                        .HasFilter("[RepostId] IS NOT NULL");
 
                     b.HasIndex("UserId");
 
@@ -483,15 +539,22 @@ namespace Persistence.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
+
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
 
-                    b.Property<DateTime>("PostedOn")
-                        .HasColumnType("datetime");
+                    b.Property<long?>("PostId1")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -501,8 +564,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PostId")
-                        .IsUnique();
+                    b.HasIndex("PostId1");
 
                     b.HasIndex("UserId");
 
@@ -515,6 +577,14 @@ namespace Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)")
+                        .HasMaxLength(15);
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
 
                     b.Property<string>("FollowerId")
                         .IsRequired()
@@ -776,6 +846,12 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.ChatUser", b =>
                 {
+                    b.HasOne("Domain.Entities.Chat", null)
+                        .WithMany("Users")
+                        .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -831,7 +907,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Post", "Post")
                         .WithMany("Poll")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
@@ -853,8 +929,12 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Post", b =>
                 {
                     b.HasOne("Domain.Entities.Post", "Reply")
-                        .WithMany()
-                        .HasForeignKey("ReplyId");
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.Post", "ReplyId");
+
+                    b.HasOne("Domain.Entities.Post", "Repost")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.Post", "RepostId");
 
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany()
@@ -868,17 +948,15 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Post", "Post")
                         .WithMany("Images")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Repost", b =>
                 {
                     b.HasOne("Domain.Entities.Post", "Post")
-                        .WithOne("Repost")
-                        .HasForeignKey("Domain.Entities.Repost", "PostId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("PostId1");
 
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany()

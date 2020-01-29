@@ -20,15 +20,20 @@ namespace Persistence.Configuration
                 .HasMaxLength(36)
                 .HasColumnType("char(36)");
 
-            builder.Property(f => f.CreatedOn)
-                .HasColumnType("datetime")
-                .IsRequired();
-
             builder.Property(f => f.NotificationType)
                 .IsRequired();
 
             builder.Property(f => f.PostId)
                 .IsRequired(false);
+
+            builder.Property(f => f.CreatedOn)
+                .IsRequired()
+                .HasColumnType("datetime");
+
+            builder.Property(f => f.CreatedByIp)
+                .IsRequired()
+                .HasMaxLength(15)
+                .HasColumnType("varchar(15)");
         }
     }
 }

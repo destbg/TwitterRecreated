@@ -1,8 +1,9 @@
 ﻿using System;
+using Domain.Common;
 
 namespace Domain.Entities
 {
-    public class Message
+    public class Message : AuditableEntity
     {
         public long Id { get; set; }
         public string Msg { get; set; }
@@ -10,7 +11,6 @@ namespace Domain.Entities
         public AppUser User { get; set; }
         public long ChatId { get; set; }
         public Chat Chat { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? EditedAt { get; set; }
+        public DateTime? EditedOn { get; set; }
     }
 }

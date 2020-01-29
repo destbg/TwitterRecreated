@@ -24,7 +24,7 @@ namespace Persistence.Common
 
         public Task<List<MessageVm>> ChatMessages(long chatId, DateTime skip, CancellationToken token) =>
             _context.Messages
-                .Where(f => f.ChatId == chatId && f.CreatedAt > skip)
+                .Where(f => f.ChatId == chatId && f.CreatedOn > skip)
                 .ProjectTo<MessageVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
     }

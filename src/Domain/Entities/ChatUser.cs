@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities
+﻿using Domain.Common;
+
+namespace Domain.Entities
 {
-    public class ChatUser
+    public class ChatUser : AuditableEntity
     {
         public long Id { get; set; }
         public string UserId { get; set; }

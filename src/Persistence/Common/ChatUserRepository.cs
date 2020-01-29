@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Interfaces;
 using Application.Common.Repositories;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ namespace Persistence.Common
 {
     public class ChatUserRepository : BaseRepository<ChatUser>, IChatUserRepository
     {
-        public ChatUserRepository(Application.Common.Interfaces.ITwitterDbContext context) : base(context)
+        public ChatUserRepository(ITwitterDbContext context) : base(context)
         {
         }
 

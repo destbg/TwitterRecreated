@@ -24,10 +24,10 @@ namespace Persistence.Common
 
         public Task<List<PostVm>> UserBookmarks(string userId, DateTime skip, CancellationToken token) =>
             _context.Bookmarks
-                .Where(f => f.UserId == userId && f.AddedOn > skip)
+                .Where(f => f.UserId == userId && f.CreatedOn > skip)
                 .Select(f => f.Post)
-                .ProjectTo<PostVm>(_mapper.ConfigurationProvider)
                 .Take(50)
+                .ProjectTo<PostVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
 
         public Task<Bookmark> GetByPostAndUser(string userId, long postId, CancellationToken token) =>

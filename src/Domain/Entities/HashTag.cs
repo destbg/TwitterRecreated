@@ -1,6 +1,8 @@
-﻿namespace Domain.Entities
+﻿using Domain.Common;
+
+namespace Domain.Entities
 {
-    public class HashTag
+    public class HashTag : AuditableEntity
     {
         public long Id { get; set; }
         public string Tag { get; set; }

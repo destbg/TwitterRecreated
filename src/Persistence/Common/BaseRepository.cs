@@ -13,11 +13,11 @@ using System.Threading.Tasks;
 
 namespace Persistence.Common
 {
-    public class BaseRepository<T> : IRepository<T> where T : class
+    public abstract class BaseRepository<T> : IRepository<T> where T : class
     {
         protected readonly ITwitterDbContext _context;
 
-        public BaseRepository(ITwitterDbContext context)
+        protected BaseRepository(ITwitterDbContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }

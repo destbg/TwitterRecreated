@@ -104,9 +104,9 @@ export class PostService {
 
   private skipPosts(url: string, skip?: Date): Observable<IPost[]> {
     if (skip) {
-      return this.http.get<IPost[]>(environment.API_URL + url + '/' + skip);
+      return this.http.get<IPost[]>(environment.API_URL + url + '/all/' + skip);
     } else {
-      return this.http.get<IPost[]>(environment.API_URL + url);
+      return this.http.get<IPost[]>(environment.API_URL + url + '/all');
     }
   }
 }

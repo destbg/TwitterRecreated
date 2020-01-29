@@ -10,7 +10,7 @@ namespace WebApi.Services
         {
             UserId = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
             IsAuthenticated = UserId != null;
-            Ip = httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
+            Ip = httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString();
         }
 
         public string Ip { get; }

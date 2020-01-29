@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Domain.Common;
 
 namespace Domain.Entities
 {
-    public class Repost
+    public class Repost : AuditableEntity
     {
         public long Id { get; set; }
         public long PostId { get; set; }
@@ -10,6 +10,5 @@ namespace Domain.Entities
         public string UserId { get; set; }
         public AppUser User { get; set; }
         public string Content { get; set; }
-        public DateTime PostedOn { get; set; }
     }
 }

@@ -25,6 +25,9 @@ namespace WebApi.Hubs
         [HubMethodName("followPosts")]
         public async Task OnFollowPosts(long[] postIds)
         {
+            if (postIds == null || postIds.Length == 0)
+                return;
+
             if (await _mediator.Send(new VerifyPostsCommand { PostIds = postIds }))
             {
                 foreach (var id in postIds)
@@ -35,6 +38,9 @@ namespace WebApi.Hubs
         [HubMethodName("unFollowPosts")]
         public async Task OnUnFollowPosts(long[] postIds)
         {
+            if (postIds == null || postIds.Length == 0)
+                return;
+
             foreach (var id in postIds)
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, id.ToString());
         }

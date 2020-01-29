@@ -1,9 +1,9 @@
-﻿using Domain.Enums;
-using System;
+﻿using Domain.Common;
+using Domain.Enums;
 
 namespace Domain.Entities
 {
-    public class Notification
+    public class Notification : AuditableEntity
     {
         public long Id { get; set; }
         public string ForUserId { get; set; }
@@ -12,6 +12,5 @@ namespace Domain.Entities
         public long? PostId { get; set; }
         public Post Post { get; set; }
         public NotificationType NotificationType { get; set; }
-        public DateTime CreatedOn { get; set; }
     }
 }

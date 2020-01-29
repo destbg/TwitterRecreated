@@ -20,17 +20,19 @@ namespace Application.Common.ViewModels
         public int Reposts { get; set; }
         public PollVm[] Poll { get; set; }
         public DateTime PollEnd { get; set; }
-        public Post Reply { get; set; }
         public string[] Reposters { get; set; }
         public string[] Likers { get; set; }
-        public RepostVm Repost { get; set; }
+        public PostShortVm Repost { get; set; }
+        public PostReplyVm Reply { get; set; }
 
         public void Mapping(Profile profile) =>
             profile.CreateMap<Post, PostVm>()
+                .ForMember(f => f.PostedOn, f => f.MapFrom(s => s.CreatedOn))
                 .ForMember(f => f.Images, f => f.MapFrom(s => s.Images.Select(f => f.Image)))
                 .ForMember(f => f.User, f => f.MapFrom(s => s.User))
                 .ForMember(f => f.Poll, f => f.MapFrom(s => s.Poll))
-                .ForMember(f => f.Repost, f => f.MapFrom(s => s.Repost));
+                .ForMember(f => f.Repost, f => f.MapFrom(s => s.Repost))
+                .ForMember(f => f.Reply, f => f.MapFrom(s => s.Reply));
     }
 
     public class PostShortVm : IMapFrom<Post>
@@ -42,6 +44,7 @@ namespace Application.Common.ViewModels
 
         public void Mapping(Profile profile) =>
             profile.CreateMap<Post, PostShortVm>()
+                .ForMember(f => f.PostedOn, f => f.MapFrom(s => s.CreatedOn))
                 .ForMember(f => f.User, f => f.MapFrom(s => s.User));
     }
 
@@ -54,10 +57,11 @@ namespace Application.Common.ViewModels
 
         public void Mapping(Profile profile) =>
             profile.CreateMap<Repost, RepostVm>()
+                .ForMember(f => f.PostedOn, f => f.MapFrom(s => s.CreatedOn))
                 .ForMember(f => f.User, f => f.MapFrom(s => s.User));
     }
 
-    public class PostReplyVm
+    public class PostReplyVm : IMapFrom<Post>
     {
         public string Username { get; set; }
         public long PostId { get; set; }

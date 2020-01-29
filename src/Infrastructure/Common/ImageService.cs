@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Infrastructure
+namespace Infrastructure.Common
 {
     public class ImageService : IImageService
     {

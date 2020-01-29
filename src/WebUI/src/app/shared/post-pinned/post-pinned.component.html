@@ -17,7 +17,7 @@
     <iframe *ngIf="!post.video.includes('.')" [src]="videoLink" style="width: 100%" height="300px" frameBorder="0"
       allowFullscreen></iframe>
   </div>
-  <div *ngIf="post.poll.length !== 0" class="row offset-1 mb-3 mr-3" onclick="event.stopPropagation()">
+  <div *ngIf="!post.poll || post.poll.length !== 0" class="row offset-1 mb-3 mr-3" onclick="event.stopPropagation()">
     <div *ngIf="post.hasVoted || pollEnded" class="w-100">
       <div *ngFor="let option of post.poll; let i = index" class="w-100">
         <p style="text-align: left;font-size: medium; position: absolute;">
@@ -37,7 +37,7 @@
       <div class="form-group m-3">
         <div class="custom-control custom-radio" *ngFor="let option of post.poll; let i = index">
           <input type="radio" [id]="'pollRadio' + i" name="pollRadio" class="custom-control-input"
-            (change)="selectOption(option.option)">
+            (change)="selectOption(option.id)">
           <label class="custom-control-label" [for]="'pollRadio' + i">{{option.option}}</label>
         </div>
       </div>

@@ -1,4 +1,8 @@
-﻿using Application.Common.Interfaces;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Application.Common.Interfaces;
+using Common;
+using Domain.Common;
 using Domain.Entities;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
@@ -9,10 +13,19 @@ namespace Persistence
 {
     public class TwitterDbContext : ApiAuthorizationDbContext<AppUser>, ITwitterDbContext
     {
-        public TwitterDbContext(DbContextOptions<TwitterDbContext> options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions)
+        private readonly ICurrentUserService _currentUserService;
+        private readonly IDateTime _dateTime;
+
+        public TwitterDbContext(DbContextOptions<TwitterDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions)
             : base(options, operationalStoreOptions)
         {
+        }
+
+        public TwitterDbContext(DbContextOptions<TwitterDbContext> options, IOptions<OperationalStoreOptions> operationalStoreOptions, ICurrentUserService currentUserService, IDateTime dateTime)
+            : base(options, operationalStoreOptions)
+        {
+            _currentUserService = currentUserService;
+            _dateTime = dateTime;
         }
 
         public DbSet<Bookmark> Bookmarks { get; set; }
@@ -28,6 +41,20 @@ namespace Persistence
         public DbSet<Repost> Reposts { get; set; }
         public DbSet<HashTag> HashTags { get; set; }
         public DbSet<UserFollow> UserFollowers { get; set; }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedByIp = _currentUserService.Ip;
+                    entry.Entity.CreatedOn = _dateTime.Now;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

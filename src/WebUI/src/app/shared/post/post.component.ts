@@ -50,7 +50,7 @@ export class PostComponent implements OnInit, AfterViewInit {
           return;
         }
         const index = this.post.poll.findIndex(
-          (f: IPoll) => f.option === pollVote.option,
+          (f: IPoll) => f.id === pollVote.optionId,
         );
         if (index !== -1) {
           this.post.poll[index].votes++;

@@ -45,8 +45,8 @@ namespace Persistence.Common
                 .Where(f => f.FollowerId != userId && f.FollowingId != userId)
                 .Select(f => f.Following)
                 .OrderByDescending(f => f.Followers)
-                .ProjectTo<UserShortVm>(_mapper.ConfigurationProvider)
                 .Take(3)
+                .ProjectTo<UserShortVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
     }
 }

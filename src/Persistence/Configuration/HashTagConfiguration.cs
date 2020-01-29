@@ -17,6 +17,15 @@ namespace Persistence.Configuration
             builder.Property(f => f.Tag)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            builder.Property(f => f.CreatedOn)
+                .IsRequired()
+                .HasColumnType("datetime");
+
+            builder.Property(f => f.CreatedByIp)
+                .IsRequired()
+                .HasMaxLength(15)
+                .HasColumnType("varchar(15)");
         }
     }
 }

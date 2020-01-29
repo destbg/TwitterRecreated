@@ -1,7 +1,7 @@
 ﻿using Common;
 using System;
 
-namespace Infrastructure
+namespace Infrastructure.Common
 {
     public class UniversalDateTime : IDateTime
     {

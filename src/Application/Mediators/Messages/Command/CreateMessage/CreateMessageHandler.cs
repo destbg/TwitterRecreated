@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Repositories;
-using Common;
 using Domain.Entities;
 using MediatR;
 
@@ -14,14 +13,12 @@ namespace Application.Messages.Command.CreateMessage
     {
         private readonly IMessageRepository _message;
         private readonly IChatRepository _chat;
-        private readonly IDateTime _date;
         private readonly ICurrentUserService _currentUser;
 
-        public CreateMessageHandler(IMessageRepository message, IChatRepository chat, IDateTime date, ICurrentUserService currentUser)
+        public CreateMessageHandler(IMessageRepository message, IChatRepository chat, ICurrentUserService currentUser)
         {
             _message = message ?? throw new ArgumentNullException(nameof(message));
             _chat = chat ?? throw new ArgumentNullException(nameof(chat));
-            _date = date ?? throw new ArgumentNullException(nameof(date));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
         }
 
@@ -32,7 +29,6 @@ namespace Application.Messages.Command.CreateMessage
             await _message.Create(new Message
             {
                 ChatId = request.ChatId,
-                CreatedAt = _date.Now,
                 Msg = request.Content,
                 UserId = _currentUser.UserId
             }, cancellationToken);

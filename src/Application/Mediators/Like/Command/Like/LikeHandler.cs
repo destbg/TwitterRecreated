@@ -1,12 +1,11 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Application.Common.Repositories;
-using Common;
-using Domain.Entities;
-using MediatR;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
+using Application.Common.Interfaces;
+using Application.Common.Repositories;
+using Domain.Entities;
+using MediatR;
 
 namespace Application.Like.Command.Like
 {
@@ -15,14 +14,12 @@ namespace Application.Like.Command.Like
         private readonly IPostRepository _post;
         private readonly ILikedPostRepository _likedPost;
         private readonly ICurrentUserService _currentUser;
-        private readonly IDateTime _date;
 
-        public LikeHandler(IPostRepository post, ILikedPostRepository likedPost, ICurrentUserService currentUser, IDateTime date)
+        public LikeHandler(IPostRepository post, ILikedPostRepository likedPost, ICurrentUserService currentUser)
         {
             _post = post ?? throw new ArgumentNullException(nameof(post));
             _likedPost = likedPost ?? throw new ArgumentNullException(nameof(likedPost));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
-            _date = date ?? throw new ArgumentNullException(nameof(date));
         }
 
         public async Task<Unit> Handle(LikeCommand request, CancellationToken cancellationToken)
@@ -40,8 +37,7 @@ namespace Application.Like.Command.Like
                 await _likedPost.Create(new LikedPost
                 {
                     PostId = post.Id,
-                    UserId = _currentUser.UserId,
-                    LikedOn = _date.Now
+                    UserId = _currentUser.UserId
                 }, cancellationToken);
                 post.Likes++;
             }

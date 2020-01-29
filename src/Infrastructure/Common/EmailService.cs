@@ -2,7 +2,7 @@
 using Application.Common.Models;
 using System.Threading.Tasks;
 
-namespace Infrastructure
+namespace Infrastructure.Common
 {
     public class EmailService : IEmailService
     {
