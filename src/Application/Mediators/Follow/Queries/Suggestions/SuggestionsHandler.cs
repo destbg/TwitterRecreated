@@ -21,6 +21,6 @@ namespace Application.Follow.Queries.Suggestions
         }
 
         public async Task<IEnumerable<UserShortVm>> Handle(SuggestionsQuery request, CancellationToken cancellationToken) =>
-            await _userFollow.Suggestions(_currentUser.UserId, cancellationToken);
+            await _userFollow.Suggestions(_currentUser.User.Id, cancellationToken);
     }
 }

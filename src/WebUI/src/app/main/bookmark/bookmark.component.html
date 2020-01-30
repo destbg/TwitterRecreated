@@ -1,8 +1,8 @@
 <div class="row m-0">
   <div id="middle" class="col-xl-5 col-md-7 offset-xl-3 offset-md-1">
     <div class="list-group mt-50px">
-      <app-post-list *ngIf="posts && posts.length !== 0" [posts]="posts"></app-post-list>
-      <div class="text-center mt-5" *ngIf="posts && posts.length === 0">
+      <app-post-list *ngIf="bookmarks && bookmarks.length !== 0" [posts]="posts"></app-post-list>
+      <div class="text-center mt-5" *ngIf="bookmarks && bookmarks.length === 0">
         <h3>You have no bookmarks to look at yet</h3>
       </div>
     </div>

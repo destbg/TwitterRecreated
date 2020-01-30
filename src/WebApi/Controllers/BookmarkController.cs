@@ -33,7 +33,7 @@ namespace WebApi.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBookmark(long id)
         {
-            await Mediator.Send(new DeleteBookmarkCommand { PostId = id });
+            await Mediator.Send(new DeleteBookmarkCommand { Id = id });
             return NoContent();
         }
     }

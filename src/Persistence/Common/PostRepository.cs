@@ -31,9 +31,9 @@ namespace Persistence.Common
                 .ProjectTo<PostVm>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(token);
 
-        public Task<List<PostVm>> FindPostsFromUsers(DateTime skip, CancellationToken token) =>
+        public Task<List<PostVm>> FindPostsFromUsers(IEnumerable<string> userIds, DateTime skip, CancellationToken token) =>
             _context.Posts
-                .Where(f => f.CreatedOn > skip)
+                .Where(f => userIds.Any(a => a == f.UserId) && f.CreatedOn > skip)
                 .OrderByDescending(f => f.CreatedOn)
                 .Take(50)
                 .ProjectTo<PostVm>(_mapper.ConfigurationProvider)

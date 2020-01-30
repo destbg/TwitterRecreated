@@ -29,7 +29,7 @@ const routes: Routes = [
     path: 'bookmark',
     component: BookmarkComponent,
     resolve: {
-      posts: BookmarkResolver,
+      bookmarks: BookmarkResolver,
     },
   },
   {

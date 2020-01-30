@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.Bookmarks.Queries.UserBookmarks
 {
-    public class UserBookmarksQuery : IRequest<IEnumerable<PostVm>>
+    public class UserBookmarksQuery : IRequest<IEnumerable<BookmarkVm>>
     {
         public DateTime Skip { get; set; }
     }

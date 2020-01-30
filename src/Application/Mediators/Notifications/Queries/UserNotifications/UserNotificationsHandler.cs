@@ -21,6 +21,6 @@ namespace Application.Notifications.Queries.UserNotifications
         }
 
         public async Task<IEnumerable<NotificationVm>> Handle(UserNotificationsQuery request, CancellationToken cancellationToken) =>
-            await _notification.UserNotifications(_currentUser.UserId, request.Skip, cancellationToken);
+            await _notification.UserNotifications(_currentUser.User.Id, request.Skip, cancellationToken);
     }
 }

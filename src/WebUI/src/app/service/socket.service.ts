@@ -46,11 +46,11 @@ export class SocketService {
   }
 
   public messagesRead(chatId: number): void {
-    this._hubConnection.send('messagesRead', chatId);
+    this._hubConnection.send('messagesRead', { chatId });
   }
 
   public startTyping(chatId: number): void {
-    this._hubConnection.send('startTyping', chatId);
+    this._hubConnection.send('startTyping', { chatId });
   }
 
   public requestCall(chat: IRequestCall): void {

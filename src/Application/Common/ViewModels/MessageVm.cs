@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
@@ -13,9 +15,11 @@ namespace Application.Common.ViewModels
         public long ChatId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
+        public IEnumerable<UserShortVm> Users { get; set; }
 
         public void Mapping(Profile profile) =>
             profile.CreateMap<Message, MessageVm>()
-                .ForMember(f => f.User, f => f.MapFrom(s => s.User));
+                .ForMember(f => f.User, f => f.MapFrom(s => s.User))
+                .ForMember(f => f.Users, f => f.MapFrom(s => s.MessagesRead.Select(a => a.User)));
     }
 }

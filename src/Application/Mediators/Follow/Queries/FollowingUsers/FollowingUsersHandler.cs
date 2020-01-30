@@ -21,8 +21,8 @@ namespace Application.Follow.Queries.FollowingUsers
 
         public async Task<IReadOnlyList<string>> Handle(FollowingUsersQuery request, CancellationToken cancellationToken)
         {
-            var result = await _userFollow.FollowingUsers(_currentUser.UserId, cancellationToken);
-            result.Add(_currentUser.UserId);
+            var result = await _userFollow.FollowingUsers(_currentUser.User.Id, cancellationToken);
+            result.Add(_currentUser.User.Id);
             return result;
         }
     }

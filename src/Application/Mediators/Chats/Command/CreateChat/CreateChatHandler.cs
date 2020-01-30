@@ -33,7 +33,7 @@ namespace Application.Chats.Command.CreateChat
         {
             var user = await _userManager.GetUserByUsername(request.Username)
                 ?? throw new NotFoundException(nameof(request.Username), request.Username);
-            var chat = await _chat.FindChatByUsers(new[] { _currentUser.UserId, user.Id }, false, cancellationToken);
+            var chat = await _chat.FindChatByUsers(new[] { _currentUser.User.Id, user.Id }, false, cancellationToken);
             if (chat != null)
                 return chat.Id;
             chat = new Chat
@@ -47,7 +47,7 @@ namespace Application.Chats.Command.CreateChat
 
             chat.Users.Add(new ChatUser
             {
-                UserId = _currentUser.UserId,
+                UserId = _currentUser.User.Id,
                 ChatId = chat.Id,
                 OthersColor = "#8b0000",
                 SelfColor = "#4b0082"

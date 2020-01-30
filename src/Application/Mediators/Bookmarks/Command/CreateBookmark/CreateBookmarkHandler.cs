@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Repositories;
 using Application.Posts.Queries.GetPostById;
@@ -25,10 +26,13 @@ namespace Application.Bookmarks.Command.CreateBookmark
         public async Task<Unit> Handle(CreateBookmarkCommand request, CancellationToken cancellationToken)
         {
             await _mediator.Send(new GetPostByIdQuery { Id = request.PostId });
+            var bookmark = await _bookmark.GetByPostAndUser(_currentUser.User.Id, request.PostId, cancellationToken);
+            if (bookmark != null)
+                throw new BadRequestException("This post is already in your bookmarks");
             await _bookmark.Create(new Bookmark
             {
                 PostId = request.PostId,
-                UserId = _currentUser.UserId
+                UserId = _currentUser.User.Id
             }, cancellationToken);
             return Unit.Value;
         }

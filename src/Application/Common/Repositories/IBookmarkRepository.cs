@@ -9,7 +9,8 @@ namespace Application.Common.Repositories
 {
     public interface IBookmarkRepository : IRepository<Bookmark>
     {
-        Task<List<PostVm>> UserBookmarks(string userId, DateTime skip, CancellationToken token);
+        Task<List<BookmarkVm>> UserBookmarks(string userId, DateTime skip, CancellationToken token);
+        Task<Bookmark> GetByIdAndUser(string userId, long id, CancellationToken token);
         Task<Bookmark> GetByPostAndUser(string userId, long postId, CancellationToken token);
     }
 }

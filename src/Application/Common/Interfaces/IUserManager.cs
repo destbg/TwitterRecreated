@@ -13,6 +13,8 @@ namespace Application.Common.Interfaces
         Task<Result> DeleteUserAsync(string userId);
         Task<AppUser> GetUserByUsername(string username);
         Task<AppUser> GetUserById(string id);
+        Task<AppUser> GetCurrentUser(string username);
+        Task<Result> UpdateUser(AppUser user);
         Task<List<UserFollowVm>> SeachUsers(string search);
         Task<List<AppUser>> ValidateUsersnames(IEnumerable<string> usernames);
         string NormalizeName(string name);

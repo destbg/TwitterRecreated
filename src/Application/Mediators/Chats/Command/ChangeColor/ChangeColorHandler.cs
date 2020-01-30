@@ -21,7 +21,7 @@ namespace Application.Chats.Command.ChangeColor
 
         public async Task<Unit> Handle(ChangeColorCommand request, CancellationToken cancellationToken)
         {
-            var chatUser = await _chatUser.FindByUserAndChat(_currentUser.UserId, request.ChatId, cancellationToken)
+            var chatUser = await _chatUser.FindByUserAndChat(_currentUser.User.Id, request.ChatId, cancellationToken)
                 ?? throw new NotFoundException("Chat User", request.ChatId);
             chatUser.OthersColor = request.OthersColor;
             chatUser.SelfColor = request.SelfColor;

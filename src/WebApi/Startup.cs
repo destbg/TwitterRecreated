@@ -43,7 +43,6 @@ namespace WebApi
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddTransient<IMainHubService, MainHubService>();
 
-            services.AddHttpContextAccessor();
             services.AddCors(f => f.AddPolicy("MyPolicy", builder =>
             {
                 builder.AllowAnyHeader()
@@ -90,7 +89,6 @@ namespace WebApi
             }
 
             app.UseWebSocketMiddleware();
-            app.UseCustomExceptionHandler();
             app.UseHealthChecks("/health");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
@@ -109,6 +107,8 @@ namespace WebApi
             app.UseAuthentication();
             app.UseIdentityServer();
             app.UseAuthorization();
+            app.UseCurrentUserMiddleware();
+            app.UseCustomExceptionHandler();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

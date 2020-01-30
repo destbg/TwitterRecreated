@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Application.Common.ViewModels;
 using MediatR;
 
-namespace Application.Posts.Queries.MultimediaPosts
+namespace Application.Multimedia.Queries.MultimediaPosts
 {
     public class MultimediaPostsQuery : IRequest<IEnumerable<PostVm>>
     {

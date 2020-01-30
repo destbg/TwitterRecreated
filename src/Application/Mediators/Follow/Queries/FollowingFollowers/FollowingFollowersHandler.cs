@@ -20,7 +20,10 @@ namespace Application.Follow.Queries.FollowingFollowers
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
         }
 
-        public async Task<IEnumerable<UserShortVm>> Handle(FollowingFollowersQuery request, CancellationToken cancellationToken) =>
-            await _userFollow.FollowingFollowers(_currentUser.UserId, cancellationToken);
+        public async Task<IEnumerable<UserShortVm>> Handle(FollowingFollowersQuery request, CancellationToken cancellationToken)
+        {
+            var following = await _userFollow.FollowingUsers(_currentUser.User.Id, cancellationToken);
+            return await _userFollow.FollowingFollowers(following, cancellationToken);
+        }
     }
 }

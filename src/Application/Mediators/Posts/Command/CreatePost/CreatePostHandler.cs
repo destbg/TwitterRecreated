@@ -45,10 +45,9 @@ namespace Application.Posts.Command.CreatePost
             var post = new Post
             {
                 Content = request.Content,
-                UserId = _currentUser.UserId,
                 PollEnd = request.PollEnd,
                 Video = videoLink,
-                User = await _userManager.GetUserById(_currentUser.UserId)
+                User = _currentUser.User
             };
 
             await _post.Create(post, cancellationToken);

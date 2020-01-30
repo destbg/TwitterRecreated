@@ -1,22 +1,29 @@
-﻿using Application.Common.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using System;
 using System.Security.Claims;
+using System.Threading.Tasks;
+using Application.Common.Interfaces;
+using Domain.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace WebApi.Services
 {
     public class CurrentUserService : ICurrentUserService
     {
-        public CurrentUserService(IHttpContextAccessor httpContextAccessor)
+        public async Task Initialize(ClaimsPrincipal user, ConnectionInfo connection, IUserManager userManager)
         {
-            UserId = httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-            IsAuthenticated = UserId != null;
-            Ip = httpContextAccessor.HttpContext?.Connection?.RemoteIpAddress?.ToString();
+            if (user?.Identity?.IsAuthenticated == true)
+            {
+                User = await userManager.GetCurrentUser(user.Identity.Name)
+                    ?? throw new UnauthorizedAccessException("Provided credentials are invalid");
+                IsAuthenticated = true;
+            }
+            Ip = connection?.RemoteIpAddress?.ToString();
         }
 
-        public string Ip { get; }
+        public string Ip { get; private set; }
 
-        public string UserId { get; }
+        public AppUser User { get; private set; }
 
-        public bool IsAuthenticated { get; }
+        public bool IsAuthenticated { get; private set; }
     }
 }

@@ -13,13 +13,11 @@ namespace Application.Reposts.Command.CreateRepostWithComment
     {
         private readonly IPostRepository _post;
         private readonly ICurrentUserService _currentUser;
-        private readonly IUserManager _userManager;
 
-        public CreateRepostWithCommentHandler(IPostRepository post, ICurrentUserService currentUser, IUserManager userManager)
+        public CreateRepostWithCommentHandler(IPostRepository post, ICurrentUserService currentUser)
         {
             _post = post ?? throw new ArgumentNullException(nameof(post));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
         public async Task<Unit> Handle(CreateRepostWithCommentCommand request, CancellationToken cancellationToken)
@@ -27,14 +25,14 @@ namespace Application.Reposts.Command.CreateRepostWithComment
             var post = await _post.GetById(request.RepostId, cancellationToken)
                 ?? throw new NotFoundException("Repost Id", request.RepostId);
 
-            if (post.UserId == _currentUser.UserId)
+            if (post.UserId == _currentUser.User.Id)
                 throw new BadRequestException("You can't repost your own post");
 
             await _post.Create(new Post
             {
                 Content = request.Content,
                 Repost = post,
-                User = await _userManager.GetUserById(_currentUser.UserId)
+                User = _currentUser.User
             }, cancellationToken);
 
             post.Reposts++;

@@ -21,8 +21,8 @@ namespace Application.Bookmarks.Command.DeleteBookmark
 
         public async Task<Unit> Handle(DeleteBookmarkCommand request, CancellationToken cancellationToken)
         {
-            var bookmark = await _bookmark.GetByPostAndUser(_currentUser.UserId, request.PostId, cancellationToken)
-                    ?? throw new NotFoundException("Bookmark", request.PostId);
+            var bookmark = await _bookmark.GetByIdAndUser(_currentUser.User.Id, request.Id, cancellationToken)
+                    ?? throw new NotFoundException("Bookmark Id", request.Id);
             await _bookmark.Delete(bookmark, cancellationToken);
             return Unit.Value;
         }

@@ -11,16 +11,16 @@ namespace WebApi.Controllers
     [Authorize]
     public class FollowController : BaseController
     {
+        [HttpGet]
+        public async Task<IActionResult> FollowingUsers(FollowingUsersQuery command) =>
+            Ok(await Mediator.Send(command));
+
         [HttpPost]
         public async Task<IActionResult> FollowUser(FollowUserCommand command)
         {
             await Mediator.Send(command);
             return NoContent();
         }
-
-        [HttpGet]
-        public async Task<IActionResult> FollowingUsers(FollowingUsersQuery command) =>
-            Ok(await Mediator.Send(command));
 
         [HttpGet("FollowingFollowers")]
         public async Task<IActionResult> FollowingFollowers(FollowingFollowersQuery command) =>

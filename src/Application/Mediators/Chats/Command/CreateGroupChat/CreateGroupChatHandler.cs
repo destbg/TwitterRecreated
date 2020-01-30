@@ -60,7 +60,7 @@ namespace Application.Chats.Command.CreateGroupChat
                 IsModerator = true,
                 OthersColor = "#8b0000",
                 SelfColor = "#4b0082",
-                User = await _userManager.GetUserById(_currentUser.UserId)
+                User = _currentUser.User
             });
             await _chat.Update(chat, cancellationToken);
             return _mapper.Map<ChatVm>(chat);

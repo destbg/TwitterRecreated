@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Application.Common.Mappings;
 using AutoMapper;
 using Domain.Entities;
@@ -17,7 +18,8 @@ namespace Application.Common.ViewModels
 
         public void Mapping(Profile profile) =>
             profile.CreateMap<Chat, ChatVm>()
-                .ForMember(f => f.Users, f => f.MapFrom(s => s.Users));
+                .ForMember(f => f.Users, f => f.MapFrom(s => s.Users))
+                .ForMember(f => f.LastMessage, f => f.MapFrom(s => s.Messages.OrderBy(f => f.CreatedOn).Select(w => w.Msg).FirstOrDefault()));
     }
 
     public class ChatUserVm : IMapFrom<ChatUser>

@@ -19,6 +19,7 @@ export interface IPost {
   reposters?: string[];
   likers?: string[];
   repost?: IPostShort;
+  bookmarkId?: number;
 }
 
 export class PostContent {

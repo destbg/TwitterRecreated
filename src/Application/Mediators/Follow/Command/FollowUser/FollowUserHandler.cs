@@ -27,13 +27,13 @@ namespace Application.Follow.Command.FollowUser
             var user = await _userManager.GetUserByUsername(request.Username)
                 ?? throw new NotFoundException(nameof(request.Username), request.Username);
 
-            if (user.Id == _currentUser.UserId)
+            if (user.Id == _currentUser.User.Id)
                 throw new BadRequestException("You cannot follow yourself");
 
             var result = await _userFollow.Create(new UserFollow
             {
                 FollowerId = user.Id,
-                FollowingId = _currentUser.UserId
+                FollowingId = _currentUser.User.Id
             }, cancellationToken);
 
             if (!result.Succeeded)

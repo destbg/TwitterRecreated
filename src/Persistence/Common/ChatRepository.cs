@@ -10,7 +10,6 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace Persistence.Common
 {
@@ -28,10 +27,22 @@ namespace Persistence.Common
                 .Include(f => f.Users)
                 .FirstOrDefaultAsync(f => userIds.SequenceEqual(f.Users.Select(s => s.UserId)));
 
+        public Task<Chat> FindByUserAndChat(string userId, long chatId, CancellationToken token) =>
+            _context.Chats
+                .Include(f => f.Users)
+                .FirstOrDefaultAsync(f => f.Users.Any(s => s.UserId == userId) && f.Id == chatId, token);
+
+        public Task<List<long>> UserChatIds(string userId, CancellationToken token) =>
+            _context.Chats
+                .Where(f => f.Users.Any(f => f.UserId == userId))
+                .Select(f => f.Id)
+                .ToListAsync(token);
+
         public Task<List<ChatVm>> UserChats(string userId, CancellationToken token) =>
             _context.Chats
                 .Include(f => f.Users)
                 .Where(f => f.Users.Any(f => f.UserId == userId))
+                .Take(20)
                 .ProjectTo<ChatVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
     }

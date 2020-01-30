@@ -10,5 +10,7 @@ namespace Application.Common.Repositories
     public interface IMessageRepository : IRepository<Message>
     {
         Task<List<MessageVm>> ChatMessages(long chatId, DateTime skip, CancellationToken token);
+        Task<Message> FindByMessageReadAndChat(long chatId, string userId, CancellationToken token);
+        Task<Message> LastMessageInChat(long chatId, CancellationToken token);
     }
 }

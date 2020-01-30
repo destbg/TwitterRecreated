@@ -1,10 +1,10 @@
-﻿using Application.Common.Interfaces;
+﻿using System;
+using System.Threading.Tasks;
+using Application.Common.Interfaces;
 using Application.Common.ViewModels;
 using Application.Follow.Queries.FollowingUsers;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Threading.Tasks;
 using WebApi.Hubs;
 
 namespace WebApi.Services
@@ -25,19 +25,24 @@ namespace WebApi.Services
                 .Users(await _mediator.Send(new FollowingUsersQuery()))
                 .SendAsync("newPost", post);
 
-        public async Task SendLikedPost(LikeVm like) =>
-            await _hubContext.Clients
-                .Group(like.PostId.ToString())
+        public Task SendLikedPost(LikeVm like) =>
+            _hubContext.Clients
+                .Group("post" + like.PostId)
                 .SendAsync("likedPost", like);
 
-        public async Task SendPollVote(PollVoteVm pollVote) =>
-            await _hubContext.Clients
-                .Group(pollVote.PostId.ToString())
+        public Task SendPollVote(PollVoteVm pollVote) =>
+            _hubContext.Clients
+                .Group("post" + pollVote.PostId)
                 .SendAsync("votedOnPoll", pollVote);
 
-        public async Task SendDeletedPost(long id) =>
-            await _hubContext.Clients
-                .Group(id.ToString())
+        public Task SendDeletedPost(long id) =>
+            _hubContext.Clients
+                .Group("post" + id)
                 .SendAsync("deletedPost", id);
+
+        public Task SendMessage(MessageVm message) =>
+            _hubContext.Clients
+                .Group("msg" + message.ChatId)
+                .SendAsync("newMessage", message);
     }
 }

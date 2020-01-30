@@ -21,6 +21,6 @@ namespace Application.Chats.Queries.UserChats
         }
 
         public async Task<IEnumerable<ChatVm>> Handle(UserChatsQuery request, CancellationToken cancellationToken) =>
-            await _chat.UserChats(_currentUser.UserId, cancellationToken);
+            await _chat.UserChats(_currentUser.User.Id, cancellationToken);
     }
 }

@@ -9,7 +9,7 @@ using MediatR;
 
 namespace Application.Bookmarks.Queries.UserBookmarks
 {
-    public class UserBookmarksHandler : IRequestHandler<UserBookmarksQuery, IEnumerable<PostVm>>
+    public class UserBookmarksHandler : IRequestHandler<UserBookmarksQuery, IEnumerable<BookmarkVm>>
     {
         private readonly IBookmarkRepository _bookmark;
         private readonly ICurrentUserService _currentUser;
@@ -20,7 +20,7 @@ namespace Application.Bookmarks.Queries.UserBookmarks
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
         }
 
-        public async Task<IEnumerable<PostVm>> Handle(UserBookmarksQuery request, CancellationToken cancellationToken) =>
-            await _bookmark.UserBookmarks(_currentUser.UserId, request.Skip, cancellationToken);
+        public async Task<IEnumerable<BookmarkVm>> Handle(UserBookmarksQuery request, CancellationToken cancellationToken) =>
+            await _bookmark.UserBookmarks(_currentUser.User.Id, request.Skip, cancellationToken);
     }
 }

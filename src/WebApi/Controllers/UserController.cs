@@ -1,4 +1,5 @@
-﻿using Application.Users.Queries.GetUser;
+﻿using Application.Users.Command.EditUserProfile;
+using Application.Users.Queries.GetUser;
 using Application.Users.Queries.GetUserPosts;
 using Common;
 using Microsoft.AspNetCore.Mvc;
@@ -27,5 +28,12 @@ namespace WebApi.Controllers
                 Username = username,
                 Skip = skip ?? _date.MinDate
             }));
+
+        [HttpPost("Profile")]
+        public async  Task<IActionResult> EditUserProfile(EditUserProfileCommand command)
+        {
+            await Mediator.Send(command);
+            return NoContent();
+        }
     }
 }

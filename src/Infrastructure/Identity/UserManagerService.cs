@@ -32,8 +32,8 @@ namespace Infrastructure.Identity
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _signInManager = signInManager ?? throw new ArgumentNullException(nameof(signInManager));
             _dateTime = dateTime ?? throw new ArgumentNullException(nameof(dateTime));
-            _mapper = mapper;
-            _configuration = configuration;
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         public async Task<(Result Result, AuthVm Auth)> LoginUserAsync(string username, string password)
@@ -116,6 +116,15 @@ namespace Infrastructure.Identity
                 .Where(f => usernames.Contains(f.UserName))
                 .ToListAsync();
 
+        public Task<AppUser> GetCurrentUser(string username) =>
+            _userManager.FindByNameAsync(username);
+
+        public async Task<Result> UpdateUser(AppUser user)
+        {
+            var result = await _userManager.UpdateAsync(user);
+            return result.ToApplicationResult();
+        }
+
         public string NormalizeName(string name) =>
             _userManager.NormalizeName(name);
 
@@ -125,6 +134,8 @@ namespace Infrastructure.Identity
 
         private string CreateJwtToken(AppUser user)
         {
+            if (user == default)
+                return default;
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
 
             var token = new JwtSecurityToken(

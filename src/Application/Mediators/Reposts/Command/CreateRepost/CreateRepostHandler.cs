@@ -27,10 +27,10 @@ namespace Application.Reposts.Command.CreateRepost
             var post = await _post.GetById(request.Id, cancellationToken)
                 ?? throw new NotFoundException("Post Id", request.Id);
 
-            if (post.UserId == _currentUser.UserId)
+            if (post.UserId == _currentUser.User.Id)
                 throw new BadRequestException("You can't repost your own post");
 
-            var repost = await _repost.FindByUserAndPost(_currentUser.UserId, request.Id, cancellationToken);
+            var repost = await _repost.FindByUserAndPost(_currentUser.User.Id, request.Id, cancellationToken);
 
             if (repost == default)
             {
@@ -38,7 +38,7 @@ namespace Application.Reposts.Command.CreateRepost
                 {
                     Content = request.Content,
                     PostId = request.Id,
-                    UserId = _currentUser.UserId
+                    UserId = _currentUser.User.Id
                 }, cancellationToken);
                 post.Reposts++;
                 await _post.Update(post, cancellationToken);

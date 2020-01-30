@@ -6,7 +6,7 @@ using Application.Common.Repositories;
 using Application.Common.ViewModels;
 using MediatR;
 
-namespace Application.Posts.Queries.MultimediaPosts
+namespace Application.Multimedia.Queries.MultimediaPosts
 {
     public class MultimediaPostsHandler : IRequestHandler<MultimediaPostsQuery, IEnumerable<PostVm>>
     {

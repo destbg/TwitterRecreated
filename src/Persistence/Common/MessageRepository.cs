@@ -27,5 +27,13 @@ namespace Persistence.Common
                 .Where(f => f.ChatId == chatId && f.CreatedOn > skip)
                 .ProjectTo<MessageVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
+        public Task<Message> FindByMessageReadAndChat(long chatId, string userId, CancellationToken token) =>
+            _context.Messages
+                .Include(f => f.MessagesRead)
+                .FirstOrDefaultAsync(f => f.MessagesRead.Any(f => f.UserId == userId), token);
+
+        public Task<Message> LastMessageInChat(long chatId, CancellationToken token) =>
+            _context.Messages
+                .LastOrDefaultAsync(f => f.ChatId == chatId, token);
     }
 }

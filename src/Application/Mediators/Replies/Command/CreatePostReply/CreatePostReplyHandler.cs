@@ -21,9 +21,8 @@ namespace Application.Replies.Command.CreatePostReply
         private readonly IVideoService _videoService;
         private readonly IMapper _mapper;
         private readonly IMainHubService _mainHub;
-        private readonly IUserManager _userManager;
 
-        public CreatePostReplyHandler(IPostRepository post, ICurrentUserService currentUser, IImageService imageService, IVideoService videoService, IMapper mapper, IMainHubService mainHub, IUserManager userManager)
+        public CreatePostReplyHandler(IPostRepository post, ICurrentUserService currentUser, IImageService imageService, IVideoService videoService, IMapper mapper, IMainHubService mainHub)
         {
             _post = post ?? throw new ArgumentNullException(nameof(post));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
@@ -31,7 +30,6 @@ namespace Application.Replies.Command.CreatePostReply
             _videoService = videoService ?? throw new ArgumentNullException(nameof(videoService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _mainHub = mainHub ?? throw new ArgumentNullException(nameof(mainHub));
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
         public async Task<Unit> Handle(CreatePostReplyCommand request, CancellationToken cancellationToken)
@@ -48,10 +46,9 @@ namespace Application.Replies.Command.CreatePostReply
             var post = new Post
             {
                 Content = request.Content,
-                UserId = _currentUser.UserId,
                 PollEnd = request.PollEnd,
                 Video = videoLink,
-                User = await _userManager.GetUserById(_currentUser.UserId),
+                User = _currentUser.User,
                 Reply = postToReply
             };
 

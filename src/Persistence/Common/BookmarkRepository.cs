@@ -22,13 +22,16 @@ namespace Persistence.Common
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public Task<List<PostVm>> UserBookmarks(string userId, DateTime skip, CancellationToken token) =>
+        public Task<List<BookmarkVm>> UserBookmarks(string userId, DateTime skip, CancellationToken token) =>
             _context.Bookmarks
                 .Where(f => f.UserId == userId && f.CreatedOn > skip)
-                .Select(f => f.Post)
                 .Take(50)
-                .ProjectTo<PostVm>(_mapper.ConfigurationProvider)
+                .ProjectTo<BookmarkVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
+
+        public Task<Bookmark> GetByIdAndUser(string userId, long id, CancellationToken token) =>
+            _context.Bookmarks
+                .FirstOrDefaultAsync(f => f.UserId == userId && f.Id == id, token);
 
         public Task<Bookmark> GetByPostAndUser(string userId, long postId, CancellationToken token) =>
             _context.Bookmarks

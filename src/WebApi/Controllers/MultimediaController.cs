@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Application.Posts.Queries.MultimediaPosts;
+using Application.Multimedia.Queries.MultimediaPosts;
 using Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

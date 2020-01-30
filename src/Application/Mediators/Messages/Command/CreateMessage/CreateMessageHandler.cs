@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Repositories;
+using Application.Common.ViewModels;
+using AutoMapper;
 using Domain.Entities;
 using MediatR;
 
@@ -14,24 +16,33 @@ namespace Application.Messages.Command.CreateMessage
         private readonly IMessageRepository _message;
         private readonly IChatRepository _chat;
         private readonly ICurrentUserService _currentUser;
+        private readonly IMainHubService _mainHub;
+        private readonly IMapper _mapper;
 
-        public CreateMessageHandler(IMessageRepository message, IChatRepository chat, ICurrentUserService currentUser)
+        public CreateMessageHandler(IMessageRepository message, IChatRepository chat, ICurrentUserService currentUser, IMainHubService mainHub, IMapper mapper)
         {
             _message = message ?? throw new ArgumentNullException(nameof(message));
             _chat = chat ?? throw new ArgumentNullException(nameof(chat));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
+            _mainHub = mainHub ?? throw new ArgumentNullException(nameof(mainHub));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
         public async Task<Unit> Handle(CreateMessageCommand request, CancellationToken cancellationToken)
         {
-            _ = _chat.GetById(request.ChatId, cancellationToken)
+            var chat = await _chat.GetById(request.ChatId, cancellationToken)
                 ?? throw new NotFoundException("Chat Id", request.ChatId);
-            await _message.Create(new Message
+
+            var message = new Message
             {
-                ChatId = request.ChatId,
+                Chat = chat,
                 Msg = request.Content,
-                UserId = _currentUser.UserId
-            }, cancellationToken);
+                User = _currentUser.User
+            };
+
+            await _message.Create(message, cancellationToken);
+            await _mainHub.SendMessage(_mapper.Map<MessageVm>(message));
+
             return Unit.Value;
         }
     }

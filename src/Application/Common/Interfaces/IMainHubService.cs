@@ -9,5 +9,6 @@ namespace Application.Common.Interfaces
         Task SendLikedPost(LikeVm like);
         Task SendPollVote(PollVoteVm pollVote);
         Task SendDeletedPost(long id);
+        Task SendMessage(MessageVm message);
     }
 }

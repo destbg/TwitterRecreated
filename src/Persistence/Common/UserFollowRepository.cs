@@ -22,9 +22,9 @@ namespace Persistence.Common
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public Task<List<UserShortVm>> FollowingFollowers(string userId, CancellationToken token) =>
+        public Task<List<UserShortVm>> FollowingFollowers(IEnumerable<string> userIds, CancellationToken token) =>
             _context.UserFollowers
-                .Where(f => f.FollowerId == userId)
+                .Where(f => userIds.Any(a => a == f.FollowingId))
                 .Select(f => f.Following)
                 .ProjectTo<UserShortVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);

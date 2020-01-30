@@ -33,7 +33,7 @@ namespace Application.Common.Behaviors
                 : $"{type.Name.Replace("`" + type.Name[^1], "")}<{string.Join(", ", type.GenericTypeArguments.Select(f => f.Name))}>";
 
             _logger.LogInformation("Response [{Name}] ({ElapsedMilliseconds} milliseconds) {@UserId}",
-                name, timer.ElapsedMilliseconds, _currentUserService.UserId ?? _currentUserService.Ip);
+                name, timer.ElapsedMilliseconds, _currentUserService.User?.UserName ?? _currentUserService.Ip);
 
             return response;
         }

@@ -21,7 +21,7 @@ namespace Application.Auth.Commands.RegisterAuth
         {
             _manager = manager ?? throw new ArgumentNullException(nameof(manager));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _currentUser = currentUser;
+            _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
         }
 
         public async Task<AuthVm> Handle(RegisterAuthCommand request, CancellationToken cancellationToken)

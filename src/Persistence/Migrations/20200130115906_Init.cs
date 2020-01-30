@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Infrastructure.Migrations
+namespace Persistence.Migrations
 {
     public partial class Init : Migration
     {
@@ -514,6 +514,32 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MessageRead",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    MessageId = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MessageRead", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MessageRead_Messages_MessageId",
+                        column: x => x.MessageId,
+                        principalTable: "Messages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_MessageRead_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PollVotes",
                 columns: table => new
                 {
@@ -615,6 +641,16 @@ namespace Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_LikedPosts_UserId",
                 table: "LikedPosts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MessageRead_MessageId",
+                table: "MessageRead",
+                column: "MessageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MessageRead_UserId",
+                table: "MessageRead",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -740,7 +776,7 @@ namespace Infrastructure.Migrations
                 name: "LikedPosts");
 
             migrationBuilder.DropTable(
-                name: "Messages");
+                name: "MessageRead");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
@@ -764,10 +800,13 @@ namespace Infrastructure.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Chats");
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "PollOptions");
+
+            migrationBuilder.DropTable(
+                name: "Chats");
 
             migrationBuilder.DropTable(
                 name: "Posts");

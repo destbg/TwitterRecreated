@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { IPost } from '../model/post.model';
+import { IBookmark } from '../model/bookmark.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,21 +10,21 @@ import { IPost } from '../model/post.model';
 export class BookmarkService {
   constructor(private readonly http: HttpClient) {}
 
-  public getBookmarks(): Observable<IPost[]> {
-    return this.http.get<IPost[]>(`${environment.API_URL}bookmark`);
+  public getBookmarks(skip?: Date): Observable<IBookmark[]> {
+    return this.http.get<IBookmark[]>(`${environment.API_URL}bookmark/${skip}`);
   }
 
-  public postBookmark(postId: number): void {
+  public postBookmark(id: number): void {
     this.http
       .post(`${environment.API_URL}bookmark`, {
-        postId,
+        id,
       })
       .subscribe((data: any) => data);
   }
 
-  public removeBookmark(postId: number): void {
+  public removeBookmark(id: number): void {
     this.http
-      .delete(`${environment.API_URL}bookmark${postId}`)
+      .delete(`${environment.API_URL}bookmark/${id}`)
       .subscribe((data: any) => data);
   }
 }
