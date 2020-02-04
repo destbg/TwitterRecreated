@@ -1,15 +1,14 @@
-﻿using Application.Common.Interfaces;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
+using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Common.Repositories;
 using Application.Common.Validators;
 using Application.Common.ViewModels;
 using AutoMapper;
-using Common;
 using Domain.Entities;
 using MediatR;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Application.Posts.Command.CreatePost
 {
@@ -21,9 +20,8 @@ namespace Application.Posts.Command.CreatePost
         private readonly IVideoService _videoService;
         private readonly IMapper _mapper;
         private readonly IMainHubService _mainHub;
-        private readonly IUserManager _userManager;
 
-        public CreatePostHandler(IPostRepository post, ICurrentUserService currentUser, IImageService imageService, IVideoService videoService, IMapper mapper, IMainHubService mainHub, IUserManager userManager)
+        public CreatePostHandler(IPostRepository post, ICurrentUserService currentUser, IImageService imageService, IVideoService videoService, IMapper mapper, IMainHubService mainHub)
         {
             _post = post ?? throw new ArgumentNullException(nameof(post));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
@@ -31,7 +29,6 @@ namespace Application.Posts.Command.CreatePost
             _videoService = videoService ?? throw new ArgumentNullException(nameof(videoService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _mainHub = mainHub ?? throw new ArgumentNullException(nameof(mainHub));
-            _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
         }
 
         public async Task<Unit> Handle(CreatePostCommand request, CancellationToken cancellationToken)
@@ -56,14 +53,28 @@ namespace Application.Posts.Command.CreatePost
             {
                 post.Images.Add(new PostImage
                 {
-                    Image = request.Gif.ToString(),
+                    Image = request.Gif,
                     PostId = post.Id
                 });
                 await _post.Update(post, cancellationToken);
                 return await ExecuteAndReturn(post);
             }
 
-            if (request.Poll != null && request.PollEnd.HasValue || videoLink != null || request.Files == null)
+            if (request.Poll != null && request.PollEnd.HasValue)
+            {
+                foreach (var option in request.Poll)
+                {
+                    post.Poll.Add(new PollOption
+                    {
+                        Option = option,
+                        PostId = post.Id
+                    });
+                }
+                await _post.Update(post, cancellationToken);
+                return await ExecuteAndReturn(post);
+            }
+
+            if (videoLink != null || request.Files == null || request.Files.Count == 0)
                 return await ExecuteAndReturn(post);
 
             switch (validFiles)

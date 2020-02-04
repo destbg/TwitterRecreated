@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +33,16 @@ namespace WebApi
                 if (args != null)
                     config.AddCommandLine(args);
             })
-            .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
+            .ConfigureWebHostDefaults(webBuilder =>
+                webBuilder.UseStartup<Startup>()
+                    .UseKestrel((_, options) =>
+                    {
+                        var port = Environment.GetEnvironmentVariable("PORT");
+                        if (!string.IsNullOrEmpty(port))
+                            options.ListenAnyIP(int.Parse(port));
+
+                        options.Limits.MaxRequestBodySize = 10 /* Megabytes */ * 1000 /* Kilobytes */ * 1000 /* Bytes */;
+                    })
+            );
     }
 }

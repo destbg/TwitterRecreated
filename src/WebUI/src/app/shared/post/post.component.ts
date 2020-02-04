@@ -3,20 +3,17 @@ import {
   Component,
   ElementRef,
   Input,
-  ViewChild,
   OnInit,
-  OnDestroy,
+  ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
+import { IPoll, IPollVoted } from 'src/app/model/poll.model';
 import { IPost, IPostLike } from 'src/app/model/post.model';
 import { LikeService } from 'src/app/service/like.service';
 import { OverlayService } from 'src/app/service/overlay.service';
-import { ReplyDialogComponent } from '../reply-dialog/reply-dialog.component';
-import { Subscription } from 'rxjs';
-import { IPollVoted, IPoll } from 'src/app/model/poll.model';
 import { SocketService } from 'src/app/service/socket.service';
-import { environment } from 'src/environments/environment';
+import { ReplyDialogComponent } from '../reply-dialog/reply-dialog.component';
 
 @Component({
   selector: 'app-post',
@@ -24,7 +21,6 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./post.component.scss'],
 })
 export class PostComponent implements OnInit, AfterViewInit {
-  API_URL = environment.API_URL.replace('api/', '');
   @Input() post: IPost;
   @Input() displayTop: boolean;
   @Input() username: string;

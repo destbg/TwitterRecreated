@@ -20,7 +20,11 @@ namespace Application.Follow.Queries.Suggestions
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
         }
 
-        public async Task<IEnumerable<UserShortVm>> Handle(SuggestionsQuery request, CancellationToken cancellationToken) =>
-            await _userFollow.Suggestions(_currentUser.User.Id, cancellationToken);
+        public async Task<IEnumerable<UserShortVm>> Handle(SuggestionsQuery request, CancellationToken cancellationToken)
+        {
+            var followingUsers = await _userFollow.FollowingUsers(_currentUser.User.Id, cancellationToken);
+            followingUsers.Add(_currentUser.User.Id);
+            return await _userFollow.Suggestions(followingUsers, _currentUser.User.Id, cancellationToken);
+        }
     }
 }

@@ -15,7 +15,6 @@ import { OverlayService } from 'src/app/service/overlay.service';
 import { SocketService } from 'src/app/service/socket.service';
 import { ReplyDialogComponent } from 'src/app/shared/reply-dialog/reply-dialog.component';
 import { PostStorage } from 'src/app/storage/post.storage';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-status',
@@ -25,7 +24,6 @@ export class StatusComponent implements OnInit, OnDestroy {
   posts: IPost[];
   post: IPost;
   username: string;
-  API_URL = environment.API_URL.replace('api/', '');
 
   @ViewChild('heart', { static: false }) heart: ElementRef<HTMLDivElement>;
 

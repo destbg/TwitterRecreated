@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
@@ -19,14 +20,16 @@ namespace Application.Chats.Command.CreateChat
         private readonly IUserManager _userManager;
         private readonly IDateTime _date;
         private readonly IMapper _mapper;
+        private readonly IMainHubService _mainHub;
 
-        public CreateChatHandler(IChatRepository chat, ICurrentUserService currentUser, IUserManager userManager, IDateTime date, IMapper mapper)
+        public CreateChatHandler(IChatRepository chat, ICurrentUserService currentUser, IUserManager userManager, IDateTime date, IMapper mapper, IMainHubService mainHub)
         {
             _chat = chat ?? throw new ArgumentNullException(nameof(chat));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _date = date ?? throw new ArgumentNullException(nameof(date));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mainHub = mainHub ?? throw new ArgumentNullException(nameof(mainHub));
         }
 
         public async Task<object> Handle(CreateChatCommand request, CancellationToken cancellationToken)
@@ -38,30 +41,34 @@ namespace Application.Chats.Command.CreateChat
                 return chat.Id;
             chat = new Chat
             {
-                Image = "default.jpg",
+                Image = "",
                 Name = "",
                 IsGroup = false,
                 CreatedOn = _date.Now
             };
             await _chat.Create(chat, cancellationToken);
 
-            chat.Users.Add(new ChatUser
+            chat.ChatUsers.Add(new ChatUser
             {
-                UserId = _currentUser.User.Id,
+                User = _currentUser.User,
                 ChatId = chat.Id,
-                OthersColor = "#8b0000",
-                SelfColor = "#4b0082"
+                OthersColor = "8b0000",
+                SelfColor = "4b0082"
             });
-            chat.Users.Add(new ChatUser
+            chat.ChatUsers.Add(new ChatUser
             {
-                UserId = user.Id,
+                User = user,
                 ChatId = chat.Id,
-                OthersColor = "#8b0000",
-                SelfColor = "#4b0082"
+                OthersColor = "8b0000",
+                SelfColor = "4b0082"
             });
 
             await _chat.Update(chat, cancellationToken);
-            return _mapper.Map<ChatVm>(chat);
+
+            var mappedChat = _mapper.Map<ChatVm>(chat);
+            await _mainHub.AddUsersToChat(chat.ChatUsers.Select(f => f.UserId).ToList(), mappedChat);
+
+            return mappedChat;
         }
     }
 }

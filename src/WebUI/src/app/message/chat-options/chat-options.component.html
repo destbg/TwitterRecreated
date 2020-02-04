@@ -1,7 +1,7 @@
 <div class="card h-100" *ngIf="messageStorage.selectedChat">
   <h3 class="card-header">
     <button (click)="historyStorage.navigateBack()">
-      <img [src]="API_URL + 'img/arrow-left.png'" height="24">
+      <img src="assets/img/arrow-left.png" height="24">
     </button>
     <span class="d-inline-block text-nowrap overflow-hidden"
       style="max-width: calc(100% - 150px);text-overflow: ellipsis">{{messageStorage.selectedChat.name}}</span>
@@ -9,7 +9,7 @@
   <div class="list-group" style="overflow-y: auto">
     <div class="list-group-item">
       <div style="width: 100px;height: 100px" class="fit-img mt-3 mx-auto">
-        <img [src]="API_URL + 'group/' + messageStorage.selectedChat.image" alt=" ">
+        <img [src]="messageStorage.selectedChat.image" alt=" ">
       </div>
       <div class="text-center mt-3">
         <h4>{{messageStorage.selectedChat.name}}</h4>
@@ -20,16 +20,16 @@
       <ul class="list-group list-group-flush mt-1">
         <button class="d-flex justify-content-between p-1">
           <span>Search in conversation</span>
-          <img [src]="API_URL + 'img/magnify.png'" height="20">
+          <img src="assets/img/magnify.png" height="20">
         </button>
         <button class="d-flex justify-content-between p-1" (click)="openDialog()"
           *ngIf="messageStorage.selectedChat.isGroup">
           <span>Add user to chat</span>
-          <img [src]="API_URL + 'img/account-plus.png'" height="20">
+          <img src="assets/img/account-plus.png" height="20">
         </button>
         <a [routerLink]="['../color']" class="d-flex justify-content-between p-1">
           <span>Change colors</span>
-          <img [src]="API_URL + 'img/palette.png'" height="20">
+          <img src="assets/img/palette.png" height="20">
         </a>
       </ul>
     </div>

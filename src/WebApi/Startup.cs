@@ -91,8 +91,6 @@ namespace WebApi
             app.UseWebSocketMiddleware();
             app.UseHealthChecks("/health");
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
-            app.UseDefaultFiles();
 
             app.UseOpenApi();
 

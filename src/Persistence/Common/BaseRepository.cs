@@ -15,46 +15,60 @@ namespace Persistence.Common
 {
     public abstract class BaseRepository<T> : IRepository<T> where T : class
     {
-        protected readonly ITwitterDbContext _context;
+        protected readonly ITwitterDbContext Context;
+
+        protected IQueryable<T> Query =>
+            Context.Set<T>()
+            .AsNoTracking();
 
         protected BaseRepository(ITwitterDbContext context)
         {
-            _context = context ?? throw new ArgumentNullException(nameof(context));
+            Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
         public async Task<T> GetById(object id, CancellationToken token) =>
-            await _context.Set<T>().FindAsync(new[] { id }, token);
+            await Context.Set<T>()
+                .FindAsync(new[] { id }, token);
 
         public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expr, CancellationToken token) =>
-            await _context.Set<T>().AsNoTracking().Where(expr).ToListAsync(token);
+            await Query
+                .Where(expr)
+                .ToListAsync(token);
 
         public Task<Result> Create(T entity, CancellationToken token) =>
             HandleAction(async () =>
             {
-                await _context.Set<T>().AddAsync(entity, token);
-                await _context.SaveChangesAsync(token);
+                await Context.Set<T>().AddAsync(entity, token);
+                await Context.SaveChangesAsync(token);
+            });
+
+        public Task<Result> CreateMany(T[] entities, CancellationToken token) =>
+            HandleAction(async () =>
+            {
+                await Context.Set<T>().AddRangeAsync(entities, token);
+                await Context.SaveChangesAsync(token);
             });
 
         public Task<Result> Delete(object id, CancellationToken token) =>
             HandleAction(async () =>
             {
-                var entity = await _context.Set<T>().FindAsync(new[] { id }, token);
-                _context.Set<T>().Remove(entity);
-                await _context.SaveChangesAsync(token);
+                var entity = await Context.Set<T>().FindAsync(new[] { id }, token);
+                Context.Set<T>().Remove(entity);
+                await Context.SaveChangesAsync(token);
             });
 
         public Task<Result> Delete(T entity, CancellationToken token) =>
             HandleAction(async () =>
             {
-                _context.Set<T>().Remove(entity);
-                await _context.SaveChangesAsync(token);
+                Context.Set<T>().Remove(entity);
+                await Context.SaveChangesAsync(token);
             });
 
         public Task<Result> Update(T entity, CancellationToken token) =>
             HandleAction(async () =>
             {
-                _context.Set<T>().Update(entity);
-                await _context.SaveChangesAsync(token);
+                Context.Set<T>().Update(entity);
+                await Context.SaveChangesAsync(token);
             });
 
         protected async Task<Result> HandleAction(Func<Task> action)

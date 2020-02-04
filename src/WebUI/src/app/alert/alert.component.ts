@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Alert, AlertType } from '../model/alert.model';
 import { AlertService } from '../service/alert.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-alert',
@@ -11,7 +10,6 @@ import { environment } from 'src/environments/environment';
 export class AlertComponent implements OnInit, OnDestroy {
   alerts: Alert[] = [];
   subscription: Subscription;
-  API_URL = environment.API_URL.replace('api/', '');
 
   constructor(private readonly alertService: AlertService) {}
 

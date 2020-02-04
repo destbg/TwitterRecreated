@@ -14,14 +14,14 @@ export class PeerStorage {
   private stream: MediaStream;
   private peer: SimplePeer.Instance;
 
-  public requestingCall: EventEmitter<string>;
+  public requestingCall: EventEmitter<number>;
   public isRequestingCall: boolean;
 
   constructor(
     private readonly socketService: SocketService,
     private readonly authService: AuthService,
   ) {
-    this.requestingCall = new EventEmitter<string>();
+    this.requestingCall = new EventEmitter<number>();
     this.authService.currentUser.subscribe((user: ISelfUser) => {
       if (user) {
         this.username = user.username;
@@ -71,7 +71,6 @@ export class PeerStorage {
         this.socketService.requestCall({
           data: JSON.stringify(data),
           id: chatId,
-          username: this.username,
         });
       } else {
         this.socketService.respondToCall({

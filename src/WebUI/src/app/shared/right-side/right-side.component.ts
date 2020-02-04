@@ -8,14 +8,12 @@ import {
 import { Router } from '@angular/router';
 import { FollowService } from 'src/app/service/follow.service';
 import { RightSideStorage } from 'src/app/storage/right-side.storage';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-right-side',
   templateUrl: './right-side.component.html',
 })
 export class RightSideComponent {
-  API_URL = environment.API_URL.replace('api/', '');
   private position: number;
   @Input() hasSearch: boolean;
 

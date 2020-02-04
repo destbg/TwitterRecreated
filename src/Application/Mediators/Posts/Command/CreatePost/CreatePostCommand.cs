@@ -9,7 +9,7 @@ namespace Application.Posts.Command.CreatePost
     {
         public List<IFormFile> Files { get; set; }
         public string Content { get; set; }
-        public Uri Gif { get; set; }
+        public string Gif { get; set; }
         public string[] Poll { get; set; }
         public DateTime? PollEnd { get; set; }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Application.Common.Interfaces;
+using CloudinaryDotNet;
 using Common;
 using Domain.Entities;
 using Infrastructure.Common;
@@ -18,12 +19,21 @@ namespace Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            var account = new Account(
+                configuration.GetValue<string>("Cloudinary:Name"),
+                configuration.GetValue<string>("Cloudinary:Api_Key"),
+                configuration.GetValue<string>("Cloudinary:Api_Secret")
+            );
+            var cloudinary = new Cloudinary(account);
+
+            services.AddSingleton(_ => cloudinary);
             services.AddScoped<IUserManager, UserManagerService>();
             services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IDateTime, UniversalDateTime>();
             services.AddTransient<IImageService, ImageService>();
             services.AddTransient<IVideoService, VideoService>();
             services.AddTransient<ICountryService, CountryService>();
+            services.AddSingleton<IConnectionMapping, ConnectionMapping>();
 
             services.AddDefaultIdentity<AppUser>(opt =>
             {

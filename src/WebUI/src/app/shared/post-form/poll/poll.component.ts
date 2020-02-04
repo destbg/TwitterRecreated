@@ -7,7 +7,6 @@ import {
   Output,
 } from '@angular/core';
 import * as moment from 'moment';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-poll',
@@ -20,7 +19,6 @@ export class PollComponent implements OnInit {
   days: number;
   hours: number;
   minutes: number;
-  API_URL = environment.API_URL.replace('api/', '');
 
   @Input() submittedEvent: EventEmitter<any>;
   @Output() closeEvent = new EventEmitter<any>();
@@ -63,7 +61,7 @@ export class PollComponent implements OnInit {
     ) {
       return;
     }
-    const date = moment();
+    const date = moment.utc();
     date.add(this.days, 'days');
     date.add(this.hours, 'hours');
     date.add(this.minutes, 'minutes');

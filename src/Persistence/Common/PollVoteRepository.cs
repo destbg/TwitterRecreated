@@ -14,7 +14,6 @@ namespace Persistence.Common
         }
 
         public Task<PollVote> GetByUserAndOption(string userId, long optionId, CancellationToken token) =>
-            _context.PollVotes
-                .FirstOrDefaultAsync(f => f.UserId == userId && f.OptionId == optionId, token);
+            Query.FirstOrDefaultAsync(f => f.UserId == userId && f.OptionId == optionId, token);
     }
 }

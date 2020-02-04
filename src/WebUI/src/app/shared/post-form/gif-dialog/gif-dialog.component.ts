@@ -2,7 +2,6 @@ import { Component, OnInit, QueryList } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { IGif, IGifCategory } from 'src/app/model/gif.model';
 import { GifService } from 'src/app/service/gif.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-gif',
@@ -12,7 +11,6 @@ export class GifDialogComponent implements OnInit {
   gifCategories: QueryList<IGifCategory>;
   gifs: QueryList<IGif>;
   showSearch: boolean;
-  API_URL = environment.API_URL.replace('api/', '');
 
   constructor(
     private readonly gifService: GifService,

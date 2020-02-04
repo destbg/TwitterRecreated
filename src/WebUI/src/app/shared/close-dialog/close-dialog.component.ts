@@ -1,7 +1,6 @@
 import { ComponentPortal } from '@angular/cdk/portal';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-close-dialog',
@@ -9,7 +8,6 @@ import { environment } from 'src/environments/environment';
 })
 export class CloseDialogComponent implements OnInit {
   @Input() portal: any;
-  API_URL = environment.API_URL.replace('api/', '');
 
   componentPortal: ComponentPortal<any>;
 

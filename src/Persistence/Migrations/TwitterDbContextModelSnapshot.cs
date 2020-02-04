@@ -61,10 +61,8 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Image")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(100)")
-                        .HasMaxLength(100)
-                        .HasDefaultValue("default.jpg");
+                        .HasMaxLength(100);
 
                     b.Property<DateTime>("JoinedOn")
                         .HasColumnType("datetime");
@@ -107,10 +105,8 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Thumbnail")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(100)")
-                        .HasMaxLength(100)
-                        .HasDefaultValue("default.jpg");
+                        .HasMaxLength(100);
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -869,7 +865,7 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.ChatUser", b =>
                 {
-                    b.HasOne("Domain.Entities.Chat", null)
+                    b.HasOne("Domain.Entities.Chat", "Chat")
                         .WithMany("Users")
                         .HasForeignKey("ChatId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -3,7 +3,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ColorEvent } from 'ngx-color';
 import { HistoryStorage } from 'src/app/storage/history.storage';
 import { MessageStorage } from 'src/app/storage/message.storage';
-import { environment } from 'src/environments/environment';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-chat-color',
@@ -11,17 +11,21 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['../chat-options/chat-options.component.scss'],
 })
 export class ChatColorComponent implements OnInit {
+  private username: string;
   selfColor = '#4b0082';
   othersColor = '#8b0000';
-  API_URL = environment.API_URL.replace('api/', '');
 
   constructor(
     private readonly route: ActivatedRoute,
+    private readonly authService: AuthService,
     public messageStorage: MessageStorage,
     public historyStorage: HistoryStorage,
   ) {}
 
   ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.username = this.authService.currentUserValue.username;
+    }
     this.route.paramMap.subscribe((paramMap: ParamMap) => {
       const groupId = +paramMap.get('id');
       if (
@@ -30,13 +34,12 @@ export class ChatColorComponent implements OnInit {
       ) {
         this.messageStorage.selectChat(groupId);
       }
-      const group = this.messageStorage.selectedChat;
-      if (group) {
-        if (group.userOptions && group.userOptions.othersColor) {
-          this.othersColor = group.userOptions.othersColor;
-        }
-        if (group.userOptions && group.userOptions.selfColor) {
-          this.selfColor = group.userOptions.selfColor;
+      const chat = this.messageStorage.selectedChat;
+      if (chat) {
+        const chatUser = chat.users.find(f => f.username === this.username);
+        if (chatUser) {
+          this.othersColor = chatUser.othersColor;
+          this.selfColor = chatUser.selfColor;
         }
       }
     });

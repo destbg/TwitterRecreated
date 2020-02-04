@@ -113,15 +113,16 @@ export class PostStorage {
         ? this.postsArray[this.postsArray.length - 1].postedOn
         : new Date(0);
     if (lastDate) {
-      const date = moment(lastDate);
+      const date = moment.utc(lastDate);
       if (this.postsArray.length < 50) {
         let count = this.postsArray.length;
         posts = posts.filter(
-          (post: IPost) => count++ < 50 || date.isBefore(moment(post.postedOn)),
+          (post: IPost) =>
+            count++ < 50 || date.isBefore(moment.utc(post.postedOn)),
         );
       } else {
         posts = posts.filter((post: IPost) =>
-          date.isBefore(moment(post.postedOn)),
+          date.isBefore(moment.utc(post.postedOn)),
         );
       }
     }

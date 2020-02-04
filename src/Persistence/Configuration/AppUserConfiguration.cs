@@ -58,7 +58,6 @@ namespace Persistence.Configuration
             builder.Property(f => f.Image)
                 .IsRequired()
                 .HasMaxLength(100)
-                .HasDefaultValue("default.jpg")
                 .HasColumnType("varchar(100)");
 
             builder.Property(f => f.JoinedOn)
@@ -71,7 +70,6 @@ namespace Persistence.Configuration
             builder.Property(f => f.Thumbnail)
                 .HasMaxLength(100)
                 .IsRequired()
-                .HasDefaultValue("default.jpg")
                 .HasColumnType("varchar(100)");
         }
     }

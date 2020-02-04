@@ -23,7 +23,7 @@ namespace Application.Follow.Queries.FollowingFollowers
         public async Task<IEnumerable<UserShortVm>> Handle(FollowingFollowersQuery request, CancellationToken cancellationToken)
         {
             var following = await _userFollow.FollowingUsers(_currentUser.User.Id, cancellationToken);
-            return await _userFollow.FollowingFollowers(following, cancellationToken);
+            return await _userFollow.FollowingFollowers(following, _currentUser.User.Id, cancellationToken);
         }
     }
 }

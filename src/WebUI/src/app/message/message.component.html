@@ -31,7 +31,7 @@
           <div *ngIf="chat.isGroup"
             class="list-group-item d-flex align-items-center{{chat.newMessage ? ' bg-dark-warn' : ''}}">
             <div style="width: 32px;height: 32px" class="fit-img">
-              <img [src]="API_URL + 'group/' + chat.image" alt=" ">
+              <img [src]="chat.image" alt=" ">
             </div>
             <span class="col">
               <b>{{chat.name}}</b>
@@ -43,7 +43,7 @@
           <div *ngIf="!chat.isGroup && getChatUser(i) as user"
             class="list-group-item d-flex align-items-center{{chat.newMessage ? ' bg-dark-warn' : ''}}">
             <div style="width: 32px;height: 32px" class="fit-img">
-              <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+              <img [src]="user.image" alt=" ">
             </div>
             <span class="col">
               <b>{{user.displayName}}</b>
@@ -62,6 +62,6 @@
   <button (click)="openDialog()" style="height: 50px;width: 50px;">
     <div class="position-absolute rounded-circle"
       style="background-color: #3498DB; width: 48px;height: 48px; z-index: -1"></div>
-    <img [src]="API_URL + 'img/email-plus-outline.png'" height="40" style="margin-top: 2px;">
+    <img src="assets/img/email-plus-outline.png" height="40" style="margin-top: 2px;">
   </button>
 </div>

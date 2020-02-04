@@ -1,12 +1,14 @@
-﻿using Application.Posts.Command.CreatePost;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using Application.Posts.Command.CreatePost;
 using Application.Posts.Command.DeletePost;
 using Application.Posts.Queries.FollowersPosts;
 using Application.Posts.Queries.GetPostById;
 using Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace WebApi.Controllers
 {
@@ -30,8 +32,13 @@ namespace WebApi.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> CreatePost([FromBody]CreatePostCommand command)
+        public async Task<IActionResult> CreatePost([FromForm]CreatePostCommand command)
         {
+            if (command == null || command.Content == null)
+            {
+                using var stream = new StreamReader(Request.Body);
+                command = JsonConvert.DeserializeObject<CreatePostCommand>(await stream.ReadToEndAsync());
+            }
             await Mediator.Send(command);
             return NoContent();
         }

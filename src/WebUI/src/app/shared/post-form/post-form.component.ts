@@ -15,7 +15,6 @@ import { AuthService } from 'src/app/service/auth.service';
 import { PostService } from 'src/app/service/post.service';
 import { GifDialogComponent } from './gif-dialog/gif-dialog.component';
 import { PollComponent } from './poll/poll.component';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-post-form',
@@ -33,7 +32,6 @@ export class PostFormComponent implements OnInit {
   image: string;
   poll: boolean;
   emojiToggle: boolean;
-  API_URL = environment.API_URL.replace('api/', '');
   private files: FileList;
   submittedEvent = new EventEmitter();
 

@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-1" style="min-width: 50px;">
     <div style="width: 46px;height: 46px" class="fit-img">
-      <img [src]="API_URL + 'avatar/' + image" alt=" ">
+      <img [src]="image" alt=" ">
     </div>
   </div>
   <div class="col" style="max-width: 90%;">
@@ -17,14 +17,14 @@
   <div class="col-5 m-2 p-1" style="text-align: center; background-color: rgba(255, 255, 255, 0.1);"
     *ngFor="let image of images">
     <button class="position-absolute" style="right: 10px;" (click)="removeImage(image)">
-      <img [src]="API_URL + 'img/close.png'">
+      <img src="assets/img/close.png">
     </button>
     <img [src]="image" class="rounded img-responsive w-100 h-100" style="object-fit: cover">
   </div>
 </div>
 <div class="row col pl-5 mb-4" *ngIf="video">
   <button class="position-absolute" style="right: 20px;" (click)="removeVideo()">
-    <img [src]="API_URL + 'img/close.png'">
+    <img src="assets/img/close.png">
   </button>
   <video #vid controls class="w-100"></video>
 </div>
@@ -32,7 +32,7 @@
 <div class="row">
   <div class="col-1 offset-1 mt-1">
     <label for="upload" [class]="(poll || images && images.length > 0 || video || repost ? '' : 'pointer')">
-      <img [src]="API_URL + 'img/image-outline.png'" height="24">
+      <img src="assets/img/image-outline.png" height="24">
       <input #fileInput multiple type="file" id="upload" style="display:none"
         (change)="handleFileInput($event.target.files)"
         [disabled]="poll || images && images.length > 0 || video || repost">
@@ -40,18 +40,18 @@
   </div>
   <div class="col-1 mt-1">
     <button (click)="openGifDialog()" [disabled]="poll || images && images.length > 0 || video || repost">
-      <img [src]="API_URL + 'img/gif.png'" height="24">
+      <img src="assets/img/gif.png" height="24">
     </button>
   </div>
   <div class="col-1 mt-1">
     <button (click)="openPoll()" [disabled]="poll || images && images.length > 0 || video || repost">
-      <img [src]="API_URL + 'img/poll-box-outline.png'" height="24">
+      <img src="assets/img/poll-box-outline.png" height="24">
     </button>
   </div>
   <div class="col-1 mt-1">
     <button (click)="emojiToggle = !emojiToggle" [(emojiPickerIf)]="emojiToggle" [emojiPickerDirection]="'bottom'"
       (emojiPickerSelect)="handleSelection($event)">
-      <img [src]="API_URL + 'img/sticker-emoji.png'" height="24">
+      <img src="assets/img/sticker-emoji.png" height="24">
     </button>
   </div>
   <div class="col-4 offset-3 text-right">

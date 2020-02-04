@@ -18,7 +18,7 @@ namespace Application.Common.ViewModels
 
         public void Mapping(Profile profile) =>
             profile.CreateMap<Chat, ChatVm>()
-                .ForMember(f => f.Users, f => f.MapFrom(s => s.Users))
+                .ForMember(f => f.Users, f => f.MapFrom(s => s.ChatUsers))
                 .ForMember(f => f.LastMessage, f => f.MapFrom(s => s.Messages.OrderBy(f => f.CreatedOn).Select(w => w.Msg).FirstOrDefault()));
     }
 

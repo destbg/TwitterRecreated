@@ -10,7 +10,6 @@ import { IUserFollow } from '../model/user.model';
 import { OverlayService } from '../service/overlay.service';
 import { TagService } from '../service/tag.service';
 import { UserService } from '../service/user.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-search-overlay',
@@ -22,7 +21,6 @@ export class SearchOverlayComponent implements OnInit {
   atOverlay: boolean;
   hashtags: ITag[];
   users: IUserFollow[];
-  API_URL = environment.API_URL.replace('api/', '');
 
   @ViewChild('list', { static: false })
   private readonly listDiv: ElementRef<HTMLDivElement>;

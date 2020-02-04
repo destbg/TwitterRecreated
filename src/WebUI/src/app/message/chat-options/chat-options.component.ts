@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageStorage } from 'src/app/storage/message.storage';
-import { HistoryStorage } from 'src/app/storage/history.storage';
+import { MatDialog } from '@angular/material';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { SocketService } from 'src/app/service/socket.service';
-import { MatDialog } from '@angular/material';
+import { HistoryStorage } from 'src/app/storage/history.storage';
+import { MessageStorage } from 'src/app/storage/message.storage';
 import { AddUserDialogComponent } from '../add-user-dialog/add-user-dialog.component';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-chat-options',
@@ -13,8 +12,6 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./chat-options.component.scss'],
 })
 export class ChatOptionsComponent implements OnInit {
-  API_URL = environment.API_URL.replace('api/', '');
-
   constructor(
     private readonly route: ActivatedRoute,
     private readonly socketService: SocketService,

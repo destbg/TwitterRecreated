@@ -22,31 +22,34 @@ namespace Persistence.Common
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
-        public Task<List<UserShortVm>> FollowingFollowers(IEnumerable<string> userIds, CancellationToken token) =>
-            _context.UserFollowers
-                .Where(f => userIds.Any(a => a == f.FollowingId))
-                .Select(f => f.Following)
+        public Task<List<UserShortVm>> FollowingFollowers(IEnumerable<string> userIds, string selfId, CancellationToken token) =>
+            Query.Where(f => userIds.Any(a => a == f.FollowerId) && f.FollowingId == selfId)
+                .Select(f => f.Follower)
                 .ProjectTo<UserShortVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
 
         public Task<List<string>> FollowingUsers(string userId, CancellationToken token) =>
-            _context.UserFollowers
-                .Where(w => w.FollowerId == userId)
+            Query.Where(w => w.FollowerId == userId)
                 .Select(f => f.FollowingId)
                 .ToListAsync(token);
 
         public Task<List<UserFollow>> FollowingAndFollowers(string userId, CancellationToken token) =>
-            _context.UserFollowers
-                .Where(f => f.FollowerId == userId || f.FollowingId == userId)
+            Query.Where(f => f.FollowerId == userId || f.FollowingId == userId)
                 .ToListAsync(token);
 
-        public Task<List<UserShortVm>> Suggestions(string userId, CancellationToken token) =>
-            _context.UserFollowers
-                .Where(f => f.FollowerId != userId && f.FollowingId != userId)
-                .Select(f => f.Following)
-                .OrderByDescending(f => f.Followers)
+        public Task<List<UserShortVm>> Suggestions(IEnumerable<string> userIds, string userId, CancellationToken token) =>
+            Query.Include(f => f.Following)
+                .Where(f => !userIds.Contains(f.FollowerId) && f.FollowingId != userId)
+                .OrderByDescending(f => f.Following.Followers)
+                .Select(f => f.Follower)
                 .Take(3)
                 .ProjectTo<UserShortVm>(_mapper.ConfigurationProvider)
+                .ToListAsync(token);
+
+        public Task<List<string>> FollowingUsernames(IEnumerable<string> usernames, string userId, CancellationToken token) =>
+            Query.Include(f => f.Following)
+                .Where(f => usernames.Contains(f.Following.UserName) && f.FollowerId == userId)
+                .Select(f => f.Following.UserName)
                 .ToListAsync(token);
     }
 }

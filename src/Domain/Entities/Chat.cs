@@ -7,7 +7,7 @@ namespace Domain.Entities
     {
         public Chat()
         {
-            Users = new HashSet<ChatUser>();
+            ChatUsers = new HashSet<ChatUser>();
             Messages = new HashSet<Message>();
         }
 
@@ -16,7 +16,7 @@ namespace Domain.Entities
         public string Image { get; set; }
         public bool IsGroup { get; set; }
 
-        public ICollection<ChatUser> Users { get; set; }
+        public ICollection<ChatUser> ChatUsers { get; set; }
         public ICollection<Message> Messages { get; set; }
     }
 }

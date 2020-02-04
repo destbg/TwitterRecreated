@@ -1,6 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
 import { ISelfUser } from '../model/auth.model';
 import {
@@ -8,15 +7,14 @@ import {
   IChatUser,
   IMessage,
   IMessageRead,
+  IUserInChat,
   IUserTyping,
   PreviewMessage,
-  IUserInChat,
 } from '../model/message.model';
 import { IUserShort } from '../model/user.model';
 import { AuthService } from '../service/auth.service';
 import { MessageService } from '../service/message.service';
 import { SocketService } from '../service/socket.service';
-import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -76,7 +74,6 @@ export class MessageStorage {
   public hasReachedEnd: boolean;
 
   constructor(
-    private readonly router: Router,
     private readonly socketService: SocketService,
     private readonly messageService: MessageService,
     private readonly title: Title,
@@ -176,14 +173,12 @@ export class MessageStorage {
         selfColor,
         othersColor,
       );
-      if (this.selectedChat.userOptions) {
-        this.selectedChat.userOptions.selfColor = selfColor;
-        this.selectedChat.userOptions.othersColor = othersColor;
-      } else {
-        this.selectedChat.userOptions = {
-          selfColor,
-          othersColor,
-        };
+      const chatUser = this.selectedChat.users.find(
+        f => f.username === this.user.username,
+      );
+      if (chatUser) {
+        chatUser.othersColor = othersColor;
+        chatUser.selfColor = selfColor;
       }
     }
   }
@@ -192,6 +187,7 @@ export class MessageStorage {
     this.previewMessagesArray.unshift(
       new PreviewMessage(message, this.user.image),
     );
+    this.checkMessagesRead();
   }
 
   private handleNewMessage(message: IMessage): void {
@@ -216,7 +212,7 @@ export class MessageStorage {
       } else {
         this.socketService.messagesRead(this.selectedChat.id);
       }
-    } else {
+    } else if (message.user.username !== this.user.username) {
       const found = this.chatsArray.find(
         (chat: IChat) => chat.id === message.chatId,
       );
@@ -244,9 +240,9 @@ export class MessageStorage {
   }
 
   private handleMessagesRead(messagesRead: IMessageRead): void {
-    if (messagesRead.user.username === this.user.username) {
-      return;
-    }
+    // if (messagesRead.user.username === this.user.username) {
+    //   return;
+    // }
     if (
       this.messagesArray.length > 0 &&
       this.selectedChat &&
@@ -305,8 +301,7 @@ export class MessageStorage {
 
   private playSound(): void {
     const sound = document.createElement('audio');
-    sound.src =
-      environment.API_URL.replace('api/', '') + 'sound/notification.mp3';
+    sound.src = 'assets/sound/notification.mp3';
     sound.setAttribute('preload', 'auto');
     sound.setAttribute('controls', 'none');
     sound.volume = 0.2;

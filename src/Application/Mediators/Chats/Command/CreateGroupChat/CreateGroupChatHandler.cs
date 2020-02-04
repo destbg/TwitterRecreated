@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Exceptions;
@@ -19,14 +20,16 @@ namespace Application.Chats.Command.CreateGroupChat
         private readonly IDateTime _date;
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
+        private readonly IMainHubService _mainHub;
 
-        public CreateGroupChatHandler(IChatRepository chat, ICurrentUserService currentUser, IDateTime date, IUserManager userManager, IMapper mapper)
+        public CreateGroupChatHandler(IChatRepository chat, ICurrentUserService currentUser, IDateTime date, IUserManager userManager, IMapper mapper, IMainHubService mainHub)
         {
             _chat = chat ?? throw new ArgumentNullException(nameof(chat));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
             _date = date ?? throw new ArgumentNullException(nameof(date));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _mainHub = mainHub ?? throw new ArgumentNullException(nameof(mainHub));
         }
 
         public async Task<ChatVm> Handle(CreateGroupChatCommand request, CancellationToken cancellationToken)
@@ -36,7 +39,7 @@ namespace Application.Chats.Command.CreateGroupChat
                 throw new BadRequestException("Not all users in the list of users are valid");
             var chat = new Chat
             {
-                Image = "default.jpg",
+                Image = "assets/group/default.jpg",
                 IsGroup = true,
                 Name = string.Join(", ", request.Users).Substring(0, 50),
                 CreatedOn = _date.Now
@@ -45,25 +48,29 @@ namespace Application.Chats.Command.CreateGroupChat
 
             foreach (var user in users)
             {
-                chat.Users.Add(new ChatUser
+                chat.ChatUsers.Add(new ChatUser
                 {
                     ChatId = chat.Id,
                     IsModerator = false,
-                    OthersColor = "#8b0000",
-                    SelfColor = "#4b0082",
+                    OthersColor = "8b0000",
+                    SelfColor = "4b0082",
                     User = user
                 });
             }
-            chat.Users.Add(new ChatUser
+            chat.ChatUsers.Add(new ChatUser
             {
                 ChatId = chat.Id,
                 IsModerator = true,
-                OthersColor = "#8b0000",
-                SelfColor = "#4b0082",
+                OthersColor = "8b0000",
+                SelfColor = "4b0082",
                 User = _currentUser.User
             });
             await _chat.Update(chat, cancellationToken);
-            return _mapper.Map<ChatVm>(chat);
+
+            var mappedChat = _mapper.Map<ChatVm>(chat);
+            await _mainHub.AddUsersToChat(chat.ChatUsers.Select(f => f.UserId).ToList(), mappedChat);
+
+            return mappedChat;
         }
     }
 }

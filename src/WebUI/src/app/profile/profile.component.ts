@@ -8,15 +8,14 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { MatDialog } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Data } from '@angular/router';
 import { IUser } from '../model/user.model';
 import { AuthService } from '../service/auth.service';
 import { FollowService } from '../service/follow.service';
 import { HistoryStorage } from '../storage/history.storage';
-import { MatDialog } from '@angular/material';
 import { EditProfileDialogComponent } from './edit-profile-dialog/edit-profile-dialog.component';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -26,7 +25,6 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   user: IUser;
   userLoaded: boolean;
   username: string;
-  API_URL = environment.API_URL.replace('api/', '');
 
   @ViewChild('thumbnail', { static: false })
   private readonly thumbnail: ElementRef<HTMLDivElement>;

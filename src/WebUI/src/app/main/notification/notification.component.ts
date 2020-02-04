@@ -5,7 +5,6 @@ import {
   INotification,
   NotificationType,
 } from 'src/app/model/notification.model';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-notification',
@@ -14,7 +13,6 @@ import { environment } from 'src/environments/environment';
 export class NotificationComponent implements OnInit {
   notifications: INotification[];
   notificationType = NotificationType;
-  API_URL = environment.API_URL.replace('api/', '');
 
   constructor(
     private readonly title: Title,

@@ -6,7 +6,7 @@ namespace Application.Common.Interfaces
 {
     public interface IImageService
     {
-        Task<string[]> SaveImages(List<IFormFile> images, string type = ".png", string location = "wwwroot/post/");
-        Task<string> SaveImage(IFormFile image, string type = ".png", string location = "wwwroot/post/");
+        Task<string[]> SaveImages(List<IFormFile> images, string type = "png");
+        Task<string> SaveImage(IFormFile image, string type = "png");
     }
 }

@@ -27,7 +27,7 @@ namespace Application.Common.Validators
         public static IRuleBuilderInitial<T, List<IFormFile>> FilesValidator<T>(this IRuleBuilder<T, List<IFormFile>> ruleBuilder) =>
             ruleBuilder.Custom((files, context) =>
             {
-                if (files == null)
+                if (files == null || files.Count == 0)
                     return;
 
                 if (files.Count > 4)
@@ -36,7 +36,7 @@ namespace Application.Common.Validators
                     context.AddFailure("You can't upload video and images");
                 else if (files.Exists(f => f.ContentType == "image/gif") && files.Count > 1)
                     context.AddFailure("You can't upload gif and images");
-                else if (!files.TrueForAll(f => f.ContentType.StartsWith("image")))
+                else if (!files.TrueForAll(f => f.ContentType.StartsWith("image") || f.ContentType.StartsWith("video")))
                     context.AddFailure("You can only upload video, images or gif");
             });
 

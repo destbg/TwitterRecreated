@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Data } from '@angular/router';
 import { IUserFollow } from 'src/app/model/user.model';
 import { FollowService } from 'src/app/service/follow.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-users',
@@ -10,7 +9,6 @@ import { environment } from 'src/environments/environment';
 })
 export class UsersComponent implements OnInit {
   users: IUserFollow[];
-  API_URL = environment.API_URL.replace('api/', '');
 
   constructor(
     private readonly route: ActivatedRoute,

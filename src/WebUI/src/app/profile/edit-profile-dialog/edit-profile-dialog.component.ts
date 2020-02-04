@@ -12,7 +12,6 @@ import { MatDialogRef } from '@angular/material';
 import { IUser } from 'src/app/model/user.model';
 import { AuthService } from 'src/app/service/auth.service';
 import { UserService } from 'src/app/service/user.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-edit-profile-dialog',
@@ -26,7 +25,6 @@ export class EditProfileDialogComponent implements OnInit, AfterViewInit {
   userImg: string;
   thumbnailImg: string;
   loading: boolean;
-  API_URL = environment.API_URL.replace('api/', '');
   @Input() user: IUser;
 
   @ViewChild('thumbnail', { static: false })
@@ -42,12 +40,8 @@ export class EditProfileDialogComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.thumbnailImg =
-      environment.API_URL.replace('api/', '') +
-      'thumbnail/' +
-      this.user.thumbnail;
-    this.userImg =
-      environment.API_URL.replace('api/', '') + 'avatar/' + this.user.image;
+    this.thumbnailImg = this.user.thumbnail;
+    this.userImg = this.user.image;
     this.username = this.authService.currentUserValue.username;
     this.editProfileDialog = this.formBuilder.group({
       name: [

@@ -23,14 +23,12 @@ namespace Persistence.Common
         }
 
         public Task<List<HashTagVm>> GetTopTags(string country, CancellationToken token) =>
-            _context.HashTags
-                .Where(f => f.Country == country)
+            Query.Where(f => f.Country == country)
                 .ProjectTo<HashTagVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
 
         public Task<List<HashTagVm>> SearchTags(string search, CancellationToken token) =>
-            _context.HashTags
-                .Where(f => EF.Functions.Like(f.Tag, '%' + search + '%'))
+            Query.Where(f => EF.Functions.Like(f.Tag, '%' + search + '%'))
                 .ProjectTo<HashTagVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
     }

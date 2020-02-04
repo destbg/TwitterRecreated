@@ -4,6 +4,7 @@ using Application.Common.Repositories;
 using Domain.Entities;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -30,14 +31,30 @@ namespace Application.Follow.Command.FollowUser
             if (user.Id == _currentUser.User.Id)
                 throw new BadRequestException("You cannot follow yourself");
 
-            var result = await _userFollow.Create(new UserFollow
-            {
-                FollowerId = user.Id,
-                FollowingId = _currentUser.User.Id
-            }, cancellationToken);
+            var result = (
+                await _userFollow.Find(f => f.FollowerId == _currentUser.User.Id
+                    && f.FollowingId == user.Id, cancellationToken)
+                )
+                .FirstOrDefault();
 
-            if (!result.Succeeded)
-                throw new BadRequestException("Could not create user follow because:\n" + string.Join('\n', result.Errors));
+            if (result == null)
+            {
+                _currentUser.User.Following++;
+                user.Followers++;
+                await _userFollow.Create(new UserFollow
+                {
+                    Follower = _currentUser.User,
+                    Following = user
+                }, cancellationToken);
+            }
+            else
+            {
+                await _userFollow.Delete(result, cancellationToken);
+                _currentUser.User.Following--;
+                await _userManager.UpdateUser(_currentUser.User);
+                user.Followers--;
+                await _userManager.UpdateUser(user);
+            }
 
             return Unit.Value;
         }

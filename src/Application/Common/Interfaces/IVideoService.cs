@@ -5,6 +5,6 @@ namespace Application.Common.Interfaces
 {
     public interface IVideoService
     {
-        Task<string> CreateVideo(IFormFile video, string location = "wwwroot/post/");
+        Task<string> CreateVideo(IFormFile video);
     }
 }

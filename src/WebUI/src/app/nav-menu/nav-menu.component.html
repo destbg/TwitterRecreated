@@ -1,7 +1,7 @@
 <div *ngIf="phoneSized && user && showBottom" class="position-fixed" style="top: 6px; left: 6px;z-index: 15;">
   <button (click)="expandPhoneMenu()">
     <div style="width: 40px;height: 40px" class="fit-img">
-      <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+      <img [src]="user.image" alt=" ">
     </div>
   </button>
 </div>
@@ -11,7 +11,7 @@
 <div *ngIf="showPhoneMenu && phoneSized" class="phone-menu" #phoneMenu>
   <button (click)="collapsePhoneMenu()" class="m-2">
     <div style="width: 50px;height: 50px" class="fit-img">
-      <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+      <img [src]="user.image" alt=" ">
     </div>
   </button>
   <div class="ml-2">
@@ -24,19 +24,19 @@
   <ul class="navbar-nav mr-auto mt-2">
     <li class="nav-item m-2">
       <a class="nav-link" [routerLink]="['/' + user.username]" (click)="collapsePhoneMenu()">
-        <img [src]="API_URL + 'img/account-outline.png'" height="36" />
+        <img src="assets/img/account-outline.png" height="36" />
         <span style="font-size: 20px" class="ml-2 align-middle nav-text">Profile</span>
       </a>
     </li>
     <li class="nav-item m-2">
       <a class="nav-link" [routerLink]="['/bookmark']" (click)="collapsePhoneMenu()">
-        <img [src]="API_URL + 'img/bookmark-outline.png'" height="36" />
+        <img src="assets/img/bookmark-outline.png" height="36" />
         <span style="font-size: 20px" class="ml-2 align-middle nav-text">Bookmarks</span>
       </a>
     </li>
     <li class="nav-item m-2">
       <a class="nav-link" [routerLink]="['/auth/logout']" (click)="collapsePhoneMenu()">
-        <img [src]="API_URL + 'img/email-outline.png'" height="36" />
+        <img src="assets/img/email-outline.png" height="36" />
         <span style="font-size: 20px" class="ml-2 align-middle nav-text">Logout</span>
       </a>
     </li>
@@ -53,38 +53,38 @@
     <ul class="navbar-nav mr-auto mt-2">
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/']">
-          <img [src]="API_URL + 'img/home.png'" height="36" />
+          <img src="assets/img/home.png" height="36" />
           <span style="font-size: 20px" class="ml-2 align-middle nav-text d-none d-xl-inline">Home</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/notification']">
-          <img [src]="API_URL + 'img/bell-outline.png'" height="36" />
+          <img src="assets/img/bell-outline.png" height="36" />
           <span style="font-size: 20px" class="ml-2 align-middle nav-text d-none d-xl-inline">Notifications</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/message/']">
-          <img [src]="API_URL + 'img/email-outline.png'" height="36" />
+          <img src="assets/img/email-outline.png" height="36" />
           <span style="font-size: 20px" class="ml-2 align-middle nav-text d-none d-xl-inline">Message</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/bookmark']">
-          <img [src]="API_URL + 'img/bookmark-outline.png'" height="36" />
+          <img src="assets/img/bookmark-outline.png" height="36" />
           <span style="font-size: 20px" class="ml-2 align-middle nav-text d-none d-xl-inline">Bookmarks</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/auth/logout']">
-          <img [src]="API_URL + 'img/email-outline.png'" height="36" />
+          <img src="assets/img/email-outline.png" height="36" />
           <span style="font-size: 20px" class="ml-2 align-middle nav-text d-none d-xl-inline">Logout</span>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['/' + user.username]">
           <div style="width: 36px;height: 36px" class="fit-img mb-n3 d-inline-block">
-            <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+            <img [src]="user.image" alt=" ">
           </div>
           <span style="font-size: 20px" class="ml-2 align-middle nav-text d-none d-xl-inline">Profile</span>
         </a>
@@ -96,7 +96,7 @@
         <button class="d-xl-none" (click)="openPostDialog()" style="height: 40px">
           <div class="position-absolute rounded-circle"
             style="background-color: #3498DB; width: 38px;height: 38px; z-index: -1"></div>
-          <img [src]="API_URL + 'img/pencil-outline.png'" height="36">
+          <img src="assets/img/pencil-outline.png" height="36">
         </button>
       </li>
     </ul>
@@ -106,22 +106,22 @@
   <ul class="nav nav-tabs w-100">
     <li class="nav-item w-25 m-0 p-0 d-flex justify-content-center">
       <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/']">
-        <img [src]="API_URL + 'img/home.png'" height="36" />
+        <img src="assets/img/home.png" height="36" />
       </a>
     </li>
     <li class="nav-item w-25 m-0 p-0 d-flex justify-content-center">
       <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/search/ ']">
-        <img [src]="API_URL + 'img/magnify.png'" height="36" />
+        <img src="assets/img/magnify.png" height="36" />
       </a>
     </li>
     <li class="nav-item w-25 m-0 p-0 d-flex justify-content-center">
       <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/notification']">
-        <img [src]="API_URL + 'img/bell-outline.png'" height="36" />
+        <img src="assets/img/bell-outline.png" height="36" />
       </a>
     </li>
     <li class="nav-item w-25 m-0 p-0 d-flex justify-content-center">
       <a class="nav-link" [routerLinkActive]="['link-active']" [routerLink]="['/message']">
-        <img [src]="API_URL + 'img/email-outline.png'" height="36" />
+        <img src="assets/img/email-outline.png" height="36" />
       </a>
     </li>
   </ul>
@@ -130,6 +130,6 @@
   <button (click)="openPostDialog()" style="height: 50px;width: 50px;">
     <div class="position-absolute rounded-circle"
       style="background-color: #3498DB; width: 48px;height: 48px; z-index: -1"></div>
-    <img [src]="API_URL + 'img/pencil-outline.png'" height="46">
+    <img src="assets/img/pencil-outline.png" height="46">
   </button>
 </div>

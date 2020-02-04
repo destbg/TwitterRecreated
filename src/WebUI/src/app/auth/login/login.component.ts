@@ -1,8 +1,7 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +16,6 @@ export class LoginComponent implements OnInit, AfterViewInit, OnDestroy {
   error = '';
   key = '6LcRdsYUAAAAAGPuLKq8y6bACKqhaehaI1Y80y99';
   response: string;
-  API_URL = environment.API_URL.replace('api/', '');
 
   constructor(
     private readonly formBuilder: FormBuilder,

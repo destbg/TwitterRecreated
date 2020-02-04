@@ -65,8 +65,8 @@ namespace Infrastructure.Identity
                 LastLogin = dateNow,
                 JoinedOn = dateNow,
                 Description = "",
-                Image = "default.jpg",
-                Thumbnail = "default.jpg"
+                Image = "assets/avatar/default.jpg",
+                Thumbnail = "assets/thumbnail/default.jpg"
             };
 
             var result = await _userManager.CreateAsync(user, password);
@@ -86,7 +86,7 @@ namespace Infrastructure.Identity
 
         public async Task<Result> DeleteUserAsync(string userId)
         {
-            var user = _userManager.Users.SingleOrDefault(u => u.Id == userId);
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
 
             return user != null ? await DeleteUserAsync(user) : Result.Success();
         }
@@ -104,12 +104,15 @@ namespace Infrastructure.Identity
         public Task<AppUser> GetUserById(string id) =>
             _userManager.FindByIdAsync(id);
 
-        public Task<List<UserFollowVm>> SeachUsers(string search) =>
-            _userManager.Users
-                .Where(f => EF.Functions.Like(f.NormalizedEmail, '%' + NormalizeName(search) + '%') ||
-                    EF.Functions.Like(f.DisplayName, '%' + NormalizeName(search) + '%'))
+        public Task<List<UserFollowVm>> SeachUsers(string search)
+        {
+            var normalizedName = '%' + NormalizeName(search) + '%';
+            return _userManager.Users
+                .Where(f => EF.Functions.Like(f.NormalizedUserName, normalizedName) ||
+                    EF.Functions.Like(f.DisplayName, normalizedName))
                 .ProjectTo<UserFollowVm>(_mapper.ConfigurationProvider)
                 .ToListAsync();
+        }
 
         public Task<List<AppUser>> ValidateUsersnames(IEnumerable<string> usernames) =>
             _userManager.Users

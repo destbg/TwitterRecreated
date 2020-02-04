@@ -5,10 +5,10 @@
       <div class="list-group-item p-0" *ngIf="user">
         <div class="row-5">
           <div id="thumbnail" #thumbnail>
-            <img id="thumbnail-img" #thumbnailimg [src]="API_URL + 'thumbnail/' + user.thumbnail" alt=" ">
+            <img id="thumbnail-img" #thumbnailimg [src]="user.thumbnail" alt=" ">
           </div>
           <div style="width: 100px;height: 100px" class="mt-n5 ml-3 fit-img d-inline-block">
-            <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+            <img [src]="user.image" alt=" ">
           </div>
           <div *ngIf="username && user.username !== username && userLoaded" class="float-right m-2">
             <button class="btn btn-{{buttonCss()}}" (click)="followUser()">
@@ -60,7 +60,7 @@
     <div class="top-view list-group-item d-flex justify-content-between align-items-center width-50" #topView>
       <div *ngIf="userLoaded">
         <button *ngIf="username && !historyStorage.isEmpty()" (click)="historyStorage.navigateBack()">
-          <img [src]="API_URL + 'img/arrow-left.png'" height="24">
+          <img src="assets/img/arrow-left.png" height="24">
         </button>
         <span class="ml-3">{{user.username}}</span>
       </div>

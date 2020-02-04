@@ -12,7 +12,6 @@ import { ISelfUser } from '../model/auth.model';
 import { AuthService } from '../service/auth.service';
 import { CloseDialogComponent } from '../shared/close-dialog/close-dialog.component';
 import { PostFormComponent } from '../shared/post-form/post-form.component';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-nav-menu',
@@ -25,7 +24,6 @@ export class NavMenuComponent implements OnInit {
   phoneSized: boolean;
   showBottom: boolean;
   showPhoneMenu: boolean;
-  API_URL = environment.API_URL.replace('api/', '');
 
   @Input() showPost: boolean;
 

@@ -14,7 +14,6 @@ namespace Persistence.Common
         }
 
         public Task<Repost> FindByUserAndPost(string userId, long postId, CancellationToken token) =>
-            _context.Reposts
-                .FirstOrDefaultAsync(f => f.UserId == userId && f.PostId == postId, token);
+            Query.FirstOrDefaultAsync(f => f.UserId == userId && f.PostId == postId, token);
     }
 }

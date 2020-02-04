@@ -23,8 +23,7 @@ namespace Persistence.Common
         }
 
         public Task<List<NotificationVm>> UserNotifications(string userId, DateTime skip, CancellationToken token) =>
-            _context.Notifications
-                .Where(f => f.UserId == userId && f.CreatedOn > skip)
+            Query.Where(f => f.UserId == userId && f.CreatedOn > skip)
                 .ProjectTo<NotificationVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
     }

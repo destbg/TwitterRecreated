@@ -23,25 +23,21 @@ namespace Persistence.Common
         }
 
         public Task<Chat> FindChatByUsers(string[] userIds, bool isGroup, CancellationToken token) =>
-            _context.Chats
-                .Include(f => f.Users)
-                .FirstOrDefaultAsync(f => userIds.SequenceEqual(f.Users.Select(s => s.UserId)));
+            Query.Include(f => f.ChatUsers)
+                .FirstOrDefaultAsync(f => f.ChatUsers.All(s => userIds.Any(w => w == s.UserId)) && f.IsGroup == isGroup, token);
 
         public Task<Chat> FindByUserAndChat(string userId, long chatId, CancellationToken token) =>
-            _context.Chats
-                .Include(f => f.Users)
-                .FirstOrDefaultAsync(f => f.Users.Any(s => s.UserId == userId) && f.Id == chatId, token);
+            Query.Include(f => f.ChatUsers)
+                .FirstOrDefaultAsync(f => f.ChatUsers.Any(s => s.UserId == userId) && f.Id == chatId, token);
 
         public Task<List<long>> UserChatIds(string userId, CancellationToken token) =>
-            _context.Chats
-                .Where(f => f.Users.Any(f => f.UserId == userId))
+            Query.Where(f => f.ChatUsers.Any(f => f.UserId == userId))
                 .Select(f => f.Id)
                 .ToListAsync(token);
 
         public Task<List<ChatVm>> UserChats(string userId, CancellationToken token) =>
-            _context.Chats
-                .Include(f => f.Users)
-                .Where(f => f.Users.Any(f => f.UserId == userId))
+            Query.Include(f => f.ChatUsers)
+                .Where(f => f.ChatUsers.Any(f => f.UserId == userId))
                 .Take(20)
                 .ProjectTo<ChatVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);

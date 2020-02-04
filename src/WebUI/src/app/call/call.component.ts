@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { PeerStorage } from '../storage/peer.storage';
-import { SocketService } from '../service/socket.service';
-import { ICallRequest } from '../model/message.model';
-import { MessageStorage } from '../storage/message.storage';
-import { AuthService } from '../service/auth.service';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ISelfUser } from '../model/auth.model';
-import { environment } from 'src/environments/environment';
+import { ICallRequest } from '../model/message.model';
+import { AuthService } from '../service/auth.service';
+import { SocketService } from '../service/socket.service';
+import { MessageStorage } from '../storage/message.storage';
+import { PeerStorage } from '../storage/peer.storage';
 
 @Component({
   selector: 'app-call',
@@ -19,7 +18,6 @@ export class CallComponent implements OnInit {
   hasRequest: boolean;
   isInCall: boolean;
   notOnline: boolean;
-  API_URL = environment.API_URL.replace('api/', '');
 
   @ViewChild('myVideo', { static: false })
   private readonly myVideo: ElementRef<HTMLVideoElement>;

@@ -17,7 +17,6 @@ import { SocketService } from 'src/app/service/socket.service';
 import { HistoryStorage } from 'src/app/storage/history.storage';
 import { MessageStorage } from 'src/app/storage/message.storage';
 import { PeerStorage } from 'src/app/storage/peer.storage';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-chat-messages',
@@ -29,7 +28,6 @@ export class ChatMessagesComponent implements OnInit, AfterViewInit, OnDestroy {
   othersColor: string;
   username: string;
   emojiToggle: boolean;
-  API_URL = environment.API_URL.replace('api/', '');
   private chatId: number;
   private canType: boolean;
   private timer: Subscription;
@@ -84,15 +82,10 @@ export class ChatMessagesComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       const chat = this.messageStorage.selectedChat;
       if (chat) {
-        if (chat.userOptions && chat.userOptions.othersColor) {
-          this.othersColor = chat.userOptions.othersColor;
-        } else {
-          this.othersColor = '#8b0000';
-        }
-        if (chat.userOptions && chat.userOptions.selfColor) {
-          this.selfColor = chat.userOptions.selfColor;
-        } else {
-          this.selfColor = '#4b0082';
+        const chatUser = chat.users.find(f => f.username === this.username);
+        if (chatUser) {
+          this.othersColor = chatUser.othersColor;
+          this.selfColor = chatUser.selfColor;
         }
       }
     });
@@ -105,18 +98,10 @@ export class ChatMessagesComponent implements OnInit, AfterViewInit, OnDestroy {
     this.adjustTextArea();
     this.messageStorage.event.subscribe(async () => {
       await new Promise((resolve: any) => setTimeout(resolve, 1));
-      this.messagesDiv.nativeElement.scrollTop = this.messagesDiv.nativeElement.scrollHeight;
-      // this.messagesDiv.nativeElement.scrollTo(
-      //   0,
-      //   this.messagesDiv.nativeElement.scrollHeight,
-      // );
+      this.scrollToBottom();
     });
     if (this.messagesDiv) {
-      this.messagesDiv.nativeElement.scrollTop = this.messagesDiv.nativeElement.scrollHeight;
-      // this.messagesDiv.nativeElement.scrollTo(
-      //   0,
-      //   this.messagesDiv.nativeElement.scrollHeight,
-      // );
+      this.scrollToBottom();
       this.messageStorage.messagesDiv = this.messagesDiv.nativeElement;
       this.messagesDiv.nativeElement.onscroll = () => {
         this.onScroll();
@@ -210,8 +195,7 @@ export class ChatMessagesComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   callUser(): void {
-    // TODO: Remake this so it works again
-    this.peerStorage.requestingCall.emit(this.chatId.toString());
+    this.peerStorage.requestingCall.emit(this.chatId);
   }
 
   private adjustTextArea(): void {
@@ -222,6 +206,17 @@ export class ChatMessagesComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.textInput.nativeElement.scrollHeight < 70) {
       this.textInput.nativeElement.style.height =
         this.textInput.nativeElement.scrollHeight + 'px';
+    }
+  }
+
+  private scrollToBottom(): void {
+    try {
+      this.messagesDiv.nativeElement.scrollTo(
+        0,
+        this.messagesDiv.nativeElement.scrollHeight,
+      );
+    } catch {
+      this.messagesDiv.nativeElement.scrollTop = this.messagesDiv.nativeElement.scrollHeight;
     }
   }
 }

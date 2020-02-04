@@ -23,8 +23,8 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("FollowingFollowers")]
-        public async Task<IActionResult> FollowingFollowers(FollowingFollowersQuery command) =>
-            Ok(await Mediator.Send(command));
+        public async Task<IActionResult> FollowingFollowers() =>
+            Ok(await Mediator.Send(new FollowingFollowersQuery()));
 
         [HttpGet("Suggestions")]
         public async Task<IActionResult> FollowersFollowers() =>

@@ -1,10 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
+import { IChat, IChatUser } from 'src/app/model/message.model';
 import { IUserShort } from 'src/app/model/user.model';
 import { UserService } from 'src/app/service/user.service';
 import { MessageStorage } from 'src/app/storage/message.storage';
-import { IChat, IChatUser } from 'src/app/model/message.model';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-users-dialog',
@@ -14,7 +13,6 @@ export class UsersDialogComponent implements OnInit {
   @Input() username: string;
   users: IUserShort[];
   isChat: boolean;
-  API_URL = environment.API_URL.replace('api/', '');
   private usernames: string[];
   private usersArray: IUserShort[];
 

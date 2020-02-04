@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
+import { IChatUser } from 'src/app/model/message.model';
+import { IUserShort } from 'src/app/model/user.model';
 import { UserService } from 'src/app/service/user.service';
 import { MessageStorage } from 'src/app/storage/message.storage';
-import { IUserShort } from 'src/app/model/user.model';
-import { IChatUser } from 'src/app/model/message.model';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-user-dialog',
@@ -12,7 +11,6 @@ import { environment } from 'src/environments/environment';
 })
 export class AddUserDialogComponent implements OnInit {
   users: IUserShort[];
-  API_URL = environment.API_URL.replace('api/', '');
 
   constructor(
     private readonly messageStorage: MessageStorage,

@@ -20,6 +20,7 @@ namespace Application.Common.ViewModels
         public void Mapping(Profile profile) =>
             profile.CreateMap<Message, MessageVm>()
                 .ForMember(f => f.User, f => f.MapFrom(s => s.User))
+                .ForMember(f => f.Message, f => f.MapFrom(s => s.Msg))
                 .ForMember(f => f.Users, f => f.MapFrom(s => s.MessagesRead.Select(a => a.User)));
     }
 }

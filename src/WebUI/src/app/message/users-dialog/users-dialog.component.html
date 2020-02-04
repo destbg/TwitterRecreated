@@ -1,5 +1,5 @@
 <button (click)="closeDialog()" style="position: relative;top: -10px;left: -10px">
-  <img [src]="API_URL + 'img/close.png'" height="30">
+  <img src="assets/img/close.png" height="30">
 </button>
 <div class="row ml-1 mr-1">
   <ul class="nav nav-tabs w-100">
@@ -22,7 +22,7 @@
     <button class="list-group-item d-flex align-items-center text-left" *ngFor="let user of users"
       (click)="chooseUser(user)">
       <div style="width: 32px;height: 32px" class="fit-img">
-        <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+        <img [src]="user.image" alt=" ">
       </div>
       <span class="col">
         <a [routerLink]="'/' + user.username">
@@ -39,7 +39,7 @@
     <button class="list-group-item d-flex justify-content-between align-items-center text-left"
       *ngFor="let user of users">
       <div style="width: 32px;height: 32px" class="fit-img">
-        <img [src]="API_URL + 'avatar/' + user.image" alt=" ">
+        <img [src]="user.image" alt=" ">
       </div>
       <span class="col">
         <a [routerLink]="'/' + user.username">

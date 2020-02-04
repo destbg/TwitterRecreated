@@ -14,10 +14,12 @@ export class TimeDirective implements OnInit, OnDestroy {
   constructor(private readonly element: ElementRef<HTMLElement>) {}
 
   ngOnInit(): void {
-    this.postedDate = moment(this.date);
+    this.postedDate = moment.utc(this.date);
     this.element.nativeElement.innerText = this.getPostedOn();
     if (
-      Math.floor(moment.duration(moment().diff(this.postedDate)).asDays()) === 0
+      Math.floor(
+        moment.duration(moment.utc().diff(this.postedDate)).asDays(),
+      ) === 0
     ) {
       this.timer = interval(60 * 1000).subscribe(() => {
         this.element.nativeElement.innerText = this.getPostedOn();
@@ -32,7 +34,7 @@ export class TimeDirective implements OnInit, OnDestroy {
   }
 
   private getPostedOn(): string {
-    const date = moment.duration(moment().diff(this.postedDate));
+    const date = moment.duration(moment.utc().diff(this.postedDate));
     const days = Math.round(date.asDays());
     if (days > 0) {
       return days + ' days';

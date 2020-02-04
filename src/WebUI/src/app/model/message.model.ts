@@ -14,16 +14,13 @@ export class PreviewMessage {
   constructor(public message: string, public image: string) {}
 }
 
-export interface IChatUserOptions {
-  selfColor: string;
-  othersColor: string;
-}
-
 export interface IChatUser {
   username: string;
   displayName: string;
   image: string;
   moderator: boolean;
+  selfColor: string;
+  othersColor: string;
 }
 
 export interface IChat {
@@ -31,7 +28,6 @@ export interface IChat {
   name: string;
   image: string;
   users: IChatUser[];
-  userOptions: IChatUserOptions;
   lastMessage: string;
   newMessage: boolean;
   isGroup: boolean;
@@ -45,7 +41,6 @@ export interface ICallRequest {
 
 export interface IRequestCall {
   id: number;
-  username: string;
   data: string;
 }
 

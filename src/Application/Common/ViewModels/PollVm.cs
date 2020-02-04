@@ -21,6 +21,7 @@ namespace Application.Common.ViewModels
         public long PostId { get; set; }
 
         public void Mapping(Profile profile) =>
-            profile.CreateMap<PollVote, PollVoteVm>();
+            profile.CreateMap<PollVote, PollVoteVm>()
+                .ForMember(f => f.PostId, f => f.MapFrom(s => s.Option.PostId));
     }
 }

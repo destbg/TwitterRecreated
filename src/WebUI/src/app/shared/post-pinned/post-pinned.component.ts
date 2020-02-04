@@ -3,9 +3,9 @@ import {
   Component,
   ElementRef,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
-  OnDestroy,
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import * as moment from 'moment';
@@ -15,7 +15,6 @@ import { IPoll } from 'src/app/model/poll.model';
 import { IPost } from 'src/app/model/post.model';
 import { VoteService } from 'src/app/service/vote.service';
 import videojs from 'video.js';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-post-pinned',
@@ -30,7 +29,6 @@ export class PostPinnedComponent implements OnInit, AfterViewInit, OnDestroy {
   pollEndDate: string;
   totalVotes: number;
   images: IAlbum[];
-  API_URL = environment.API_URL.replace('api/', '');
 
   @ViewChild('vid', { static: false })
   private readonly videoElement: ElementRef<HTMLVideoElement>;
@@ -52,12 +50,12 @@ export class PostPinnedComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     if (!this.post.poll || this.post.poll.length !== 0) {
       this.totalVotes = this.calcTotalVotes();
-      this.pollEnded = moment(this.post.pollEnd).diff(moment()) < 0;
+      this.pollEnded = moment.utc(this.post.pollEnd).diff(moment.utc()) < 0;
       if (this.pollEnded) {
         this.pollEndDate = this.getPollEndedDate();
         if (
           Math.floor(
-            moment.duration(moment().diff(this.post.pollEnd)).asDays(),
+            moment.duration(moment.utc().diff(this.post.pollEnd)).asDays(),
           ) === 0
         ) {
           this.timer = interval(60 * 1000).subscribe(() => {
@@ -68,7 +66,9 @@ export class PostPinnedComponent implements OnInit, AfterViewInit, OnDestroy {
         this.pollEndDate = this.getPollEndDate();
         if (
           Math.floor(
-            moment.duration(moment(this.post.pollEnd).diff(moment())).asDays(),
+            moment
+              .duration(moment.utc(this.post.pollEnd).diff(moment.utc()))
+              .asDays(),
           ) === 0
         ) {
           this.timer = interval(60 * 1000).subscribe(() => {
@@ -85,23 +85,22 @@ export class PostPinnedComponent implements OnInit, AfterViewInit, OnDestroy {
       this.images = this.post.images.map(
         (image: string, index: number) =>
           ({
-            src: environment.API_URL.replace('api/', '') + `post/${image}`,
+            src: image,
             caption: `image ${index + 1}`,
-            thumb: environment.API_URL.replace('api/', '') + `post/${image}`,
+            thumb: image,
           } as IAlbum),
       );
     }
   }
 
   ngAfterViewInit(): void {
-    if (this.post && this.post.video && !this.post.video.startsWith('http')) {
+    if (this.post && this.post.video && this.post.video.includes('.')) {
       videojs(this.videoElement.nativeElement, {
         controls: true,
         autoplay: true,
         muted: true,
         preload: 'auto',
-        src:
-          environment.API_URL.replace('api/', '') + 'video/' + this.post.video,
+        src: this.post.video,
         techOrder: ['html5'],
         width: 500,
       });
@@ -147,7 +146,7 @@ export class PostPinnedComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getPollEndDate(): string {
-    const dateTime = moment(this.post.pollEnd).diff(moment());
+    const dateTime = moment.utc(this.post.pollEnd).diff(moment.utc());
     if (dateTime < 0) {
       this.pollEnded = true;
       this.pollEndDate = this.getPollEndedDate();
@@ -173,7 +172,9 @@ export class PostPinnedComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private getPollEndedDate(): string {
-    const date = moment.duration(moment().diff(moment(this.post.pollEnd)));
+    const date = moment.duration(
+      moment.utc().diff(moment.utc(this.post.pollEnd)),
+    );
     const days = Math.round(date.asDays());
     if (days > 0) {
       return days + ' days';

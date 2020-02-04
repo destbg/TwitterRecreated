@@ -1,7 +1,7 @@
 <div class="card h-100" *ngIf="messageStorage.selectedChat">
   <h3 class="card-header">
     <button (click)="historyStorage.navigateBack()">
-      <img [src]="API_URL + 'img/arrow-left.png'" height="24">
+      <img src="assets/img/arrow-left.png" height="24">
     </button>
     <span class="d-inline-block text-nowrap overflow-hidden"
       style="max-width: calc(100% - 150px);text-overflow: ellipsis">{{messageStorage.selectedChat.name}}</span>
@@ -14,7 +14,7 @@
     <div>
       <div class="row w-100 pl-4 mt-2">
         <div style="width: 32px;height: 32px" class="fit-img m-2">
-          <img [src]="API_URL + 'avatar/default.png'" alt=" ">
+          <img src="assets/avatar/default.png" alt=" ">
         </div>
         <div contenteditable class="message" [ngStyle]="{ 'background-color': othersColor }">
           Sample text
@@ -25,7 +25,7 @@
           Sample text
         </div>
         <div style="width: 32px;height: 32px" class="fit-img m-2">
-          <img [src]="API_URL + 'avatar/default.png'" alt=" ">
+          <img src="assets/avatar/default.png" alt=" ">
         </div>
       </div>
     </div>

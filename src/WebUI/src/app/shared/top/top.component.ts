@@ -1,7 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { HistoryStorage } from 'src/app/storage/history.storage';
-import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-top',
@@ -12,7 +11,6 @@ export class TopComponent implements OnInit {
   @Input() showBack: boolean;
   phoneSized: boolean;
   showMessage: boolean;
-  API_URL = environment.API_URL.replace('api/', '');
 
   constructor(
     private readonly router: Router,

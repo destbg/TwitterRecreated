@@ -7,7 +7,7 @@
             [placeholder]="'Option ' + (i + 1)" [value]="polls[i]" (input)="textChange($event, i, textChar)">
           <div class="input-group-append" *ngIf="i > 1">
             <button class="btn btn-outline-secondary" type="button" (click)="removeOption(i)">
-              <img [src]="API_URL + 'img/close.png'" height="20">
+              <img src="assets/img/close.png" height="20">
             </button>
           </div>
         </div>
@@ -22,7 +22,7 @@
     </div>
     <div class="col-1 p-0 mr-1" style="display: flex">
       <button (click)="addOption()" style="align-self: flex-end">
-        <img [src]="API_URL + 'img/plus-thick.png'" height="34">
+        <img src="assets/img/plus-thick.png" height="34">
       </button>
     </div>
   </div>

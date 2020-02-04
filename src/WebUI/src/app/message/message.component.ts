@@ -2,13 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router, RouterEvent } from '@angular/router';
-import { MessageStorage } from '../storage/message.storage';
-import { UsersDialogComponent } from './users-dialog/users-dialog.component';
 import { Subscription } from 'rxjs';
-import { IChatUser, IChat } from '../model/message.model';
+import { IChat, IChatUser } from '../model/message.model';
 import { AuthService } from '../service/auth.service';
 import { MessageService } from '../service/message.service';
-import { environment } from 'src/environments/environment';
+import { MessageStorage } from '../storage/message.storage';
+import { UsersDialogComponent } from './users-dialog/users-dialog.component';
 
 @Component({
   selector: 'app-message',
@@ -16,7 +15,6 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./message.component.scss'],
 })
 export class MessageComponent implements OnInit, OnDestroy {
-  API_URL = environment.API_URL.replace('api/', '');
   private routerSub: Subscription;
   private username: string;
 
@@ -108,7 +106,6 @@ export class MessageComponent implements OnInit, OnDestroy {
             .createGroupChat(response.users)
             .subscribe((chat: IChat) => {
               this.messageStorage.chats = [chat];
-              window.location.reload();
             });
         } else {
           this.messageService
@@ -118,7 +115,6 @@ export class MessageComponent implements OnInit, OnDestroy {
                 this.router.navigate(['/message/' + chat]);
               } else {
                 this.messageStorage.chats = [chat];
-                window.location.reload();
               }
             });
         }

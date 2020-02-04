@@ -7,5 +7,6 @@ namespace Application.Common.Repositories
     public interface IChatUserRepository : IRepository<ChatUser>
     {
         Task<ChatUser> FindByUserAndChat(string userId, long chatId, CancellationToken token);
+        Task<AppUser> FindUserInChat(long chatId, string userId, CancellationToken token);
     }
 }

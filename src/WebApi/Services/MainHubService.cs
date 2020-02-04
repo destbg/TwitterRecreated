@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
 using Application.Common.ViewModels;
@@ -35,14 +36,24 @@ namespace WebApi.Services
                 .Group("post" + pollVote.PostId)
                 .SendAsync("votedOnPoll", pollVote);
 
-        public Task SendDeletedPost(long id) =>
+        public Task SendDeletedPost(long postId) =>
             _hubContext.Clients
-                .Group("post" + id)
-                .SendAsync("deletedPost", id);
+                .Group("post" + postId)
+                .SendAsync("deletedPost", postId);
 
         public Task SendMessage(MessageVm message) =>
             _hubContext.Clients
                 .Group("msg" + message.ChatId)
                 .SendAsync("newMessage", message);
+
+        public Task AddUserToChat(string userId, ChatVm chat) =>
+            _hubContext.Clients
+                .User(userId)
+                .SendAsync("newChat", chat);
+
+        public Task AddUsersToChat(IReadOnlyList<string> userIds, ChatVm chat) =>
+            _hubContext.Clients
+                .Users(userIds)
+                .SendAsync("newChat", chat);
     }
 }

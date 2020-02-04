@@ -40,10 +40,11 @@ namespace Application.Common.ViewModels
         public string Username { get; set; }
         public string DisplayName { get; set; }
         public string Image { get; set; }
-        public bool Following { get; set; }
+        public bool Followed { get; set; }
 
         public void Mapping(Profile profile) =>
-            profile.CreateMap<AppUser, UserShortVm>()
-                .ForMember(f => f.Username, f => f.MapFrom(s => s.UserName));
+            profile.CreateMap<AppUser, UserFollowVm>()
+                .ForMember(f => f.Username, f => f.MapFrom(s => s.UserName))
+                .ForMember(f => f.Followed, f => f.MapFrom(_ => false));
     }
 }
