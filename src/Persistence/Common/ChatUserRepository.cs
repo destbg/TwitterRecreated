@@ -19,7 +19,7 @@ namespace Persistence.Common
 
         public Task<AppUser> FindUserInChat(long chatId, string userId, CancellationToken token) =>
             Query.Include(f => f.User)
-                .Where(f => f.ChatId == chatId && f.UserId == userId)
+                .Where(f => f.ChatId == chatId && f.UserId != userId)
                 .Select(f => f.User)
                 .FirstOrDefaultAsync(token);
     }

@@ -3,7 +3,9 @@ using Application.Users.Queries.GetUser;
 using Application.Users.Queries.GetUserPosts;
 using Common;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace WebApi.Controllers
@@ -30,10 +32,14 @@ namespace WebApi.Controllers
             }));
 
         [HttpPost("Profile")]
-        public async  Task<IActionResult> EditUserProfile(EditUserProfileCommand command)
+        public async  Task<IActionResult> EditUserProfile([FromForm]EditUserProfileCommand command)
         {
-            await Mediator.Send(command);
-            return NoContent();
+            if (command == null || command.DisplayName == null && command.Description == null)
+            {
+                using var stream = new StreamReader(Request.Body);
+                command = JsonConvert.DeserializeObject<EditUserProfileCommand>(await stream.ReadToEndAsync());
+            }
+            return Ok(await Mediator.Send(command));
         }
     }
 }

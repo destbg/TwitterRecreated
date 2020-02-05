@@ -133,6 +133,28 @@ export class MessageStorage {
         }
       },
     );
+    socketService.hubConnection.on('userNowOnline', (username: string) => {
+      const index = this.chatsArray.findIndex(f =>
+        f.users.find(s => s.username === username),
+      );
+      if (index !== -1) {
+        const userIndex = this.chatsArray[index].users.findIndex(
+          f => f.username === username,
+        );
+        this.chatsArray[index].users[userIndex].isOnline = true;
+      }
+    });
+    socketService.hubConnection.on('userNowOffline', (username: string) => {
+      const index = this.chatsArray.findIndex(f =>
+        f.users.find(s => s.username === username),
+      );
+      if (index !== -1) {
+        const userIndex = this.chatsArray[index].users.findIndex(
+          f => f.username === username,
+        );
+        this.chatsArray[index].users[userIndex].isOnline = false;
+      }
+    });
   }
 
   public Init(): void {
@@ -240,9 +262,9 @@ export class MessageStorage {
   }
 
   private handleMessagesRead(messagesRead: IMessageRead): void {
-    // if (messagesRead.user.username === this.user.username) {
-    //   return;
-    // }
+    if (messagesRead.user.username === this.user.username) {
+      return;
+    }
     if (
       this.messagesArray.length > 0 &&
       this.selectedChat &&

@@ -8,18 +8,18 @@ using MediatR;
 
 namespace Application.Chats.Queries.UserChatIds
 {
-    public class UserChatIdsHandler : IRequestHandler<UserChatIdsQuery, IEnumerable<long>>
+    public class UserChatCheckHandler : IRequestHandler<UserChatCheckQuery, IEnumerable<UserChatCheckResponse>>
     {
         private readonly IChatRepository _chat;
         private readonly ICurrentUserService _currentUser;
 
-        public UserChatIdsHandler(IChatRepository chat, ICurrentUserService currentUser)
+        public UserChatCheckHandler(IChatRepository chat, ICurrentUserService currentUser)
         {
             _chat = chat ?? throw new ArgumentNullException(nameof(chat));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
         }
 
-        public async Task<IEnumerable<long>> Handle(UserChatIdsQuery request, CancellationToken cancellationToken) =>
-            await _chat.UserChatIds(_currentUser.User.Id, cancellationToken);
+        public async Task<IEnumerable<UserChatCheckResponse>> Handle(UserChatCheckQuery request, CancellationToken cancellationToken) =>
+            await _chat.AllUserChats(_currentUser.User.Id, cancellationToken);
     }
 }

@@ -27,12 +27,9 @@ namespace Persistence.Common
                 .ProjectTo<MessageVm>(_mapper.ConfigurationProvider)
                 .ToListAsync(token);
 
-        public Task<Message> FindByMessageReadAndChat(long chatId, string userId, CancellationToken token) =>
-            Query.Include(f => f.MessagesRead)
-                .FirstOrDefaultAsync(f => f.MessagesRead.Any(f => f.UserId == userId), token);
-
         public Task<Message> LastMessageInChat(long chatId, CancellationToken token) =>
-            Query.OrderByDescending(f => f.CreatedOn)
+            Query.Include(f => f.MessagesRead)
+                .OrderByDescending(f => f.CreatedOn)
                 .FirstOrDefaultAsync(f => f.ChatId == chatId, token);
     }
 }

@@ -9,12 +9,15 @@ namespace Application.Common.Repositories
 {
     public interface IRepository<T>
     {
-        Task<T> GetById(object id, CancellationToken token);
-        Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expr, CancellationToken token);
+        ValueTask<T> GetById(object id, CancellationToken token);
+        Task<List<T>> Find(Expression<Func<T, bool>> expr, CancellationToken token);
         Task<Result> Create(T entity, CancellationToken token);
-        Task<Result> CreateMany(T[] entities, CancellationToken token);
+        Task<Result> CreateMany(IEnumerable<T> entities, CancellationToken token);
         Task<Result> Delete(object id, CancellationToken token);
         Task<Result> Delete(T entity, CancellationToken token);
+        Task<Result> DeleteMany(IEnumerable<T> entities, CancellationToken token);
+        Task<Result> DeleteMany(Expression<Func<T, bool>> expr, CancellationToken token);
         Task<Result> Update(T entity, CancellationToken token);
+        Task<Result> UpdateMany(IEnumerable<T> entities, CancellationToken token);
     }
 }

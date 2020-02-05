@@ -27,10 +27,10 @@ namespace Application.Users.Command.EditUserProfile
             var user = _currentUser.User;
 
             if (request.Image?.ContentType.StartsWith("image") == true)
-                user.Image = await _image.SaveImage(request.Image);
+                user.Image = await _image.SaveImage(request.Image, "jpg");
 
             if (request.Thumbnail?.ContentType.StartsWith("image") == true)
-                user.Thumbnail = await _image.SaveImage(request.Thumbnail);
+                user.Thumbnail = await _image.SaveImage(request.Thumbnail, "jpg");
 
             if (request.Description != null)
                 user.Description = request.Description;

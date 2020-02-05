@@ -29,6 +29,7 @@ namespace Persistence
             services.AddScoped<IChatUserRepository, ChatUserRepository>();
             services.AddScoped<IMessageRepository, MessageRepository>();
             services.AddScoped<IRepostRepository, RepostRepository>();
+            services.AddScoped<IMessageReadRepository, MessageReadRepository>();
 
             return services;
         }

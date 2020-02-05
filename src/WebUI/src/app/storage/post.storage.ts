@@ -66,6 +66,20 @@ export class PostStorage {
     });
   }
 
+  public mapPostsUsers(
+    username: string,
+    image: string,
+    displayName: string,
+  ): void {
+    this.postsArray = this.postsArray.map(f => {
+      if (f.user.username == username) {
+        f.user.image = image;
+        f.user.displayName = displayName;
+      }
+      return f;
+    });
+  }
+
   public scrolled(): void {
     if (
       !this.isProcessing &&

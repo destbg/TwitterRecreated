@@ -42,19 +42,30 @@ namespace WebApi.Hubs
         {
             await _currentUser.Initialize(Context.User, default, _userManager);
 
-            foreach (var chat in await _mediator.Send(new UserChatIdsQuery()))
-                await Groups.AddToGroupAsync(Context.ConnectionId, "msg" + chat);
+            foreach (var chat in await _mediator.Send(new UserChatCheckQuery()))
+            {
+                await Groups.AddToGroupAsync(Context.ConnectionId, "msg" + chat.Id);
+                if (!chat.IsGroup)
+                    await Clients.User(chat.UserId).SendAsync("userNowOnline", chat.Username);
+            }
 
             _connectionMapping.Add(Context.User.Identity.Name, Context.ConnectionId);
 
             _logger.LogInformation("User {0} Connected with connection id {1}", _currentUser.User.UserName, Context.ConnectionId);
         }
 
-        public override Task OnDisconnectedAsync(Exception exception)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
+            await _currentUser.Initialize(Context.User, default, _userManager);
+
+            foreach (var chat in await _mediator.Send(new UserChatCheckQuery()))
+            {
+                if (!chat.IsGroup)
+                    await Clients.User(chat.UserId).SendAsync("userNowOffline", chat.Username);
+            }
+
             _connectionMapping.Remove(Context.User.Identity.Name, Context.ConnectionId);
             _logger.LogInformation("User {0} Disconnected", Context.User.Identity.Name);
-            return Task.CompletedTask;
         }
 
         [HubMethodName("followPosts")]
@@ -114,32 +125,24 @@ namespace WebApi.Hubs
             if (result == null)
                 await Clients.Client(Context.ConnectionId).SendAsync("nonOnline");
 
-            var user = _connectionMapping.GetConnections(result.UserName);
-
-            if (user == null)
-                await Clients.Client(Context.ConnectionId).SendAsync("nonOnline");
-
-            await Clients.Clients(user.ToArray()).SendAsync("callRequest", new
+            await Clients.User(result.Id).SendAsync("callRequest", new
             {
                 command.Id,
-                User = _mapper.Map<UserShortVm>(result),
+                User = _mapper.Map<UserShortVm>(_currentUser.User),
                 command.Data
             });
         }
 
         [HubMethodName("respondToCall")]
-        public async Task OnRespondToCall((string Data, string Username, bool Accept) chat)
+        public async Task OnRespondToCall(RespondToCallVm chat)
         {
-            var user = await _userManager.GetUserByUsername(chat.Username);
-            var result = _connectionMapping.GetConnections(user.UserName);
+            var result = await _userManager.GetUserByUsername(chat.Username);
             if (result == null)
                 return;
 
-            var clients = Clients.Clients(result.ToArray());
-
             if (chat.Accept)
-                await Clients.Clients(result.ToArray()).SendAsync("acceptRequest", chat.Data);
-            else await clients.SendAsync("requestDenied");
+                await Clients.User(result.Id).SendAsync("acceptRequest", chat.Data);
+            else await Clients.User(result.Id).SendAsync("requestDenied");
         }
     }
 }

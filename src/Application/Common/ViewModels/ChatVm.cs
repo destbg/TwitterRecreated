@@ -16,10 +16,14 @@ namespace Application.Common.ViewModels
         public bool NewMessage { get; set; }
         public bool IsGroup { get; set; }
 
-        public void Mapping(Profile profile) =>
+        public void Mapping(Profile profile)
+        {
+            string userId = null;
             profile.CreateMap<Chat, ChatVm>()
                 .ForMember(f => f.Users, f => f.MapFrom(s => s.ChatUsers))
-                .ForMember(f => f.LastMessage, f => f.MapFrom(s => s.Messages.OrderBy(f => f.CreatedOn).Select(w => w.Msg).FirstOrDefault()));
+                .ForMember(f => f.NewMessage, f => f.MapFrom(s => !s.Messages.OrderByDescending(f => f.CreatedOn).First().MessagesRead.Any(f => f.UserId == userId)))
+                .ForMember(f => f.LastMessage, f => f.MapFrom(s => s.Messages.OrderByDescending(f => f.CreatedOn).Select(w => w.Msg).First()));
+        }
     }
 
     public class ChatUserVm : IMapFrom<ChatUser>
@@ -30,6 +34,7 @@ namespace Application.Common.ViewModels
         public bool? Moderator { get; set; }
         public string SelfColor { get; set; }
         public string OthersColor { get; set; }
+        public bool IsOnline { get; set; }
 
         public void Mapping(Profile profile) =>
             profile.CreateMap<ChatUser, ChatUserVm>()

@@ -1,14 +1,12 @@
-import { Injectable, EventEmitter } from '@angular/core';
-import { SocketService } from '../service/socket.service';
+import { EventEmitter, Injectable } from '@angular/core';
 import * as SimplePeer from 'simple-peer';
-import { AuthService } from '../service/auth.service';
-import { ISelfUser } from '../model/auth.model';
+import { ICallRequest } from '../model/message.model';
+import { SocketService } from '../service/socket.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PeerStorage {
-  private username: string;
   private myVideo: HTMLVideoElement;
   private otherVideo: HTMLVideoElement;
   private stream: MediaStream;
@@ -17,16 +15,8 @@ export class PeerStorage {
   public requestingCall: EventEmitter<number>;
   public isRequestingCall: boolean;
 
-  constructor(
-    private readonly socketService: SocketService,
-    private readonly authService: AuthService,
-  ) {
+  constructor(private readonly socketService: SocketService) {
     this.requestingCall = new EventEmitter<number>();
-    this.authService.currentUser.subscribe((user: ISelfUser) => {
-      if (user) {
-        this.username = user.username;
-      }
-    });
     this.socketService.hubConnection.on('startCall', () => {
       if (!this.isRequestingCall) {
         return;
@@ -52,7 +42,7 @@ export class PeerStorage {
     myVideo: HTMLVideoElement,
     otherVideo: HTMLVideoElement,
     chatId: number,
-    sentData?: string,
+    callRequest?: ICallRequest,
   ): void {
     this.stream = stream;
     this.myVideo = myVideo;
@@ -76,7 +66,7 @@ export class PeerStorage {
         this.socketService.respondToCall({
           accept: true,
           data: JSON.stringify(data),
-          username: this.username,
+          username: callRequest.user.username,
         });
       }
     });
@@ -88,6 +78,8 @@ export class PeerStorage {
         this.otherVideo.src = URL.createObjectURL(receivedStream);
       }
       this.otherVideo.play();
+      this.otherVideo.parentElement.style.widows =
+        this.otherVideo.clientWidth + 'px';
       try {
         this.myVideo.srcObject = this.stream;
       } catch {
@@ -97,7 +89,7 @@ export class PeerStorage {
       this.myVideo.play();
     });
     if (!initiator) {
-      peer.signal(JSON.parse(sentData));
+      peer.signal(JSON.parse(callRequest.data));
     }
     this.peer = peer;
   }

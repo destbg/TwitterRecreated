@@ -21,6 +21,7 @@ export interface IChatUser {
   moderator: boolean;
   selfColor: string;
   othersColor: string;
+  isOnline: boolean;
 }
 
 export interface IChat {

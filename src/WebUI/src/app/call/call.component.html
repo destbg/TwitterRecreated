@@ -1,24 +1,30 @@
-<div class="d-flex justify-content-between position-absolute bg-white text-black-50 align-items-center"
-  style="top: 10px;left: 10px; right: 10px;z-index: 2000" *ngIf="hasRequest">
-  <div style="width: 32px;height: 32px" class="fit-img">
-    <img [src]="callRequest.user.image" alt=" ">
-  </div>
-  <span class="col">
-    <b>{{callRequest.user.displayName}}</b>
-    <p class="text-muted m-0">@{{callRequest.user.username}}</p>
-  </span>
-  <div>
-    <button (click)="denyRequest()" class="rounded-circle bg-danger">
-      <img src="assets/img/phone-hangup.png">
-    </button>
-    <button (click)="acceptRequest()" class="rounded-circle bg-success">
-      <img src="assets/img/phone.png">
-    </button>
+<div class="position-absolute d-flex justify-content-center l r" *ngIf="hasRequest" style="top: 10px;z-index: 2000">
+  <div class="d-flex justify-content-between bg-white text-black-50 align-items-center p-2"
+    style="max-width: 500px; width: 500px;">
+    <div style="width: 32px;height: 32px" class="fit-img">
+      <img [src]="callRequest.user.image" alt=" ">
+    </div>
+    <span class="col">
+      <b>{{callRequest.user.displayName}}</b>
+      <p class="text-muted m-0">@{{callRequest.user.username}}</p>
+    </span>
+    <div>
+      <button (click)="denyRequest()" class="rounded-circle bg-danger mr-2">
+        <img src="assets/img/phone-hangup.png">
+      </button>
+      <button (click)="acceptRequest()" class="rounded-circle bg-success">
+        <img src="assets/img/phone.png">
+      </button>
+    </div>
   </div>
 </div>
-<div class="card position-absolute t r l b" *ngIf="isInCall" [hidden]="peerStorage.isRequestingCall">
-  <video #myVideo style="max-height: 100px;"></video>
-  <video #otherVideo style="max-height: 100px;"></video>
+<div class="d-flex justify-content-center position-absolute t r l b bg-secondary" *ngIf="isInCall"
+  [hidden]="peerStorage.isRequestingCall">
+  <div style="width: 600px;background-color: black" class="position-relative">
+    <video #otherVideo style="height: 100%;max-width: 100%;" controls autoplay loop></video>
+    <video #myVideo class="position-absolute" style="height: 100px;bottom: 50px; left: 30px" muted autoplay
+      loop></video>
+  </div>
 </div>
 <div *ngIf="peerStorage.isRequestingCall"
   class="position-absolute t r l b d-flex justify-content-center align-items-center">

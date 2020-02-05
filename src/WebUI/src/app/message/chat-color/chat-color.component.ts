@@ -38,8 +38,8 @@ export class ChatColorComponent implements OnInit {
       if (chat) {
         const chatUser = chat.users.find(f => f.username === this.username);
         if (chatUser) {
-          this.othersColor = chatUser.othersColor;
-          this.selfColor = chatUser.selfColor;
+          this.othersColor = '#' + chatUser.othersColor;
+          this.selfColor = '#' + chatUser.selfColor;
         }
       }
     });
@@ -59,7 +59,10 @@ export class ChatColorComponent implements OnInit {
   }
 
   saveChanges(): void {
-    this.messageStorage.changeColor(this.selfColor, this.othersColor);
+    this.messageStorage.changeColor(
+      this.selfColor.substring(1),
+      this.othersColor.substring(1),
+    );
     this.historyStorage.navigateBack();
   }
 }

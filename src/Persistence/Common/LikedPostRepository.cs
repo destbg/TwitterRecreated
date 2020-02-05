@@ -25,19 +25,11 @@ namespace Persistence.Common
         public Task<LikedPost> FindByUserAndPost(long postId, string userId, CancellationToken token) =>
             Query.FirstOrDefaultAsync(f => f.PostId == postId && f.UserId == userId, token);
 
-        public Task<bool> HasUserLikedPost(long postId, string userId, CancellationToken token) =>
-            Query.AnyAsync(f => f.UserId == userId && f.PostId == postId, token);
-
-        public Task<List<long>> HasUserLikedPosts(IEnumerable<long> postIds, string userId, CancellationToken token) =>
-            Query.Where(f => f.UserId == userId && postIds.Contains(f.PostId))
-                .Select(f => f.PostId)
-                .ToListAsync(token);
-
-        public Task<List<PostVm>> UserPosts(string username, DateTime skip, CancellationToken token) =>
+        public Task<List<PostVm>> UserPosts(string username, string userId, DateTime skip, CancellationToken token) =>
             Query.Include(f => f.User)
                 .Where(f => f.User.UserName == username && f.CreatedOn > skip)
                 .Select(f => f.Post)
-                .ProjectTo<PostVm>(_mapper.ConfigurationProvider)
+                .ProjectTo<PostVm>(_mapper.ConfigurationProvider, new { userId })
                 .ToListAsync(token);
     }
 }

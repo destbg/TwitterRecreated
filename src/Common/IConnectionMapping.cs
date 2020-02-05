@@ -8,5 +8,6 @@ namespace Common
         public void Add(string key, string connectionId);
         public IEnumerable<string> GetConnections(string key);
         public void Remove(string key, string connectionId);
+        public IEnumerable<string> UsersOnline(IEnumerable<string> usernames);
     }
 }

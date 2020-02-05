@@ -7,7 +7,7 @@
       style="max-width: calc(100% - 150px);text-overflow: ellipsis">{{messageStorage.selectedChat.name}}</span>
   </h3>
   <div class="list-group" style="overflow-y: auto">
-    <div class="list-group-item">
+    <div class="list-group-item" *ngIf="messageStorage.selectedChat.isGroup">
       <div style="width: 100px;height: 100px" class="fit-img mt-3 mx-auto">
         <img [src]="messageStorage.selectedChat.image" alt=" ">
       </div>

@@ -25,7 +25,7 @@ namespace Persistence.Common
         public Task<List<BookmarkVm>> UserBookmarks(string userId, DateTime skip, CancellationToken token) =>
             Query.Where(f => f.UserId == userId && f.CreatedOn > skip)
                 .Take(50)
-                .ProjectTo<BookmarkVm>(_mapper.ConfigurationProvider)
+                .ProjectTo<BookmarkVm>(_mapper.ConfigurationProvider, new { userId })
                 .ToListAsync(token);
 
         public Task<Bookmark> GetByIdAndUser(string userId, long id, CancellationToken token) =>

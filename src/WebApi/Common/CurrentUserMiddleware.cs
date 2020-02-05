@@ -18,15 +18,18 @@ namespace WebApi.Common
 
         public async Task Invoke(HttpContext httpContext, ICurrentUserService currentUser, IUserManager userManager)
         {
-            try
+            if (!httpContext.Request.Path.StartsWithSegments("/main", StringComparison.OrdinalIgnoreCase))
             {
-                await currentUser.Initialize(httpContext.User, httpContext.Connection, userManager);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-                await httpContext.Response.WriteAsync(ex.Message);
-                return;
+                try
+                {
+                    await currentUser.Initialize(httpContext.User, httpContext.Connection, userManager);
+                }
+                catch (UnauthorizedAccessException ex)
+                {
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    await httpContext.Response.WriteAsync(ex.Message);
+                    return;
+                }
             }
             await _next(httpContext);
         }

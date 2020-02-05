@@ -16,6 +16,7 @@ import { AuthService } from '../service/auth.service';
 import { FollowService } from '../service/follow.service';
 import { HistoryStorage } from '../storage/history.storage';
 import { EditProfileDialogComponent } from './edit-profile-dialog/edit-profile-dialog.component';
+import { PostStorage } from '../storage/post.storage';
 
 @Component({
   selector: 'app-profile',
@@ -34,6 +35,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   private readonly topView: ElementRef<HTMLDivElement>;
 
   constructor(
+    private readonly postStorage: PostStorage,
     private readonly route: ActivatedRoute,
     private readonly authService: AuthService,
     private readonly followService: FollowService,
@@ -118,6 +120,11 @@ export class ProfileComponent implements OnInit, AfterViewInit {
           }
           this.user.displayName = data.displayName;
           this.user.description = data.description;
+          this.postStorage.mapPostsUsers(
+            this.user.username,
+            data.image,
+            data.displayName,
+          );
         },
       );
   }

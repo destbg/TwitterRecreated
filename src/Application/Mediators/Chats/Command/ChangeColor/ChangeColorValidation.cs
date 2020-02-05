@@ -9,14 +9,14 @@ namespace Application.Chats.Command.ChangeColor
             RuleFor(f => f.OthersColor)
                 .NotNull()
                 .NotEmpty()
-                .Length(7)
-                .Matches("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
+                .Length(6)
+                .Matches("^[0-9A-Fa-f]{6}$");
 
             RuleFor(f => f.SelfColor)
                 .NotNull()
                 .NotEmpty()
-                .Length(7)
-                .Matches("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
+                .Length(6)
+                .Matches("^[0-9A-Fa-f]{6}$");
         }
     }
 }

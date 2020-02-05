@@ -86,20 +86,21 @@ export class CallComponent implements OnInit {
           this.myVideo.nativeElement,
           this.otherVideo.nativeElement,
           this.chatId,
-          this.callRequest.data,
+          this.callRequest,
         );
         this.hasRequest = false;
       })
-      .catch(() => {
+      .catch(err => {
+        console.log(err);
         this.hasRequest = false;
-        this.requestDenied();
+        this.denyRequest();
       });
   }
 
   denyRequest(): void {
     this.socketService.respondToCall({
       accept: false,
-      username: this.username,
+      username: this.callRequest.user.username,
     });
     this.requestDenied();
   }

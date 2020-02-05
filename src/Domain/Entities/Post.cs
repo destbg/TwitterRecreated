@@ -10,6 +10,7 @@ namespace Domain.Entities
         {
             Poll = new HashSet<PollOption>();
             Images = new HashSet<PostImage>();
+            LikedPosts = new HashSet<LikedPost>();
         }
 
         public long Id { get; set; }
@@ -28,5 +29,6 @@ namespace Domain.Entities
 
         public ICollection<PollOption> Poll { get; set; }
         public ICollection<PostImage> Images { get; set; }
+        public ICollection<LikedPost> LikedPosts { get; set; }
     }
 }

@@ -51,5 +51,14 @@ namespace Infrastructure.Common
                 }
             }
         }
+
+        public IEnumerable<string> UsersOnline(IEnumerable<string> usernames)
+        {
+            foreach (var username in usernames)
+            {
+                if (_connections.TryGetValue(username, out _))
+                    yield return username;
+            }
+        }
     }
 }

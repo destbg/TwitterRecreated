@@ -28,8 +28,8 @@
     <div class="text-center" *ngIf="messageStorage.hasReachedEnd">
       Let this be the beginning of something beautiful {{joinUsers()}}
     </div>
-    <div *ngFor="let message of messageStorage.messages">
-      <div *ngIf="message.user.username !== username" class="row w-100 pl-4 mt-2">
+    <div *ngFor="let message of messageStorage.messages" class="position-relative">
+      <div *ngIf="message.user.username !== username" class="row w-100 pl-4 pb-3">
         <div data-toggle="tooltip" data-placement="top" title={{message.user.displayName}}
           style="width: 32px;height: 32px" class="fit-img m-2">
           <img [src]="message.user.image" alt=" ">
@@ -38,7 +38,7 @@
           {{message.message}}
         </div>
       </div>
-      <div *ngIf="message.user.username === username" class="row w-100 mt-2"
+      <div *ngIf="message.user.username === username" class="row w-100 pb-3"
         style="display: flex; justify-content: flex-end">
         <div class="message" [ngStyle]="{ 'background-color': '#' + selfColor }">
           {{message.message}}
@@ -48,10 +48,12 @@
           <img [src]="message.user.image" alt=" ">
         </div>
       </div>
-      <div class="position-relative d-flex justify-content-end mb-1">
-        <div data-toggle="tooltip" data-placement="top" title={{user.displayName}} style="width: 16px;height: 16px"
-          class="fit-img m-1" *ngFor="let user of message.users">
-          <img [src]="user.image" alt=" " style="margin-top: -9px;">
+      <div class="position-absolute d-flex justify-content-end r b">
+        <div *ngFor="let user of message.users">
+          <div data-toggle="tooltip" data-placement="top" title={{user.displayName}} style="width: 16px;height: 16px"
+            class="fit-img mr-1" *ngIf="user.username !== username">
+            <img [src]="user.image" alt=" " style="margin-top: -9px;">
+          </div>
         </div>
       </div>
     </div>

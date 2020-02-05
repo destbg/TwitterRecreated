@@ -49,7 +49,7 @@ export class EditProfileDialogComponent implements OnInit, AfterViewInit {
         [
           Validators.minLength(6),
           Validators.maxLength(50),
-          Validators.pattern(/^[a-zA-Z0-9 ]*$/),
+          Validators.pattern(/[^\n\r]*/),
         ],
       ],
       bio: [this.user.description || '', [Validators.maxLength(250)]],

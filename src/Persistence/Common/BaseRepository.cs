@@ -26,13 +26,12 @@ namespace Persistence.Common
             Context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task<T> GetById(object id, CancellationToken token) =>
-            await Context.Set<T>()
+        public ValueTask<T> GetById(object id, CancellationToken token) =>
+            Context.Set<T>()
                 .FindAsync(new[] { id }, token);
 
-        public async Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expr, CancellationToken token) =>
-            await Query
-                .Where(expr)
+        public Task<List<T>> Find(Expression<Func<T, bool>> expr, CancellationToken token) =>
+            Query.Where(expr)
                 .ToListAsync(token);
 
         public Task<Result> Create(T entity, CancellationToken token) =>
@@ -42,7 +41,7 @@ namespace Persistence.Common
                 await Context.SaveChangesAsync(token);
             });
 
-        public Task<Result> CreateMany(T[] entities, CancellationToken token) =>
+        public Task<Result> CreateMany(IEnumerable<T> entities, CancellationToken token) =>
             HandleAction(async () =>
             {
                 await Context.Set<T>().AddRangeAsync(entities, token);
@@ -52,8 +51,7 @@ namespace Persistence.Common
         public Task<Result> Delete(object id, CancellationToken token) =>
             HandleAction(async () =>
             {
-                var entity = await Context.Set<T>().FindAsync(new[] { id }, token);
-                Context.Set<T>().Remove(entity);
+                Context.Set<T>().Remove(await GetById(id, token));
                 await Context.SaveChangesAsync(token);
             });
 
@@ -64,10 +62,31 @@ namespace Persistence.Common
                 await Context.SaveChangesAsync(token);
             });
 
+        public Task<Result> DeleteMany(IEnumerable<T> entities, CancellationToken token) =>
+            HandleAction(async () =>
+            {
+                Context.Set<T>().RemoveRange(entities);
+                await Context.SaveChangesAsync(token);
+            });
+
+        public Task<Result> DeleteMany(Expression<Func<T, bool>> expr, CancellationToken token) =>
+            HandleAction(async () =>
+            {
+                Context.Set<T>().RemoveRange(await Find(expr, token));
+                await Context.SaveChangesAsync(token);
+            });
+
         public Task<Result> Update(T entity, CancellationToken token) =>
             HandleAction(async () =>
             {
                 Context.Set<T>().Update(entity);
+                await Context.SaveChangesAsync(token);
+            });
+
+        public Task<Result> UpdateMany(IEnumerable<T> entities, CancellationToken token) =>
+            HandleAction(async () =>
+            {
+                Context.Set<T>().UpdateRange(entities);
                 await Context.SaveChangesAsync(token);
             });
 

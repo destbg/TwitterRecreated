@@ -25,14 +25,18 @@ namespace Application.Common.ViewModels
         public PostShortVm Repost { get; set; }
         public PostReplyVm Reply { get; set; }
 
-        public void Mapping(Profile profile) =>
+        public void Mapping(Profile profile)
+        {
+            string userId = null;
             profile.CreateMap<Post, PostVm>()
                 .ForMember(f => f.PostedOn, f => f.MapFrom(s => s.CreatedOn))
                 .ForMember(f => f.Images, f => f.MapFrom(s => s.Images.Select(f => f.Image)))
                 .ForMember(f => f.User, f => f.MapFrom(s => s.User))
                 .ForMember(f => f.Poll, f => f.MapFrom(s => s.Poll))
                 .ForMember(f => f.Repost, f => f.MapFrom(s => s.Repost))
-                .ForMember(f => f.Reply, f => f.MapFrom(s => s.Reply));
+                .ForMember(f => f.Reply, f => f.MapFrom(s => s.Reply))
+                .ForMember(f => f.IsLiked, f => f.MapFrom(s => s.LikedPosts.Any(w => w.PostId == s.Id && w.UserId == userId)));
+        }
     }
 
     public class PostShortVm : IMapFrom<Post>

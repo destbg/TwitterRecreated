@@ -4,7 +4,7 @@
   </button>
   <button class="btn btn-info position-absolute" (click)="onSubmit()" style="top: -5px;right: -10px">
     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
-    Save
+    <span>{{loading ? 'Saving Changes' : 'Save'}}</span>
   </button>
 </div>
 <div class="list-group position-relative" style="left: -24px;width: 109.1%;overflow-y: auto">

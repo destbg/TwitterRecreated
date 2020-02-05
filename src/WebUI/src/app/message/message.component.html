@@ -51,6 +51,8 @@
                 <label>{{chat.lastMessage}}</label>
               </p>
             </span>
+            <div *ngIf="user.isOnline" class="bg-success rounded-circle float-right p-2" data-toggle="tooltip"
+              data-placement="bottom" title="User is online"></div>
           </div>
         </a>
       </div>
