@@ -7,8 +7,11 @@ using Application.Common.Models;
 using Application.Common.Repositories;
 using Application.Common.Validators;
 using Application.Common.ViewModels;
+using Application.Notifications.Command.CreateNotification;
+using Application.Tags.Command.CheckForTags;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 
 namespace Application.Replies.Command.CreatePostReply
@@ -21,8 +24,9 @@ namespace Application.Replies.Command.CreatePostReply
         private readonly IVideoService _videoService;
         private readonly IMapper _mapper;
         private readonly IMainHubService _mainHub;
+        private readonly IMediator _mediator;
 
-        public CreatePostReplyHandler(IPostRepository post, ICurrentUserService currentUser, IImageService imageService, IVideoService videoService, IMapper mapper, IMainHubService mainHub)
+        public CreatePostReplyHandler(IPostRepository post, ICurrentUserService currentUser, IImageService imageService, IVideoService videoService, IMapper mapper, IMainHubService mainHub, IMediator mediator)
         {
             _post = post ?? throw new ArgumentNullException(nameof(post));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
@@ -30,12 +34,16 @@ namespace Application.Replies.Command.CreatePostReply
             _videoService = videoService ?? throw new ArgumentNullException(nameof(videoService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _mainHub = mainHub ?? throw new ArgumentNullException(nameof(mainHub));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         public async Task<Unit> Handle(CreatePostReplyCommand request, CancellationToken cancellationToken)
         {
             var postToReply = await _post.GetById(request.ReplyId, cancellationToken)
                 ?? throw new NotFoundException("Reply Id", request.ReplyId);
+
+            postToReply.Comments++;
+            await _post.Update(postToReply, cancellationToken);
 
             string videoLink = null;
             PostType validFiles = default;
@@ -48,14 +56,11 @@ namespace Application.Replies.Command.CreatePostReply
                 Content = request.Content,
                 PollEnd = request.PollEnd,
                 Video = videoLink,
-                User = _currentUser.User,
-                Reply = postToReply
+                UserId = _currentUser.User.Id,
+                ReplyId = postToReply.Id
             };
 
             await _post.Create(post, cancellationToken);
-
-            postToReply.Comments++;
-            await _post.Update(postToReply, cancellationToken);
 
             if (request.Gif != null)
             {
@@ -65,11 +70,11 @@ namespace Application.Replies.Command.CreatePostReply
                     PostId = post.Id
                 });
                 await _post.Update(post, cancellationToken);
-                return await ExecuteAndReturn(post);
+                return await ExecuteAndReturn(post, postToReply);
             }
 
             if (request.Poll != null && request.PollEnd.HasValue || videoLink != null || request.Files == null)
-                return await ExecuteAndReturn(post);
+                return await ExecuteAndReturn(post, postToReply);
 
             switch (validFiles)
             {
@@ -99,11 +104,26 @@ namespace Application.Replies.Command.CreatePostReply
 
             await _post.Update(post, cancellationToken);
 
-            return await ExecuteAndReturn(post);
+            return await ExecuteAndReturn(post, postToReply);
         }
 
-        private async Task<Unit> ExecuteAndReturn(Post post)
+        private async Task<Unit> ExecuteAndReturn(Post post, Post postToReply)
         {
+            await _mediator.Send(new CheckForTagsCommand { Content = post.Content });
+
+            if (_currentUser.User.Verified)
+            {
+                await _mediator.Send(new CreateNotificationCommand
+                {
+                    NotificationType = NotificationType.Reply,
+                    UserId = post.UserId,
+                    PostId = post.Id
+                });
+            }
+
+            post.User = _currentUser.User;
+            post.Reply = postToReply;
+
             await _mainHub.SendPost(_mapper.Map<PostVm>(post));
             return Unit.Value;
         }

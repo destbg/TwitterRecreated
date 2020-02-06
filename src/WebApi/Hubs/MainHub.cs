@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Application.Chats.Command.AddUserToChat;
 using Application.Chats.Command.CallRequest;
@@ -26,21 +25,23 @@ namespace WebApi.Hubs
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
         private readonly IConnectionMapping _connectionMapping;
+        private readonly IMemoryCacheService _cacheService;
         private readonly ILogger<MainHub> _logger;
 
-        public MainHub(IMediator mediator, ICurrentUserService currentUser, IUserManager userManager, IMapper mapper, IConnectionMapping connectionMapping, ILogger<MainHub> logger)
+        public MainHub(IMediator mediator, ICurrentUserService currentUser, IUserManager userManager, IMapper mapper, IConnectionMapping connectionMapping, IMemoryCacheService cacheService, ILogger<MainHub> logger)
         {
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _connectionMapping = connectionMapping ?? throw new ArgumentNullException(nameof(connectionMapping));
+            _cacheService = cacheService ?? throw new ArgumentNullException(nameof(cacheService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public override async Task OnConnectedAsync()
         {
-            await _currentUser.Initialize(Context.User, default, _userManager);
+            await _currentUser.Initialize(Context.User, default, _userManager, _cacheService);
 
             foreach (var chat in await _mediator.Send(new UserChatCheckQuery()))
             {
@@ -56,7 +57,7 @@ namespace WebApi.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            await _currentUser.Initialize(Context.User, default, _userManager);
+            await _currentUser.Initialize(Context.User, default, _userManager, _cacheService);
 
             foreach (var chat in await _mediator.Send(new UserChatCheckQuery()))
             {
@@ -94,7 +95,7 @@ namespace WebApi.Hubs
         [HubMethodName("messagesRead")]
         public async Task OnMessagesRead(MessagesReadCommand command)
         {
-            await _currentUser.Initialize(Context.User, default, _userManager);
+            await _currentUser.Initialize(Context.User, default, _userManager, _cacheService);
 
             var messageRead = await _mediator.Send(command);
             if (messageRead == null)
@@ -107,7 +108,7 @@ namespace WebApi.Hubs
         [HubMethodName("startTyping")]
         public async Task OnStartTyping(IsUserInChatCommand command)
         {
-            await _currentUser.Initialize(Context.User, default, _userManager);
+            await _currentUser.Initialize(Context.User, default, _userManager, _cacheService);
             await _mediator.Send(command);
             await Clients.Group("msg" + command.ChatId).SendAsync("userStartedTyping",
                 new { Username = _currentUser.User.UserName, command.ChatId });
@@ -116,7 +117,7 @@ namespace WebApi.Hubs
         [HubMethodName("addUserToChat")]
         public async Task OnAddUserToChat(AddUserToChatCommand command)
         {
-            await _currentUser.Initialize(Context.User, default, _userManager);
+            await _currentUser.Initialize(Context.User, default, _userManager, _cacheService);
             await Clients.Group("msg" + command.ChatId).SendAsync("userAddedToChat",
                 new { command.ChatId, User = await _mediator.Send(command) });
         }
@@ -124,7 +125,7 @@ namespace WebApi.Hubs
         [HubMethodName("requestCall")]
         public async Task OnRequestCall(CallRequestCommand command)
         {
-            await _currentUser.Initialize(Context.User, default, _userManager);
+            await _currentUser.Initialize(Context.User, default, _userManager, _cacheService);
             var result = await _mediator.Send(command);
             if (result == null)
                 await Clients.Client(Context.ConnectionId).SendAsync("nonOnline");

@@ -14,6 +14,7 @@ namespace Application.Common.ViewModels
 
         public void Mapping(Profile profile) =>
             profile.CreateMap<Notification, NotificationVm>()
+                .ForMember(f => f.Type, f => f.MapFrom(s => s.NotificationType))
                 .ForMember(f => f.User, f => f.MapFrom(s => s.User))
                 .ForMember(f => f.Post, f => f.MapFrom(s => s.Post));
     }

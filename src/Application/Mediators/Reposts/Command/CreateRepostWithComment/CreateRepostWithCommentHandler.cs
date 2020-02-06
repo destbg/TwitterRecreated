@@ -4,7 +4,10 @@ using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Repositories;
+using Application.Notifications.Command.CreateNotification;
+using Application.Tags.Command.CheckForTags;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 
 namespace Application.Reposts.Command.CreateRepostWithComment
@@ -13,11 +16,13 @@ namespace Application.Reposts.Command.CreateRepostWithComment
     {
         private readonly IPostRepository _post;
         private readonly ICurrentUserService _currentUser;
+        private readonly IMediator _mediator;
 
-        public CreateRepostWithCommentHandler(IPostRepository post, ICurrentUserService currentUser)
+        public CreateRepostWithCommentHandler(IPostRepository post, ICurrentUserService currentUser, IMediator mediator)
         {
             _post = post ?? throw new ArgumentNullException(nameof(post));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         public async Task<Unit> Handle(CreateRepostWithCommentCommand request, CancellationToken cancellationToken)
@@ -28,15 +33,27 @@ namespace Application.Reposts.Command.CreateRepostWithComment
             if (post.UserId == _currentUser.User.Id)
                 throw new BadRequestException("You can't repost your own post");
 
+            post.Reposts++;
+            await _post.Update(post, cancellationToken);
+
             await _post.Create(new Post
             {
                 Content = request.Content,
-                Repost = post,
-                User = _currentUser.User
+                RepostId = post.Id,
+                UserId = _currentUser.User.Id
             }, cancellationToken);
 
-            post.Reposts++;
-            await _post.Update(post, cancellationToken);
+            if (_currentUser.User.Verified)
+            {
+                await _mediator.Send(new CreateNotificationCommand
+                {
+                    NotificationType = NotificationType.Repost,
+                    PostId = post.Id,
+                    UserId = post.UserId
+                });
+            }
+
+            await _mediator.Send(new CheckForTagsCommand { Content = request.Content });
 
             return Unit.Value;
         }

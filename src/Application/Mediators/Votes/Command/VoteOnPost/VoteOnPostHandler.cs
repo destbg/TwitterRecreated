@@ -40,9 +40,11 @@ namespace Application.Votes.Command.VoteOnPost
             vote = new PollVote
             {
                 Option = option,
-                User = _currentUser.User
+                UserId = _currentUser.User.Id
             };
             await _pollVote.Create(vote, cancellationToken);
+
+            vote.User = _currentUser.User;
             await _mainHub.SendPollVote(_mapper.Map<PollVoteVm>(vote));
 
             return Unit.Value;

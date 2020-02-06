@@ -10,5 +10,6 @@ namespace Application.Common.Repositories
     {
         Task<List<HashTagVm>> GetTopTags(string country, CancellationToken token);
         Task<List<HashTagVm>> SearchTags(string search, CancellationToken token);
+        Task<HashTag> GetTag(string tag, CancellationToken token);
     }
 }

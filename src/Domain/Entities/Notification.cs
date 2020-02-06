@@ -7,6 +7,7 @@ namespace Domain.Entities
     {
         public long Id { get; set; }
         public string ForUserId { get; set; }
+        public AppUser ForUser { get; set; }
         public string UserId { get; set; }
         public AppUser User { get; set; }
         public long? PostId { get; set; }

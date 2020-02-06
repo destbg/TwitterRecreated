@@ -1,12 +1,14 @@
-﻿using Application.Common.Exceptions;
-using Application.Common.Interfaces;
-using Application.Common.Repositories;
-using Domain.Entities;
-using MediatR;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Exceptions;
+using Application.Common.Interfaces;
+using Application.Common.Repositories;
+using Application.Notifications.Command.CreateNotification;
+using Domain.Entities;
+using Domain.Enums;
+using MediatR;
 
 namespace Application.Follow.Command.FollowUser
 {
@@ -15,12 +17,14 @@ namespace Application.Follow.Command.FollowUser
         private readonly IUserFollowRepository _userFollow;
         private readonly IUserManager _userManager;
         private readonly ICurrentUserService _currentUser;
+        private readonly IMediator _mediator;
 
-        public FollowUserHandler(IUserFollowRepository userFollow, IUserManager userManager, ICurrentUserService currentUser)
+        public FollowUserHandler(IUserFollowRepository userFollow, IUserManager userManager, ICurrentUserService currentUser, IMediator mediator)
         {
             _userFollow = userFollow ?? throw new ArgumentNullException(nameof(userFollow));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         public async Task<Unit> Handle(FollowUserCommand request, CancellationToken cancellationToken)
@@ -34,8 +38,7 @@ namespace Application.Follow.Command.FollowUser
             var result = (
                 await _userFollow.Find(f => f.FollowerId == _currentUser.User.Id
                     && f.FollowingId == user.Id, cancellationToken)
-                )
-                .FirstOrDefault();
+                ).FirstOrDefault();
 
             if (result == null)
             {
@@ -43,9 +46,17 @@ namespace Application.Follow.Command.FollowUser
                 user.Followers++;
                 await _userFollow.Create(new UserFollow
                 {
-                    Follower = _currentUser.User,
-                    Following = user
+                    FollowerId = _currentUser.User.Id,
+                    FollowingId = user.Id
                 }, cancellationToken);
+                if (_currentUser.User.Verified)
+                {
+                    await _mediator.Send(new CreateNotificationCommand
+                    {
+                        NotificationType = NotificationType.Follow,
+                        UserId = user.Id
+                    });
+                }
             }
             else
             {
@@ -54,6 +65,14 @@ namespace Application.Follow.Command.FollowUser
                 await _userManager.UpdateUser(_currentUser.User);
                 user.Followers--;
                 await _userManager.UpdateUser(user);
+                if (_currentUser.User.Verified)
+                {
+                    await _mediator.Send(new CreateNotificationCommand
+                    {
+                        NotificationType = NotificationType.UnFollow,
+                        UserId = user.Id
+                    });
+                }
             }
 
             return Unit.Value;

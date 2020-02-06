@@ -6,8 +6,11 @@ using Application.Common.Models;
 using Application.Common.Repositories;
 using Application.Common.Validators;
 using Application.Common.ViewModels;
+using Application.Notifications.Command.CreateMultipleNotifications;
+using Application.Tags.Command.CheckForTags;
 using AutoMapper;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 
 namespace Application.Posts.Command.CreatePost
@@ -20,8 +23,9 @@ namespace Application.Posts.Command.CreatePost
         private readonly IVideoService _videoService;
         private readonly IMapper _mapper;
         private readonly IMainHubService _mainHub;
+        private readonly IMediator _mediator;
 
-        public CreatePostHandler(IPostRepository post, ICurrentUserService currentUser, IImageService imageService, IVideoService videoService, IMapper mapper, IMainHubService mainHub)
+        public CreatePostHandler(IPostRepository post, ICurrentUserService currentUser, IImageService imageService, IVideoService videoService, IMapper mapper, IMainHubService mainHub, IMediator mediator)
         {
             _post = post ?? throw new ArgumentNullException(nameof(post));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
@@ -29,6 +33,7 @@ namespace Application.Posts.Command.CreatePost
             _videoService = videoService ?? throw new ArgumentNullException(nameof(videoService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _mainHub = mainHub ?? throw new ArgumentNullException(nameof(mainHub));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         public async Task<Unit> Handle(CreatePostCommand request, CancellationToken cancellationToken)
@@ -44,7 +49,7 @@ namespace Application.Posts.Command.CreatePost
                 Content = request.Content,
                 PollEnd = request.PollEnd,
                 Video = videoLink,
-                User = _currentUser.User
+                UserId = _currentUser.User.Id
             };
 
             await _post.Create(post, cancellationToken);
@@ -110,6 +115,18 @@ namespace Application.Posts.Command.CreatePost
 
         private async Task<Unit> ExecuteAndReturn(Post post)
         {
+            await _mediator.Send(new CheckForTagsCommand { Content = post.Content });
+
+            if (_currentUser.User.Verified)
+            {
+                await _mediator.Send(new CreateMultipleNotificationsCommand
+                {
+                    NotificationType = NotificationType.Post,
+                    PostId = post.Id
+                });
+            }
+
+            post.User = _currentUser.User;
             await _mainHub.SendPost(_mapper.Map<PostVm>(post));
             return Unit.Value;
         }

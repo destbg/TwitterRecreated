@@ -23,7 +23,7 @@ namespace Infrastructure.Common
         {
             var ip = _currentUser.Ip;
 #if DEBUG
-            if (ip == "::1")
+            if (ip == "::1" || ip == "127.0.0.1" || ip == "192.168.0.105")
                 return "BG";
 #endif
             using var client = new HttpClient();

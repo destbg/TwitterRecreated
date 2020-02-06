@@ -35,12 +35,15 @@ namespace Application.Messages.Command.CreateMessage
 
             var message = new Message
             {
-                Chat = chat,
+                ChatId = chat.Id,
                 Msg = request.Content,
-                User = _currentUser.User
+                UserId = _currentUser.User.Id
             };
 
             await _message.Create(message, cancellationToken);
+
+            message.Chat = chat;
+            message.User = _currentUser.User;
             await _mainHub.SendMessage(_mapper.Map<MessageVm>(message));
 
             return Unit.Value;

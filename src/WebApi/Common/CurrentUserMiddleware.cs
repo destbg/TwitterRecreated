@@ -2,6 +2,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
+using Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 
@@ -16,13 +17,13 @@ namespace WebApi.Common
             _next = next;
         }
 
-        public async Task Invoke(HttpContext httpContext, ICurrentUserService currentUser, IUserManager userManager)
+        public async Task Invoke(HttpContext httpContext, ICurrentUserService currentUser, IUserManager userManager, IMemoryCacheService cacheService)
         {
             if (!httpContext.Request.Path.StartsWithSegments("/main", StringComparison.OrdinalIgnoreCase))
             {
                 try
                 {
-                    await currentUser.Initialize(httpContext.User, httpContext.Connection, userManager);
+                    await currentUser.Initialize(httpContext.User, httpContext.Connection, userManager, cacheService);
                 }
                 catch (UnauthorizedAccessException ex)
                 {

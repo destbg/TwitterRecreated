@@ -4,7 +4,9 @@ using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Repositories;
+using Application.Notifications.Command.CreateNotification;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 
 namespace Application.Reposts.Command.CreateRepost
@@ -14,12 +16,14 @@ namespace Application.Reposts.Command.CreateRepost
         private readonly IRepostRepository _repost;
         private readonly IPostRepository _post;
         private readonly ICurrentUserService _currentUser;
+        private readonly IMediator _mediator;
 
-        public CreateRepostHandler(IRepostRepository repost, IPostRepository post, ICurrentUserService currentUser)
+        public CreateRepostHandler(IRepostRepository repost, IPostRepository post, ICurrentUserService currentUser, IMediator mediator)
         {
             _repost = repost ?? throw new ArgumentNullException(nameof(repost));
             _post = post ?? throw new ArgumentNullException(nameof(post));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         public async Task<Unit> Handle(CreateRepostCommand request, CancellationToken cancellationToken)
@@ -34,20 +38,31 @@ namespace Application.Reposts.Command.CreateRepost
 
             if (repost == default)
             {
+                post.Reposts++;
+                await _post.Update(post, cancellationToken);
+
                 await _repost.Create(new Repost
                 {
                     Content = request.Content,
                     PostId = request.Id,
                     UserId = _currentUser.User.Id
                 }, cancellationToken);
-                post.Reposts++;
-                await _post.Update(post, cancellationToken);
+
+                if (_currentUser.User.Verified)
+                {
+                    await _mediator.Send(new CreateNotificationCommand
+                    {
+                        NotificationType = NotificationType.Repost,
+                        UserId = post.UserId,
+                        PostId = post.Id
+                    });
+                }
             }
             else
             {
-                await _repost.Delete(repost, cancellationToken);
                 post.Reposts--;
                 await _post.Update(post, cancellationToken);
+                await _repost.Delete(repost, cancellationToken);
             }
 
             return Unit.Value;

@@ -7,7 +7,6 @@ using Application.Common.Interfaces;
 using Application.Common.Repositories;
 using Application.Common.ViewModels;
 using AutoMapper;
-using Common;
 using Domain.Entities;
 using MediatR;
 
@@ -18,16 +17,14 @@ namespace Application.Chats.Command.CreateChat
         private readonly IChatRepository _chat;
         private readonly ICurrentUserService _currentUser;
         private readonly IUserManager _userManager;
-        private readonly IDateTime _date;
         private readonly IMapper _mapper;
         private readonly IMainHubService _mainHub;
 
-        public CreateChatHandler(IChatRepository chat, ICurrentUserService currentUser, IUserManager userManager, IDateTime date, IMapper mapper, IMainHubService mainHub)
+        public CreateChatHandler(IChatRepository chat, ICurrentUserService currentUser, IUserManager userManager, IMapper mapper, IMainHubService mainHub)
         {
             _chat = chat ?? throw new ArgumentNullException(nameof(chat));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _date = date ?? throw new ArgumentNullException(nameof(date));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _mainHub = mainHub ?? throw new ArgumentNullException(nameof(mainHub));
         }
@@ -39,25 +36,20 @@ namespace Application.Chats.Command.CreateChat
             var chat = await _chat.FindChatByUsers(new[] { _currentUser.User.Id, user.Id }, false, cancellationToken);
             if (chat != null)
                 return chat.Id;
-            chat = new Chat
-            {
-                Image = "",
-                Name = "",
-                IsGroup = false,
-                CreatedOn = _date.Now
-            };
+
+            chat = new Chat();
             await _chat.Create(chat, cancellationToken);
 
             chat.ChatUsers.Add(new ChatUser
             {
-                User = _currentUser.User,
+                UserId = _currentUser.User.Id,
                 ChatId = chat.Id,
                 OthersColor = "8b0000",
                 SelfColor = "4b0082"
             });
             chat.ChatUsers.Add(new ChatUser
             {
-                User = user,
+                UserId = user.Id,
                 ChatId = chat.Id,
                 OthersColor = "8b0000",
                 SelfColor = "4b0082"
@@ -65,8 +57,11 @@ namespace Application.Chats.Command.CreateChat
 
             await _chat.Update(chat, cancellationToken);
 
+            foreach (var chatUser in chat.ChatUsers)
+                chatUser.User = chatUser.UserId == _currentUser.User.Id ? _currentUser.User : user;
+
             var mappedChat = _mapper.Map<ChatVm>(chat);
-            await _mainHub.AddUsersToChat(chat.ChatUsers.Select(f => f.User.UserName).ToList(), mappedChat);
+            await _mainHub.AddUsersToNewChat(chat.ChatUsers.Select(f => f.User.UserName).ToList(), mappedChat);
 
             return null;
         }

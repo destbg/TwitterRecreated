@@ -11,7 +11,7 @@ namespace Application.Common.Interfaces
         Task SendPollVote(PollVoteVm pollVote);
         Task SendDeletedPost(long postId);
         Task SendMessage(MessageVm message);
-        Task AddUserToChat(string username, ChatVm chat);
-        Task AddUsersToChat(IEnumerable<string> usernames, ChatVm chat);
+        Task AddNewUserToChat(string username, ChatVm chat);
+        Task AddUsersToNewChat(IEnumerable<string> usernames, ChatVm chat);
     }
 }

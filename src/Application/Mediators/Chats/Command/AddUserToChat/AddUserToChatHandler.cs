@@ -17,14 +17,16 @@ namespace Application.Chats.Command.AddUserToChat
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
         private readonly IChatRepository _chat;
+        private readonly IChatUserRepository _chatUser;
         private readonly ICurrentUserService _currentUser;
         private readonly IMainHubService _mainHub;
 
-        public AddUserToChatHandler(IUserManager userManager, IMapper mapper, IChatRepository chat, ICurrentUserService currentUser, IMainHubService mainHub)
+        public AddUserToChatHandler(IUserManager userManager, IMapper mapper, IChatRepository chat, IChatUserRepository chatUser, ICurrentUserService currentUser, IMainHubService mainHub)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _chat = chat ?? throw new ArgumentNullException(nameof(chat));
+            _chatUser = chatUser ?? throw new ArgumentNullException(nameof(chatUser));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
             _mainHub = mainHub ?? throw new ArgumentNullException(nameof(mainHub));
         }
@@ -42,17 +44,21 @@ namespace Application.Chats.Command.AddUserToChat
             if (chat.ChatUsers.Any(f => f.UserId == user.Id))
                 throw new BadRequestException("User is already in this chat");
 
-            chat.ChatUsers.Add(new ChatUser
+            var chatUser = new ChatUser
             {
                 IsModerator = false,
                 ChatId = chat.Id,
                 UserId = user.Id,
                 OthersColor = "8b0000",
                 SelfColor = "4b0082"
-            });
+            };
 
-            await _chat.Update(chat, cancellationToken);
-            await _mainHub.AddUserToChat(user.Id, _mapper.Map<ChatVm>(chat));
+            await _chatUser.Create(chatUser, cancellationToken);
+
+            chatUser.User = user;
+            chat.ChatUsers.Add(chatUser);
+
+            await _mainHub.AddNewUserToChat(user.Id, _mapper.Map<ChatVm>(chat));
 
             return _mapper.Map<UserShortVm>(user);
         }

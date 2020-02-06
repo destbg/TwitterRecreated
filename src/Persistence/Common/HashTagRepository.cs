@@ -22,6 +22,9 @@ namespace Persistence.Common
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
 
+        public Task<HashTag> GetTag(string tag, CancellationToken token) =>
+            Query.FirstOrDefaultAsync(f => f.Tag == tag, token);
+
         public Task<List<HashTagVm>> GetTopTags(string country, CancellationToken token) =>
             Query.Where(f => f.Country == country)
                 .ProjectTo<HashTagVm>(_mapper.ConfigurationProvider)

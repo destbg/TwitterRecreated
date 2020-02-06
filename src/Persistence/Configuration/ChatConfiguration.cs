@@ -12,9 +12,6 @@ namespace Persistence.Configuration
                 .HasMaxLength(100)
                 .HasColumnType("varchar(100)");
 
-            builder.Property(f => f.CreatedOn)
-                .HasColumnType("datetime");
-
             builder.Property(f => f.Name)
                 .HasMaxLength(100)
                 .HasColumnType("varchar(100)");

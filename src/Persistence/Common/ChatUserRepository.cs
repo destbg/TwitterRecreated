@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
@@ -13,6 +14,11 @@ namespace Persistence.Common
         public ChatUserRepository(ITwitterDbContext context) : base(context)
         {
         }
+
+        public Task<List<string>> FindUserIdsInChat(string exceptUserId, long chatId, CancellationToken token) =>
+            Query.Where(f => f.ChatId == chatId && f.UserId != exceptUserId)
+                .Select(f => f.UserId)
+                .ToListAsync(token);
 
         public Task<ChatUser> FindByUserAndChat(string userId, long chatId, CancellationToken token) =>
             Query.FirstOrDefaultAsync(f => f.UserId == userId && f.ChatId == chatId, token);

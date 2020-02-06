@@ -50,7 +50,7 @@ namespace WebApi.Services
                 .Group("msg" + message.ChatId)
                 .SendAsync("newMessage", message);
 
-        public async Task AddUserToChat(string username, ChatVm chat)
+        public async Task AddNewUserToChat(string username, ChatVm chat)
         {
             var connections = _connectionMapping.GetConnections(username).ToArray();
 
@@ -62,7 +62,7 @@ namespace WebApi.Services
                 .SendAsync("newChat", chat);
         }
 
-        public async Task AddUsersToChat(IEnumerable<string> usernames, ChatVm chat)
+        public async Task AddUsersToNewChat(IEnumerable<string> usernames, ChatVm chat)
         {
             var connections = _connectionMapping.UsersConnections(usernames).ToArray();
 

@@ -65,7 +65,7 @@ namespace Application.Chats.Command.CreateGroupChat
             });
             await _chat.Update(chat, cancellationToken);
 
-            await _mainHub.AddUsersToChat(
+            await _mainHub.AddUsersToNewChat(
                 chat.ChatUsers.Select(f => f.User.UserName).ToArray(),
                 _mapper.Map<ChatVm>(chat)
             );
