@@ -13,13 +13,8 @@ namespace Persistence
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = (
-                Environment.GetEnvironmentVariable("DATABASE_URL")
-                ?? configuration.GetConnectionString("DefaultDatabase")
-            ).Split('/').Last().Split(':');
-
             services.AddDbContext<TwitterDbContext>(options =>
-                    options.UseNpgsql($"Server=ec2-54-246-89-234.eu-west-1.compute.amazonaws.com;Port=5432;Database=dfcr9qvegt6bq4;User Id={connectionString[0]};Password={connectionString[1]};")
+                    options.UseNpgsql(configuration.GetConnectionString("DefaultDatabase"))
                 );
 
             services.AddScoped<ITwitterDbContext>(provider => provider.GetService<TwitterDbContext>());
