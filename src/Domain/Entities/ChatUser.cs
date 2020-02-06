@@ -12,5 +12,7 @@ namespace Domain.Entities
         public bool? IsModerator { get; set; }
         public string SelfColor { get; set; }
         public string OthersColor { get; set; }
+        public long? MessageReadId { get; set; }
+        public Message MessageRead { get; set; }
     }
 }

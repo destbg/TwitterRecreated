@@ -7,42 +7,40 @@ using Application.Common.Interfaces;
 using Application.Common.Repositories;
 using Application.Common.ViewModels;
 using AutoMapper;
-using Common;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.Chats.Command.CreateGroupChat
 {
-    public class CreateGroupChatHandler : IRequestHandler<CreateGroupChatCommand, ChatVm>
+    public class CreateGroupChatHandler : IRequestHandler<CreateGroupChatCommand>
     {
         private readonly IChatRepository _chat;
         private readonly ICurrentUserService _currentUser;
-        private readonly IDateTime _date;
         private readonly IUserManager _userManager;
         private readonly IMapper _mapper;
         private readonly IMainHubService _mainHub;
 
-        public CreateGroupChatHandler(IChatRepository chat, ICurrentUserService currentUser, IDateTime date, IUserManager userManager, IMapper mapper, IMainHubService mainHub)
+        public CreateGroupChatHandler(IChatRepository chat, ICurrentUserService currentUser, IUserManager userManager, IMapper mapper, IMainHubService mainHub)
         {
             _chat = chat ?? throw new ArgumentNullException(nameof(chat));
             _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
-            _date = date ?? throw new ArgumentNullException(nameof(date));
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _mainHub = mainHub ?? throw new ArgumentNullException(nameof(mainHub));
         }
 
-        public async Task<ChatVm> Handle(CreateGroupChatCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(CreateGroupChatCommand request, CancellationToken cancellationToken)
         {
             var users = await _userManager.ValidateUsersnames(request.Users);
             if (users.Count != request.Users.Count)
                 throw new BadRequestException("Not all users in the list of users are valid");
+
+            var name = string.Join(", ", request.Users);
             var chat = new Chat
             {
                 Image = "assets/group/default.jpg",
                 IsGroup = true,
-                Name = string.Join(", ", request.Users).Substring(0, 50),
-                CreatedOn = _date.Now
+                Name = name.Substring(0, name.Length < 50 ? name.Length : 50),
             };
             await _chat.Create(chat, cancellationToken);
 
@@ -67,10 +65,12 @@ namespace Application.Chats.Command.CreateGroupChat
             });
             await _chat.Update(chat, cancellationToken);
 
-            var mappedChat = _mapper.Map<ChatVm>(chat);
-            await _mainHub.AddUsersToChat(chat.ChatUsers.Select(f => f.UserId).ToList(), mappedChat);
+            await _mainHub.AddUsersToChat(
+                chat.ChatUsers.Select(f => f.User.UserName).ToArray(),
+                _mapper.Map<ChatVm>(chat)
+            );
 
-            return mappedChat;
+            return Unit.Value;
         }
     }
 }

@@ -25,7 +25,7 @@
     </div>
   </h3>
   <div class="card-body message-box" #messagesDiv>
-    <div class="text-center" *ngIf="messageStorage.hasReachedEnd">
+    <div class="text-center mb-4" *ngIf="messageStorage.hasReachedEnd">
       Let this be the beginning of something beautiful {{joinUsers()}}
     </div>
     <div *ngFor="let message of messageStorage.messages" class="position-relative">
@@ -37,6 +37,10 @@
         <div class="message" [ngStyle]="{ 'background-color': '#' + othersColor }">
           {{message.message}}
         </div>
+        <small *ngIf="messageStorage.selectedChat.isGroup" class="position-absolute text-muted"
+          style="top: -15px; left: 60px">
+          {{message.user.displayName}}
+        </small>
       </div>
       <div *ngIf="message.user.username === username" class="row w-100 pb-3"
         style="display: flex; justify-content: flex-end">
@@ -49,7 +53,7 @@
         </div>
       </div>
       <div class="position-absolute d-flex justify-content-end r b">
-        <div *ngFor="let user of message.users">
+        <div *ngFor="let user of getMessageReadUsers(message.id)">
           <div data-toggle="tooltip" data-placement="top" title={{user.displayName}} style="width: 16px;height: 16px"
             class="fit-img mr-1" *ngIf="user.username !== username">
             <img [src]="user.image" alt=" " style="margin-top: -9px;">

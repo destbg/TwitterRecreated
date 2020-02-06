@@ -102,19 +102,13 @@ export class MessageComponent implements OnInit, OnDestroy {
           return;
         }
         if (response.isGroup) {
-          this.messageService
-            .createGroupChat(response.users)
-            .subscribe((chat: IChat) => {
-              this.messageStorage.chats = [chat];
-            });
+          this.messageService.createGroupChat(response.users);
         } else {
           this.messageService
             .createChat(response.users[0])
-            .subscribe((chat: IChat | string) => {
-              if (typeof chat === 'string') {
-                this.router.navigate(['/message/' + chat]);
-              } else {
-                this.messageStorage.chats = [chat];
+            .subscribe((chatId: number) => {
+              if (chatId !== undefined) {
+                this.router.navigate(['/message/' + chatId]);
               }
             });
         }

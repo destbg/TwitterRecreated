@@ -7,7 +7,6 @@ export interface IMessage {
   chatId: number;
   createdAt: Date;
   updatedAt?: Date;
-  users?: IUserShort[];
 }
 
 export class PreviewMessage {
@@ -22,6 +21,7 @@ export interface IChatUser {
   selfColor: string;
   othersColor: string;
   isOnline: boolean;
+  messageReadId?: number;
 }
 
 export interface IChat {
@@ -59,6 +59,7 @@ export interface IUserTyping {
 export interface IMessageRead {
   user: IUserShort;
   chatId: number;
+  messageId: number;
 }
 
 export interface IUserInChat {

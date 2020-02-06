@@ -11,7 +11,6 @@ import {
   IUserTyping,
   PreviewMessage,
 } from '../model/message.model';
-import { IUserShort } from '../model/user.model';
 import { AuthService } from '../service/auth.service';
 import { MessageService } from '../service/message.service';
 import { SocketService } from '../service/socket.service';
@@ -125,35 +124,17 @@ export class MessageStorage {
     socketService.hubConnection.on(
       'userAddedToChat',
       (userInChat: IUserInChat) => {
-        const index = this.chatsArray.findIndex(
-          (chat: IChat) => chat.id === userInChat.chatId,
-        );
-        if (index !== -1) {
-          this.chatsArray[index].users.push(userInChat.user as IChatUser);
-        }
+        this.handleUserAddedToChat(userInChat);
       },
     );
     socketService.hubConnection.on('userNowOnline', (username: string) => {
-      const index = this.chatsArray.findIndex(f =>
-        f.users.find(s => s.username === username),
-      );
-      if (index !== -1) {
-        const userIndex = this.chatsArray[index].users.findIndex(
-          f => f.username === username,
-        );
-        this.chatsArray[index].users[userIndex].isOnline = true;
-      }
+      this.handleUserNowOnline(username);
     });
     socketService.hubConnection.on('userNowOffline', (username: string) => {
-      const index = this.chatsArray.findIndex(f =>
-        f.users.find(s => s.username === username),
-      );
-      if (index !== -1) {
-        const userIndex = this.chatsArray[index].users.findIndex(
-          f => f.username === username,
-        );
-        this.chatsArray[index].users[userIndex].isOnline = false;
-      }
+      this.handleUserNowOffline(username);
+    });
+    socketService.hubConnection.on('newChat', (chat: IChat) => {
+      this.handleNewChat(chat);
     });
   }
 
@@ -265,31 +246,19 @@ export class MessageStorage {
     if (messagesRead.user.username === this.user.username) {
       return;
     }
-    if (
-      this.messagesArray.length > 0 &&
-      this.selectedChat &&
-      this.selectedChat.id === messagesRead.chatId
-    ) {
-      const found = this.messagesArray.find(
-        (message: IMessage) =>
-          message.users &&
-          message.users.some(
-            (user: IUserShort) => user.username === messagesRead.user.username,
-          ),
+    const index = this.chatsArray.findIndex(
+      f =>
+        f.id === messagesRead.chatId &&
+        f.users.find(s => s.username === messagesRead.user.username),
+    );
+    if (index !== -1) {
+      const userIndex = this.chatsArray[index].users.findIndex(
+        f => f.username === messagesRead.user.username,
       );
-      if (found) {
-        found.users.splice(
-          found.users.findIndex(
-            (user: IUserShort) => user.username === messagesRead.user.username,
-          ),
-          1,
-        );
+      if (userIndex !== -1) {
+        this.chatsArray[index].users[userIndex].messageReadId =
+          messagesRead.messageId;
       }
-      const last = this.messagesArray[this.messagesArray.length - 1];
-      if (!last.users) {
-        last.users = [];
-      }
-      last.users.push(messagesRead.user);
     }
   }
 
@@ -318,6 +287,47 @@ export class MessageStorage {
           }
         }),
       });
+    }
+  }
+
+  private handleUserAddedToChat(userInChat: IUserInChat): void {
+    const index = this.chatsArray.findIndex(
+      (chat: IChat) => chat.id === userInChat.chatId,
+    );
+    if (index !== -1) {
+      this.chatsArray[index].users.push(userInChat.user as IChatUser);
+    }
+  }
+
+  private handleUserNowOnline(username: string): void {
+    const index = this.chatsArray.findIndex(f =>
+      f.users.find(s => s.username === username),
+    );
+    if (index !== -1) {
+      const userIndex = this.chatsArray[index].users.findIndex(
+        f => f.username === username,
+      );
+      this.chatsArray[index].users[userIndex].isOnline = true;
+    }
+  }
+
+  private handleUserNowOffline(username: string): void {
+    const index = this.chatsArray.findIndex(f =>
+      f.users.find(s => s.username === username),
+    );
+    if (index !== -1) {
+      const userIndex = this.chatsArray[index].users.findIndex(
+        f => f.username === username,
+      );
+      this.chatsArray[index].users[userIndex].isOnline = false;
+    }
+  }
+
+  private handleNewChat(chat: IChat): void {
+    this.chats = [chat];
+    if (!this.focused && !this.hasMessage) {
+      this.playSound();
+      this.flashTab();
     }
   }
 

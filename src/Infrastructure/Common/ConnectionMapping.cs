@@ -60,5 +60,16 @@ namespace Infrastructure.Common
                     yield return username;
             }
         }
+
+        public IEnumerable<string> UsersConnections(IEnumerable<string> usernames)
+        {
+            foreach (var userId in usernames)
+            {
+                foreach (var connection in GetConnections(userId))
+                {
+                    yield return connection;
+                }
+            }
+        }
     }
 }

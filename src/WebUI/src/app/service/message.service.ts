@@ -32,14 +32,16 @@ export class MessageService {
     return this.http.get<IChat[]>(`${environment.API_URL}chat`);
   }
 
-  public createGroupChat(users: string[]): Observable<IChat> {
-    return this.http.post<IChat>(`${environment.API_URL}chat/group`, {
-      users,
-    });
+  public createGroupChat(users: string[]): void {
+    this.http
+      .post(`${environment.API_URL}chat/group`, {
+        users,
+      })
+      .subscribe(f => f);
   }
 
-  public createChat(username: string): Observable<IChat | string> {
-    return this.http.post<IChat | string>(`${environment.API_URL}chat`, {
+  public createChat(username: string): Observable<number> {
+    return this.http.post<number>(`${environment.API_URL}chat`, {
       username,
     });
   }
@@ -55,6 +57,6 @@ export class MessageService {
         selfColor,
         othersColor,
       })
-      .subscribe((data: any) => data);
+      .subscribe(f => f);
   }
 }

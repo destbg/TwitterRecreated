@@ -34,6 +34,9 @@ namespace Persistence.Configuration
                 .IsRequired()
                 .HasMaxLength(15)
                 .HasColumnType("varchar(15)");
+
+            builder.HasOne(f => f.MessageRead)
+                .WithMany(f => f.ChatUsers);
         }
     }
 }

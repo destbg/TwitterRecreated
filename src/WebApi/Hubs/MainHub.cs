@@ -95,9 +95,13 @@ namespace WebApi.Hubs
         public async Task OnMessagesRead(MessagesReadCommand command)
         {
             await _currentUser.Initialize(Context.User, default, _userManager);
-            var user = await _mediator.Send(command);
+
+            var messageRead = await _mediator.Send(command);
+            if (messageRead == null)
+                return;
+
             await Clients.Group("msg" + command.ChatId).SendAsync("messagesWereRead",
-                new { User = user, command.ChatId });
+                new { messageRead.User, messageRead.MessageId, command.ChatId });
         }
 
         [HubMethodName("startTyping")]

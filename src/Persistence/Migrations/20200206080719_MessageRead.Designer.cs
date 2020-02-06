@@ -10,8 +10,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(TwitterDbContext))]
-    [Migration("20200130115906_Init")]
-    partial class Init
+    [Migration("20200206080719_MessageRead")]
+    partial class MessageRead
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -63,10 +63,8 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Image")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(100)")
-                        .HasMaxLength(100)
-                        .HasDefaultValue("default.jpg");
+                        .HasMaxLength(100);
 
                     b.Property<DateTime>("JoinedOn")
                         .HasColumnType("datetime");
@@ -109,10 +107,8 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Thumbnail")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("varchar(100)")
-                        .HasMaxLength(100)
-                        .HasDefaultValue("default.jpg");
+                        .HasMaxLength(100);
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -222,6 +218,9 @@ namespace Persistence.Migrations
                     b.Property<bool?>("IsModerator")
                         .HasColumnType("bit");
 
+                    b.Property<long>("MessageReadId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("OthersColor")
                         .IsRequired()
                         .HasColumnType("char(6)")
@@ -243,6 +242,8 @@ namespace Persistence.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ChatId");
+
+                    b.HasIndex("MessageReadId");
 
                     b.HasIndex("UserId");
 
@@ -355,31 +356,6 @@ namespace Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("Domain.Entities.MessageRead", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long>("MessageId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("char(36)")
-                        .IsFixedLength(true)
-                        .HasMaxLength(36);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MessageId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MessageRead");
                 });
 
             modelBuilder.Entity("Domain.Entities.Notification", b =>
@@ -871,9 +847,15 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.ChatUser", b =>
                 {
-                    b.HasOne("Domain.Entities.Chat", null)
-                        .WithMany("Users")
+                    b.HasOne("Domain.Entities.Chat", "Chat")
+                        .WithMany("ChatUsers")
                         .HasForeignKey("ChatId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Message", "MessageRead")
+                        .WithMany("ChatUsers")
+                        .HasForeignKey("MessageReadId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -887,7 +869,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.LikedPost", b =>
                 {
                     b.HasOne("Domain.Entities.Post", "Post")
-                        .WithMany()
+                        .WithMany("LikedPosts")
                         .HasForeignKey("PostId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
@@ -904,21 +886,6 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Chat", "Chat")
                         .WithMany("Messages")
                         .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.AppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.MessageRead", b =>
-                {
-                    b.HasOne("Domain.Entities.Message", "Message")
-                        .WithMany("MessagesRead")
-                        .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -977,7 +944,7 @@ namespace Persistence.Migrations
                         .HasForeignKey("Domain.Entities.Post", "RepostId");
 
                     b.HasOne("Domain.Entities.AppUser", "User")
-                        .WithMany()
+                        .WithMany("Posts")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();

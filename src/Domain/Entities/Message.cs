@@ -8,7 +8,7 @@ namespace Domain.Entities
     {
         public Message()
         {
-            MessagesRead = new HashSet<MessageRead>();
+            ChatUsers = new HashSet<ChatUser>();
         }
 
         public long Id { get; set; }
@@ -19,6 +19,6 @@ namespace Domain.Entities
         public Chat Chat { get; set; }
         public DateTime? EditedOn { get; set; }
 
-        public ICollection<MessageRead> MessagesRead { get; set; }
+        public ICollection<ChatUser> ChatUsers { get; set; }
     }
 }

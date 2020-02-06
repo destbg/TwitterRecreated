@@ -13,7 +13,7 @@ using MediatR;
 
 namespace Application.Chats.Command.CreateChat
 {
-    public class CreateChatHandler : IRequestHandler<CreateChatCommand, object>
+    public class CreateChatHandler : IRequestHandler<CreateChatCommand, long?>
     {
         private readonly IChatRepository _chat;
         private readonly ICurrentUserService _currentUser;
@@ -32,7 +32,7 @@ namespace Application.Chats.Command.CreateChat
             _mainHub = mainHub ?? throw new ArgumentNullException(nameof(mainHub));
         }
 
-        public async Task<object> Handle(CreateChatCommand request, CancellationToken cancellationToken)
+        public async Task<long?> Handle(CreateChatCommand request, CancellationToken cancellationToken)
         {
             var user = await _userManager.GetUserByUsername(request.Username)
                 ?? throw new NotFoundException(nameof(request.Username), request.Username);
@@ -66,9 +66,9 @@ namespace Application.Chats.Command.CreateChat
             await _chat.Update(chat, cancellationToken);
 
             var mappedChat = _mapper.Map<ChatVm>(chat);
-            await _mainHub.AddUsersToChat(chat.ChatUsers.Select(f => f.UserId).ToList(), mappedChat);
+            await _mainHub.AddUsersToChat(chat.ChatUsers.Select(f => f.User.UserName).ToList(), mappedChat);
 
-            return mappedChat;
+            return null;
         }
     }
 }

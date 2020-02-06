@@ -30,11 +30,11 @@
 <div *ngIf="userOptionsOverlay">
   <div #div class="overlay-div"></div>
   <div #list style="z-index: 2000" class="position-absolute list-group">
-    <button *ngIf="router.url !== '/bookmark'" (click)="addToBookmarks();closeOverlay()"
+    <button *ngIf="!post.bookmarkId" (click)="addToBookmarks();closeOverlay()"
       class="list-group-item list-group-item-action">
       <span>Add to bookmarks</span>
     </button>
-    <button *ngIf="router.url === '/bookmark'" (click)="removeBookmark();closeOverlay()"
+    <button *ngIf="post.bookmarkId" (click)="removeBookmark();closeOverlay()"
       class="list-group-item list-group-item-action">
       <span>Remove bookmark</span>
     </button>

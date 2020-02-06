@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Application.Common.Interfaces;
 using Application.Common.ViewModels;
 using Application.Follow.Queries.FollowingUsers;
+using Common;
 using MediatR;
 using Microsoft.AspNetCore.SignalR;
 using WebApi.Hubs;
@@ -14,11 +16,13 @@ namespace WebApi.Services
     {
         private readonly IHubContext<MainHub> _hubContext;
         private readonly IMediator _mediator;
+        private readonly IConnectionMapping _connectionMapping;
 
-        public MainHubService(IHubContext<MainHub> hubContext, IMediator mediator)
+        public MainHubService(IHubContext<MainHub> hubContext, IMediator mediator, IConnectionMapping connectionMapping)
         {
             _hubContext = hubContext ?? throw new ArgumentNullException(nameof(hubContext));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _connectionMapping = connectionMapping ?? throw new ArgumentNullException(nameof(connectionMapping));
         }
 
         public async Task SendPost(PostVm post) =>
@@ -46,14 +50,28 @@ namespace WebApi.Services
                 .Group("msg" + message.ChatId)
                 .SendAsync("newMessage", message);
 
-        public Task AddUserToChat(string userId, ChatVm chat) =>
-            _hubContext.Clients
-                .User(userId)
-                .SendAsync("newChat", chat);
+        public async Task AddUserToChat(string username, ChatVm chat)
+        {
+            var connections = _connectionMapping.GetConnections(username).ToArray();
 
-        public Task AddUsersToChat(IReadOnlyList<string> userIds, ChatVm chat) =>
-            _hubContext.Clients
-                .Users(userIds)
+            foreach (var connection in connections)
+                await _hubContext.Groups.AddToGroupAsync(connection, "msg" + chat.Id);
+
+            await _hubContext.Clients
+                .Clients(connections)
                 .SendAsync("newChat", chat);
+        }
+
+        public async Task AddUsersToChat(IEnumerable<string> usernames, ChatVm chat)
+        {
+            var connections = _connectionMapping.UsersConnections(usernames).ToArray();
+
+            foreach (var connection in connections)
+                await _hubContext.Groups.AddToGroupAsync(connection, "msg" + chat.Id);
+
+            await _hubContext.Clients
+                .Clients(connections)
+                .SendAsync("newChat", chat);
+        }
     }
 }

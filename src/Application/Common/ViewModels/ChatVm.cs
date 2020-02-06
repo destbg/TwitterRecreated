@@ -21,8 +21,8 @@ namespace Application.Common.ViewModels
             string userId = null;
             profile.CreateMap<Chat, ChatVm>()
                 .ForMember(f => f.Users, f => f.MapFrom(s => s.ChatUsers))
-                .ForMember(f => f.NewMessage, f => f.MapFrom(s => !s.Messages.OrderByDescending(f => f.CreatedOn).First().MessagesRead.Any(f => f.UserId == userId)))
-                .ForMember(f => f.LastMessage, f => f.MapFrom(s => s.Messages.OrderByDescending(f => f.CreatedOn).Select(w => w.Msg).First()));
+                .ForMember(f => f.NewMessage, f => f.MapFrom(s => s.ChatUsers.Where(w => w.UserId == userId).Select(w => w.MessageReadId).FirstOrDefault() != s.Messages.OrderByDescending(f => f.CreatedOn).Select(f => f.Id).FirstOrDefault()))
+                .ForMember(f => f.LastMessage, f => f.MapFrom(s => s.Messages.OrderByDescending(f => f.CreatedOn).Select(w => w.Msg).FirstOrDefault()));
         }
     }
 
@@ -35,6 +35,7 @@ namespace Application.Common.ViewModels
         public string SelfColor { get; set; }
         public string OthersColor { get; set; }
         public bool IsOnline { get; set; }
+        public long MessageReadId { get; set; }
 
         public void Mapping(Profile profile) =>
             profile.CreateMap<ChatUser, ChatUserVm>()

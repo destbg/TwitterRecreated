@@ -20,8 +20,11 @@ namespace WebApi.Controllers
             Ok(await Mediator.Send(command));
 
         [HttpPost("Group")]
-        public async Task<IActionResult> CreateGroupChat(CreateGroupChatCommand command) =>
-            Ok(await Mediator.Send(command));
+        public async Task<IActionResult> CreateGroupChat(CreateGroupChatCommand command)
+        {
+            await Mediator.Send(command);
+            return NoContent();
+        }
 
         [HttpPost("Color")]
         public async Task<IActionResult> ChangeColor(ChangeColorCommand command)

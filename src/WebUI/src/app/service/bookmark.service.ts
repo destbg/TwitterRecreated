@@ -14,10 +14,10 @@ export class BookmarkService {
     return this.http.get<IBookmark[]>(`${environment.API_URL}bookmark/${skip}`);
   }
 
-  public postBookmark(id: number): void {
+  public postBookmark(postId: number): void {
     this.http
       .post(`${environment.API_URL}bookmark`, {
-        id,
+        postId,
       })
       .subscribe((data: any) => data);
   }

@@ -28,8 +28,7 @@ namespace Persistence.Common
                 .ToListAsync(token);
 
         public Task<Message> LastMessageInChat(long chatId, CancellationToken token) =>
-            Query.Include(f => f.MessagesRead)
-                .OrderByDescending(f => f.CreatedOn)
+            Query.OrderByDescending(f => f.CreatedOn)
                 .FirstOrDefaultAsync(f => f.ChatId == chatId, token);
     }
 }

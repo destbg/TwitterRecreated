@@ -112,7 +112,7 @@ export class OverlayComponent implements OnInit {
   }
 
   addToBookmarks(): void {
-    this.bookmarkService.postBookmark(this.post.bookmarkId);
+    this.bookmarkService.postBookmark(this.post.id);
   }
 
   removeBookmark(): void {

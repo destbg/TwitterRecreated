@@ -198,6 +198,12 @@ export class ChatMessagesComponent implements OnInit, AfterViewInit, OnDestroy {
     this.peerStorage.requestingCall.emit(this.chatId);
   }
 
+  getMessageReadUsers(messageId: number): IChatUser[] {
+    return this.messageStorage.selectedChat.users.filter(
+      f => f.messageReadId === messageId,
+    );
+  }
+
   private adjustTextArea(): void {
     if (!this.textInput) {
       return;
