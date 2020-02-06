@@ -19,8 +19,7 @@ namespace Persistence.Configuration
                 .IsUnicode(false);
 
             builder.Property(f => f.PollEnd)
-                .IsRequired(false)
-                .HasColumnType("datetime2");
+                .IsRequired(false);
 
             builder.Property(f => f.Video)
                 .HasMaxLength(100)

@@ -501,7 +501,7 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("PollEnd")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<long?>("ReplyId")
                         .HasColumnType("bigint");

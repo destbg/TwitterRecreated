@@ -239,7 +239,7 @@ namespace Persistence.Migrations
                     CreatedByIp = table.Column<string>(unicode: false, maxLength: 15, nullable: false),
                     CreatedOn = table.Column<DateTime>(nullable: false),
                     Content = table.Column<string>(maxLength: 250, nullable: false),
-                    PollEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    PollEnd = table.Column<DateTime>(nullable: true),
                     Video = table.Column<string>(unicode: false, maxLength: 100, nullable: true),
                     UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     ReplyId = table.Column<long>(nullable: true),

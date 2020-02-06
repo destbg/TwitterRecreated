@@ -10,7 +10,7 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(TwitterDbContext))]
-    [Migration("20200206192331_Init")]
+    [Migration("20200206192726_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -503,7 +503,7 @@ namespace Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("PollEnd")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<long?>("ReplyId")
                         .HasColumnType("bigint");
