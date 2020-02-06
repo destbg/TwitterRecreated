@@ -16,7 +16,7 @@ namespace Persistence.Configuration
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(36)
-                .HasColumnType("char(36)");
+                .IsUnicode(false);
 
             builder.Property(f => f.PollEnd)
                 .IsRequired(false)
@@ -25,7 +25,7 @@ namespace Persistence.Configuration
             builder.Property(f => f.Video)
                 .HasMaxLength(100)
                 .IsRequired(false)
-                .HasColumnType("varchar(100)");
+                .IsUnicode(false);
 
             builder.HasOne(f => f.Repost)
                 .WithOne();
@@ -34,13 +34,12 @@ namespace Persistence.Configuration
                 .WithOne();
 
             builder.Property(f => f.CreatedOn)
-                .IsRequired()
-                .HasColumnType("datetime");
+                .IsRequired();
 
             builder.Property(f => f.CreatedByIp)
                 .IsRequired()
                 .HasMaxLength(15)
-                .HasColumnType("varchar(15)");
+                .IsUnicode(false);
         }
     }
 }

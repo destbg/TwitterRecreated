@@ -12,17 +12,17 @@ namespace Persistence.Configuration
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(36)
-                .HasColumnType("char(36)");
+                .IsUnicode(false);
 
             builder.Property(f => f.UserName)
                 .IsRequired()
                 .HasMaxLength(32)
-                .HasColumnType("varchar(32)");
+                .IsUnicode(false);
 
             builder.Property(f => f.NormalizedUserName)
                 .IsRequired()
                 .HasMaxLength(32)
-                .HasColumnType("varchar(32)");
+                .IsUnicode(false);
 
             builder.Property(f => f.Email)
                 .IsRequired();
@@ -40,12 +40,12 @@ namespace Persistence.Configuration
 
             builder.Property(f => f.PhoneNumber)
                 .HasMaxLength(256)
-                .HasColumnType("varchar(256)");
+                .IsUnicode(false);
 
             builder.Property(f => f.SecurityStamp)
                 .HasMaxLength(256)
                 .IsRequired()
-                .HasColumnType("varchar(256)");
+                .IsUnicode(false);
 
             builder.Property(f => f.Description)
                 .HasMaxLength(250)
@@ -58,11 +58,10 @@ namespace Persistence.Configuration
             builder.Property(f => f.Image)
                 .IsRequired()
                 .HasMaxLength(100)
-                .HasColumnType("varchar(100)");
+                .IsUnicode(false);
 
             builder.Property(f => f.JoinedOn)
-                .IsRequired()
-                .HasColumnType("datetime");
+                .IsRequired();
 
             builder.Property(f => f.LastLogin)
                 .IsRequired();
@@ -70,7 +69,7 @@ namespace Persistence.Configuration
             builder.Property(f => f.Thumbnail)
                 .HasMaxLength(100)
                 .IsRequired()
-                .HasColumnType("varchar(100)");
+                .IsUnicode(false);
         }
     }
 }

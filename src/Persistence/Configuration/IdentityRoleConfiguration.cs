@@ -11,23 +11,23 @@ namespace Persistence.Configuration
             builder.Property(f => f.ConcurrencyStamp)
                 .HasMaxLength(256)
                 .IsRequired()
-                .HasColumnType("varchar(256)");
+                .IsUnicode(false);
 
             builder.Property(f => f.Id)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(36)
-                .HasColumnType("char(36)");
+                .IsUnicode(false);
 
             builder.Property(f => f.Name)
                 .IsRequired()
                 .HasMaxLength(100)
-                .HasColumnType("varchar(100)");
+                .IsUnicode(false);
 
             builder.Property(f => f.NormalizedName)
                 .IsRequired()
                 .HasMaxLength(100)
-                .HasColumnType("varchar(100)");
+                .IsUnicode(false);
         }
     }
 }

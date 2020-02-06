@@ -12,22 +12,21 @@ namespace Persistence.Configuration
                .IsRequired()
                .IsFixedLength()
                .HasMaxLength(36)
-               .HasColumnType("char(36)");
+                .IsUnicode(false);
 
             builder.Property(f => f.FollowingId)
                .IsRequired()
                .IsFixedLength()
                .HasMaxLength(36)
-               .HasColumnType("char(36)");
+                .IsUnicode(false);
 
             builder.Property(f => f.CreatedOn)
-                .IsRequired()
-                .HasColumnType("datetime");
+                .IsRequired();
 
             builder.Property(f => f.CreatedByIp)
                 .IsRequired()
                 .HasMaxLength(15)
-                .HasColumnType("varchar(15)");
+                .IsUnicode(false);
         }
     }
 }

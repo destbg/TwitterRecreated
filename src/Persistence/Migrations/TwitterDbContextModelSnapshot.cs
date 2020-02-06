@@ -22,9 +22,10 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.AppUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
@@ -61,11 +62,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Image")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("JoinedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime>("LastLogin")
                         .HasColumnType("timestamp without time zone");
@@ -83,8 +85,9 @@ namespace Persistence.Migrations
 
                     b.Property<string>("NormalizedUserName")
                         .IsRequired()
-                        .HasColumnType("varchar(32)")
-                        .HasMaxLength(32);
+                        .HasColumnType("character varying(32)")
+                        .HasMaxLength(32)
+                        .IsUnicode(false);
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -92,29 +95,33 @@ namespace Persistence.Migrations
                         .HasMaxLength(256);
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("varchar(256)")
-                        .HasMaxLength(256);
+                        .HasColumnType("character varying(256)")
+                        .HasMaxLength(256)
+                        .IsUnicode(false);
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("boolean");
 
                     b.Property<string>("SecurityStamp")
                         .IsRequired()
-                        .HasColumnType("varchar(256)")
-                        .HasMaxLength(256);
+                        .HasColumnType("character varying(256)")
+                        .HasMaxLength(256)
+                        .IsUnicode(false);
 
                     b.Property<string>("Thumbnail")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
                         .IsRequired()
-                        .HasColumnType("varchar(32)")
-                        .HasMaxLength(32);
+                        .HasColumnType("character varying(32)")
+                        .HasMaxLength(32)
+                        .IsUnicode(false);
 
                     b.Property<bool>("Verified")
                         .HasColumnType("boolean");
@@ -140,20 +147,22 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("character varying(15)")
+                        .HasMaxLength(15)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -173,22 +182,25 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("character varying(15)")
+                        .HasMaxLength(15)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Image")
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<bool>("IsGroup")
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -207,11 +219,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("character varying(15)")
+                        .HasMaxLength(15)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<bool?>("IsModerator")
                         .HasColumnType("boolean");
@@ -221,21 +234,24 @@ namespace Persistence.Migrations
 
                     b.Property<string>("OthersColor")
                         .IsRequired()
-                        .HasColumnType("char(6)")
+                        .HasColumnType("character(6)")
                         .IsFixedLength(true)
-                        .HasMaxLength(6);
+                        .HasMaxLength(6)
+                        .IsUnicode(false);
 
                     b.Property<string>("SelfColor")
                         .IsRequired()
-                        .HasColumnType("char(6)")
+                        .HasColumnType("character(6)")
                         .IsFixedLength(true)
-                        .HasMaxLength(6);
+                        .HasMaxLength(6)
+                        .IsUnicode(false);
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -257,17 +273,19 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Country")
                         .IsRequired()
-                        .HasColumnType("char(2)")
+                        .HasColumnType("character(2)")
                         .IsFixedLength(true)
-                        .HasMaxLength(2);
+                        .HasMaxLength(2)
+                        .IsUnicode(false);
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("character varying(15)")
+                        .HasMaxLength(15)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Posts")
                         .HasColumnType("integer");
@@ -291,20 +309,22 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("character varying(15)")
+                        .HasMaxLength(15)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -327,14 +347,15 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("character varying(15)")
+                        .HasMaxLength(15)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<DateTime?>("EditedOn")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Msg")
                         .IsRequired()
@@ -343,9 +364,10 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -365,17 +387,19 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("character varying(15)")
+                        .HasMaxLength(15)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("ForUserId")
                         .IsRequired()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.Property<int>("NotificationType")
                         .HasColumnType("integer");
@@ -385,9 +409,10 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -434,9 +459,10 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -464,11 +490,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("character varying(15)")
+                        .HasMaxLength(15)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("Likes")
                         .HasColumnType("integer");
@@ -487,13 +514,15 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.Property<string>("Video")
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -517,8 +546,9 @@ namespace Persistence.Migrations
 
                     b.Property<string>("Image")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
@@ -543,11 +573,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("character varying(15)")
+                        .HasMaxLength(15)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
@@ -557,9 +588,10 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -579,23 +611,26 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("character varying(15)")
+                        .HasMaxLength(15)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("FollowerId")
                         .IsRequired()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.Property<string>("FollowingId")
                         .IsRequired()
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -691,25 +726,29 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("char(36)")
+                        .HasColumnType("character(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .IsRequired()
-                        .HasColumnType("varchar(256)")
-                        .HasMaxLength(256);
+                        .HasColumnType("character varying(256)")
+                        .HasMaxLength(256)
+                        .IsUnicode(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<string>("NormalizedName")
                         .IsRequired()
-                        .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasColumnType("character varying(100)")
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -735,7 +774,7 @@ namespace Persistence.Migrations
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("character varying(36)");
 
                     b.HasKey("Id");
 
@@ -759,7 +798,7 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("character varying(36)");
 
                     b.HasKey("Id");
 
@@ -783,7 +822,7 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("character varying(36)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -795,10 +834,10 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("character varying(36)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("character varying(36)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -810,7 +849,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("character varying(36)");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("character varying(128)")

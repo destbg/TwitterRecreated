@@ -12,10 +12,10 @@ namespace Persistence.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    NormalizedName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
+                    Id = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
+                    Name = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
+                    NormalizedName = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
+                    ConcurrencyStamp = table.Column<string>(unicode: false, maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -26,29 +26,29 @@ namespace Persistence.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
-                    UserName = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: false),
-                    NormalizedUserName = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: false),
+                    Id = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
+                    UserName = table.Column<string>(unicode: false, maxLength: 32, nullable: false),
+                    NormalizedUserName = table.Column<string>(unicode: false, maxLength: 32, nullable: false),
                     Email = table.Column<string>(maxLength: 256, nullable: false),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: false),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(maxLength: 256, nullable: false),
-                    SecurityStamp = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
+                    SecurityStamp = table.Column<string>(unicode: false, maxLength: 256, nullable: false),
                     ConcurrencyStamp = table.Column<string>(maxLength: 256, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    PhoneNumber = table.Column<string>(unicode: false, maxLength: 256, nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Image = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    Thumbnail = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Image = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
+                    Thumbnail = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
                     Following = table.Column<int>(nullable: false),
                     Followers = table.Column<int>(nullable: false),
                     DisplayName = table.Column<string>(maxLength: 50, nullable: false),
                     Description = table.Column<string>(maxLength: 250, nullable: false),
                     Verified = table.Column<bool>(nullable: false),
-                    JoinedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    JoinedOn = table.Column<DateTime>(nullable: false),
                     LastLogin = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -62,10 +62,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    Image = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(unicode: false, maxLength: 100, nullable: true),
+                    Image = table.Column<string>(unicode: false, maxLength: 100, nullable: true),
                     IsGroup = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -96,10 +96,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
                     Tag = table.Column<string>(maxLength: 50, nullable: false),
-                    Country = table.Column<string>(type: "char(2)", fixedLength: true, maxLength: 2, nullable: false),
+                    Country = table.Column<string>(unicode: false, fixedLength: true, maxLength: 2, nullable: false),
                     Posts = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -236,12 +236,12 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
                     Content = table.Column<string>(maxLength: 250, nullable: false),
                     PollEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Video = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    Video = table.Column<string>(unicode: false, maxLength: 100, nullable: true),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     ReplyId = table.Column<long>(nullable: true),
                     RepostId = table.Column<long>(nullable: true),
                     Reposts = table.Column<int>(nullable: false),
@@ -277,10 +277,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    FollowerId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
-                    FollowingId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    FollowerId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
+                    FollowingId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -305,12 +305,12 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
                     Msg = table.Column<string>(maxLength: 250, nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     ChatId = table.Column<long>(nullable: false),
-                    EditedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    EditedOn = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -335,10 +335,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
                     PostId = table.Column<long>(nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -363,9 +363,9 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     PostId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
@@ -391,10 +391,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    ForUserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ForUserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     PostId = table.Column<long>(nullable: true),
                     NotificationType = table.Column<int>(nullable: false)
                 },
@@ -446,7 +446,7 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Image = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Image = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
                     PostId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
@@ -465,11 +465,11 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
                     PostId = table.Column<long>(nullable: false),
                     PostId1 = table.Column<long>(nullable: true),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     Content = table.Column<string>(maxLength: 250, nullable: true)
                 },
                 constraints: table =>
@@ -495,13 +495,13 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 15, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     ChatId = table.Column<long>(nullable: false),
                     IsModerator = table.Column<bool>(nullable: true),
-                    SelfColor = table.Column<string>(type: "char(6)", fixedLength: true, maxLength: 6, nullable: false),
-                    OthersColor = table.Column<string>(type: "char(6)", fixedLength: true, maxLength: 6, nullable: false),
+                    SelfColor = table.Column<string>(unicode: false, fixedLength: true, maxLength: 6, nullable: false),
+                    OthersColor = table.Column<string>(unicode: false, fixedLength: true, maxLength: 6, nullable: false),
                     MessageReadId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
@@ -534,7 +534,7 @@ namespace Persistence.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     OptionId = table.Column<long>(nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
