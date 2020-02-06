@@ -50,6 +50,14 @@ namespace WebApi
                     .AllowAnyOrigin();
             }));
 
+            services.AddCors(f => f.AddPolicy("MainPolicy", builder =>
+            {
+                builder.WithOrigins("https://twitter-recreated.herokuapp.com/")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            }));
+
             services.AddSignalR()
                 .AddJsonProtocol();
 
@@ -83,6 +91,7 @@ namespace WebApi
             }
             else
             {
+                app.UseCors("MainPolicy");
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
@@ -90,7 +99,6 @@ namespace WebApi
 
             app.UseWebSocketMiddleware();
             app.UseHealthChecks("/health");
-            app.UseHttpsRedirection();
 
             app.UseOpenApi();
 

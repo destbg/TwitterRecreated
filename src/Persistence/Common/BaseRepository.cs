@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Models;
 using Application.Common.Repositories;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -95,10 +94,6 @@ namespace Persistence.Common
             try
             {
                 await action();
-            }
-            catch (SqlException ex)
-            {
-                return Result.Failure(ex.Errors.Cast<string>());
             }
             catch (DbException ex)
             {
