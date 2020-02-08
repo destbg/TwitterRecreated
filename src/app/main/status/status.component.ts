@@ -38,7 +38,7 @@ export class StatusComponent implements OnInit, OnDestroy {
     private readonly dialog: MatDialog,
   ) {}
 
-  ngOnInit(): void {
+  zngOnInit(): void {
     this.username = this.authService.currentUserValue.username;
     this.route.data.subscribe(async (routerData: Data) => {
       this.posts = routerData.posts;
