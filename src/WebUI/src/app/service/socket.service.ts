@@ -37,31 +37,52 @@ export class SocketService {
     }
   }
 
-  public followPosts(postIds: number[]): void {
+  public async followPosts(postIds: number[]): Promise<void> {
+    while (this._hubConnection.state !== HubConnectionState.Connected) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
     this._hubConnection.send('followPosts', postIds);
   }
 
-  public unFollowPosts(postIds: number[]): void {
+  public async unFollowPosts(postIds: number[]): Promise<void> {
+    while (this._hubConnection.state !== HubConnectionState.Connected) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
     this._hubConnection.send('unFollowPosts', postIds);
   }
 
-  public messagesRead(chatId: number): void {
+  public async messagesRead(chatId: number): Promise<void> {
+    while (this._hubConnection.state !== HubConnectionState.Connected) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
     this._hubConnection.send('messagesRead', { chatId });
   }
 
-  public startTyping(chatId: number): void {
+  public async startTyping(chatId: number): Promise<void> {
+    while (this._hubConnection.state !== HubConnectionState.Connected) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
     this._hubConnection.send('startTyping', { chatId });
   }
 
-  public requestCall(chat: IRequestCall): void {
+  public async requestCall(chat: IRequestCall): Promise<void> {
+    while (this._hubConnection.state !== HubConnectionState.Connected) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
     this._hubConnection.send('requestCall', chat);
   }
 
-  public respondToCall(chat: ICallResponse): void {
+  public async respondToCall(chat: ICallResponse): Promise<void> {
+    while (this._hubConnection.state !== HubConnectionState.Connected) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
     this._hubConnection.send('respondToCall', chat);
   }
 
-  public addUserToChat(username: string, chatId: number): void {
+  public async addUserToChat(username: string, chatId: number): Promise<void> {
+    while (this._hubConnection.state !== HubConnectionState.Connected) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+    }
     this._hubConnection.send('addUserToChat', { username, chatId });
   }
 }

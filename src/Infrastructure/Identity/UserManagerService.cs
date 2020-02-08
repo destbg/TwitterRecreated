@@ -104,13 +104,19 @@ namespace Infrastructure.Identity
         public Task<AppUser> GetUserById(string id) =>
             _userManager.FindByIdAsync(id);
 
-        public Task<List<UserFollowVm>> SeachUsers(string search)
+        public Task<UserVm> GetUserViewModel(string username, string userId) =>
+            _userManager.Users
+                .Where(f => f.NormalizedUserName == NormalizeName(username))
+                .ProjectTo<UserVm>(_mapper.ConfigurationProvider, new { userId })
+                .FirstOrDefaultAsync();
+
+        public Task<List<UserFollowVm>> SeachUsers(string search, string userId)
         {
             var normalizedName = '%' + NormalizeName(search) + '%';
             return _userManager.Users
                 .Where(f => EF.Functions.Like(f.NormalizedUserName, normalizedName) ||
                     EF.Functions.Like(f.DisplayName, normalizedName))
-                .ProjectTo<UserFollowVm>(_mapper.ConfigurationProvider)
+                .ProjectTo<UserFollowVm>(_mapper.ConfigurationProvider, new { userId })
                 .ToListAsync();
         }
 

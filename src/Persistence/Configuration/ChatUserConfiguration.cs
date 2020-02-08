@@ -12,28 +12,27 @@ namespace Persistence.Configuration
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(36)
-                .HasColumnType("char(36)");
+                .IsUnicode(false);
 
             builder.Property(f => f.OthersColor)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(6)
-                .HasColumnType("char(6)");
+                .IsUnicode(false);
 
             builder.Property(f => f.SelfColor)
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(6)
-                .HasColumnType("char(6)");
+                .IsUnicode(false);
 
             builder.Property(f => f.CreatedOn)
-                .IsRequired()
-                .HasColumnType("datetime");
+                .IsRequired();
 
             builder.Property(f => f.CreatedByIp)
                 .IsRequired()
-                .HasMaxLength(15)
-                .HasColumnType("varchar(15)");
+                .HasMaxLength(50)
+                .IsUnicode(false);
 
             builder.HasOne(f => f.MessageRead)
                 .WithMany(f => f.ChatUsers);

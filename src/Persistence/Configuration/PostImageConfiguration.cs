@@ -11,12 +11,10 @@ namespace Persistence.Configuration
             builder.Property(f => f.Image)
                 .IsRequired()
                 .HasMaxLength(100)
-                .HasColumnType("varchar(100)");
+                .IsUnicode(false);
 
             builder.HasOne(f => f.Post)
-                .WithMany(f => f.Images)
-                .HasForeignKey(f => f.PostId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .WithMany(f => f.Images);
         }
     }
 }

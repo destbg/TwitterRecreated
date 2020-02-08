@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Persistence.Migrations
 {
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,10 +11,10 @@ namespace Persistence.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    NormalizedName = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    ConcurrencyStamp = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
+                    Id = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
+                    Name = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
+                    NormalizedName = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
+                    ConcurrencyStamp = table.Column<string>(unicode: false, maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,29 +25,29 @@ namespace Persistence.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
-                    UserName = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: false),
-                    NormalizedUserName = table.Column<string>(type: "varchar(32)", maxLength: 32, nullable: false),
+                    Id = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
+                    UserName = table.Column<string>(unicode: false, maxLength: 32, nullable: false),
+                    NormalizedUserName = table.Column<string>(unicode: false, maxLength: 32, nullable: false),
                     Email = table.Column<string>(maxLength: 256, nullable: false),
                     NormalizedEmail = table.Column<string>(maxLength: 256, nullable: false),
                     EmailConfirmed = table.Column<bool>(nullable: false),
                     PasswordHash = table.Column<string>(maxLength: 256, nullable: false),
-                    SecurityStamp = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false),
+                    SecurityStamp = table.Column<string>(unicode: false, maxLength: 256, nullable: false),
                     ConcurrencyStamp = table.Column<string>(maxLength: 256, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true),
+                    PhoneNumber = table.Column<string>(unicode: false, maxLength: 256, nullable: true),
                     PhoneNumberConfirmed = table.Column<bool>(nullable: false),
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Image = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false, defaultValue: "default.jpg"),
-                    Thumbnail = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false, defaultValue: "default.jpg"),
+                    Image = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
+                    Thumbnail = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
                     Following = table.Column<int>(nullable: false),
                     Followers = table.Column<int>(nullable: false),
                     DisplayName = table.Column<string>(maxLength: 50, nullable: false),
                     Description = table.Column<string>(maxLength: 250, nullable: false),
                     Verified = table.Column<bool>(nullable: false),
-                    JoinedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    JoinedOn = table.Column<DateTime>(nullable: false),
                     LastLogin = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
@@ -61,10 +61,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    Name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    Image = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    Name = table.Column<string>(unicode: false, maxLength: 100, nullable: true),
+                    Image = table.Column<string>(unicode: false, maxLength: 100, nullable: true),
                     IsGroup = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -95,10 +95,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
                     Tag = table.Column<string>(maxLength: 50, nullable: false),
-                    Country = table.Column<string>(type: "char(2)", fixedLength: true, maxLength: 2, nullable: false),
+                    Country = table.Column<string>(unicode: false, fixedLength: true, maxLength: 2, nullable: false),
                     Posts = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -129,7 +129,7 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(nullable: false),
+                    RoleId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -150,7 +150,7 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
                     ClaimValue = table.Column<string>(nullable: true)
                 },
@@ -172,7 +172,7 @@ namespace Persistence.Migrations
                     LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderKey = table.Column<string>(maxLength: 128, nullable: false),
                     ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -189,8 +189,8 @@ namespace Persistence.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    RoleId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
+                    RoleId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -213,7 +213,7 @@ namespace Persistence.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     LoginProvider = table.Column<string>(maxLength: 128, nullable: false),
                     Name = table.Column<string>(maxLength: 128, nullable: false),
                     Value = table.Column<string>(nullable: true)
@@ -235,12 +235,12 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
                     Content = table.Column<string>(maxLength: 250, nullable: false),
-                    PollEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Video = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    PollEnd = table.Column<DateTime>(nullable: true),
+                    Video = table.Column<string>(unicode: false, maxLength: 100, nullable: true),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     ReplyId = table.Column<long>(nullable: true),
                     RepostId = table.Column<long>(nullable: true),
                     Reposts = table.Column<int>(nullable: false),
@@ -276,10 +276,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    FollowerId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
-                    FollowingId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 60, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    FollowerId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
+                    FollowingId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -299,48 +299,17 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ChatUsers",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
-                    ChatId = table.Column<long>(nullable: false),
-                    IsModerator = table.Column<bool>(nullable: true),
-                    SelfColor = table.Column<string>(type: "char(6)", fixedLength: true, maxLength: 6, nullable: false),
-                    OthersColor = table.Column<string>(type: "char(6)", fixedLength: true, maxLength: 6, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ChatUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ChatUsers_Chats_ChatId",
-                        column: x => x.ChatId,
-                        principalTable: "Chats",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_ChatUsers_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Messages",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
                     Msg = table.Column<string>(maxLength: 250, nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     ChatId = table.Column<long>(nullable: false),
-                    EditedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    EditedOn = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -365,10 +334,10 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
                     PostId = table.Column<long>(nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -393,9 +362,9 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     PostId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
@@ -421,16 +390,22 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    ForUserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    ForUserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     PostId = table.Column<long>(nullable: true),
                     NotificationType = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Notifications", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Notifications_AspNetUsers_ForUserId",
+                        column: x => x.ForUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_Notifications_Posts_PostId",
                         column: x => x.PostId,
@@ -461,7 +436,8 @@ namespace Persistence.Migrations
                         name: "FK_PollOptions_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -470,7 +446,7 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Image = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    Image = table.Column<string>(unicode: false, maxLength: 100, nullable: false),
                     PostId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
@@ -480,7 +456,8 @@ namespace Persistence.Migrations
                         name: "FK_PostImages_Posts_PostId",
                         column: x => x.PostId,
                         principalTable: "Posts",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
@@ -489,11 +466,11 @@ namespace Persistence.Migrations
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CreatedByIp = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
                     PostId = table.Column<long>(nullable: false),
                     PostId1 = table.Column<long>(nullable: true),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
                     Content = table.Column<string>(maxLength: 250, nullable: true)
                 },
                 constraints: table =>
@@ -514,25 +491,37 @@ namespace Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MessageRead",
+                name: "ChatUsers",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false),
-                    MessageId = table.Column<long>(nullable: false)
+                    CreatedByIp = table.Column<string>(unicode: false, maxLength: 50, nullable: false),
+                    CreatedOn = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false),
+                    ChatId = table.Column<long>(nullable: false),
+                    IsModerator = table.Column<bool>(nullable: true),
+                    SelfColor = table.Column<string>(unicode: false, fixedLength: true, maxLength: 6, nullable: false),
+                    OthersColor = table.Column<string>(unicode: false, fixedLength: true, maxLength: 6, nullable: false),
+                    MessageReadId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MessageRead", x => x.Id);
+                    table.PrimaryKey("PK_ChatUsers", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MessageRead_Messages_MessageId",
-                        column: x => x.MessageId,
+                        name: "FK_ChatUsers_Chats_ChatId",
+                        column: x => x.ChatId,
+                        principalTable: "Chats",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_ChatUsers_Messages_MessageReadId",
+                        column: x => x.MessageReadId,
                         principalTable: "Messages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_MessageRead_AspNetUsers_UserId",
+                        name: "FK_ChatUsers_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -546,7 +535,7 @@ namespace Persistence.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     OptionId = table.Column<long>(nullable: false),
-                    UserId = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
+                    UserId = table.Column<string>(unicode: false, fixedLength: true, maxLength: 36, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -618,6 +607,11 @@ namespace Persistence.Migrations
                 column: "ChatId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ChatUsers_MessageReadId",
+                table: "ChatUsers",
+                column: "MessageReadId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ChatUsers_UserId",
                 table: "ChatUsers",
                 column: "UserId");
@@ -644,16 +638,6 @@ namespace Persistence.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MessageRead_MessageId",
-                table: "MessageRead",
-                column: "MessageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MessageRead_UserId",
-                table: "MessageRead",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Messages_ChatId",
                 table: "Messages",
                 column: "ChatId");
@@ -662,6 +646,11 @@ namespace Persistence.Migrations
                 name: "IX_Messages_UserId",
                 table: "Messages",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notifications_ForUserId",
+                table: "Notifications",
+                column: "ForUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_PostId",
@@ -774,9 +763,6 @@ namespace Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "LikedPosts");
-
-            migrationBuilder.DropTable(
-                name: "MessageRead");
 
             migrationBuilder.DropTable(
                 name: "Notifications");

@@ -9,8 +9,7 @@ namespace Persistence.Configuration
         public void Configure(EntityTypeBuilder<Message> builder)
         {
             builder.Property(f => f.EditedOn)
-                .IsRequired(false)
-                .HasColumnType("datetime2");
+                .IsRequired(false);
 
             builder.Property(f => f.Msg)
                 .HasMaxLength(250)
@@ -20,16 +19,15 @@ namespace Persistence.Configuration
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(36)
-                .HasColumnType("char(36)");
+                .IsUnicode(false);
 
             builder.Property(f => f.CreatedOn)
-                .IsRequired()
-                .HasColumnType("datetime");
+                .IsRequired();
 
             builder.Property(f => f.CreatedByIp)
                 .IsRequired()
-                .HasMaxLength(15)
-                .HasColumnType("varchar(15)");
+                .HasMaxLength(50)
+                .IsUnicode(false);
         }
     }
 }

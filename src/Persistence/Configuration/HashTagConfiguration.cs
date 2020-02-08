@@ -12,20 +12,19 @@ namespace Persistence.Configuration
                 .IsFixedLength()
                 .HasMaxLength(2)
                 .IsRequired()
-                .HasColumnType("char(2)");
+                .IsUnicode(false);
 
             builder.Property(f => f.Tag)
                 .IsRequired()
                 .HasMaxLength(50);
 
             builder.Property(f => f.CreatedOn)
-                .IsRequired()
-                .HasColumnType("datetime");
+                .IsRequired();
 
             builder.Property(f => f.CreatedByIp)
                 .IsRequired()
-                .HasMaxLength(15)
-                .HasColumnType("varchar(15)");
+                .HasMaxLength(50)
+                .IsUnicode(false);
         }
     }
 }

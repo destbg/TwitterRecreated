@@ -10,20 +10,19 @@ namespace Persistence.Configuration
         {
             builder.Property(f => f.Image)
                 .HasMaxLength(100)
-                .HasColumnType("varchar(100)");
+                .IsUnicode(false);
 
             builder.Property(f => f.Name)
                 .HasMaxLength(100)
-                .HasColumnType("varchar(100)");
+                .IsUnicode(false);
 
             builder.Property(f => f.CreatedOn)
-                .IsRequired()
-                .HasColumnType("datetime");
+                .IsRequired();
 
             builder.Property(f => f.CreatedByIp)
                 .IsRequired()
-                .HasMaxLength(15)
-                .HasColumnType("varchar(15)");
+                .HasMaxLength(50)
+                .IsUnicode(false);
         }
     }
 }

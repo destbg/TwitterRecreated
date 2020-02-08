@@ -54,7 +54,10 @@ export class PostComponent implements OnInit, AfterViewInit {
       },
     );
     this.socketService.hubConnection.on('likedPost', (postLike: IPostLike) => {
-      if (this.post.id !== postLike.postId) {
+      if (
+        this.post.id !== postLike.postId ||
+        this.username === postLike.username
+      ) {
         return;
       }
       if (postLike.isLike) {
@@ -81,8 +84,10 @@ export class PostComponent implements OnInit, AfterViewInit {
   likePost(): void {
     if (!this.post.isLiked) {
       this.heart.nativeElement.classList.toggle('is_animating');
+      this.post.likes++;
     } else {
       this.post.isLiked = !this.post.isLiked;
+      this.post.likes--;
     }
     this.heart.nativeElement.classList.toggle('post-liked');
     this.likeService.likePost(this.post.id);

@@ -13,9 +13,7 @@ namespace Persistence.Configuration
                 .IsRequired();
 
             builder.HasOne(f => f.Post)
-                .WithMany(f => f.Poll)
-                .HasForeignKey(d => d.PostId)
-                .OnDelete(DeleteBehavior.NoAction);
+                .WithMany(f => f.Poll);
         }
     }
 }

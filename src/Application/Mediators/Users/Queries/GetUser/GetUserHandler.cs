@@ -1,28 +1,24 @@
-﻿using Application.Common.Interfaces;
-using Application.Common.ViewModels;
-using AutoMapper;
-using MediatR;
-using System;
+﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Application.Common.Interfaces;
+using Application.Common.ViewModels;
+using MediatR;
 
 namespace Application.Users.Queries.GetUser
 {
     public class GetUserHandler : IRequestHandler<GetUserQuery, UserVm>
     {
         private readonly IUserManager _userManager;
-        private readonly IMapper _mapper;
+        private readonly ICurrentUserService _currentUser;
 
-        public GetUserHandler(IUserManager userManager, IMapper mapper)
+        public GetUserHandler(IUserManager userManager, ICurrentUserService currentUser)
         {
             _userManager = userManager ?? throw new ArgumentNullException(nameof(userManager));
-            _mapper = mapper;
+            _currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
         }
 
-        public async Task<UserVm> Handle(GetUserQuery request, CancellationToken cancellationToken)
-        {
-            var user = await _userManager.GetUserByUsername(request.Username);
-            return _mapper.Map<UserVm>(user);
-        }
+        public async Task<UserVm> Handle(GetUserQuery request, CancellationToken cancellationToken) =>
+            await _userManager.GetUserViewModel(request.Username, _currentUser.User.Id);
     }
 }

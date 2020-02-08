@@ -12,10 +12,11 @@ namespace Application.Common.Interfaces
         Task<(Result Result, AuthVm Auth)> CreateUserAsync(string userName, string email, string password);
         Task<Result> DeleteUserAsync(string userId);
         Task<AppUser> GetUserByUsername(string username);
+        Task<UserVm> GetUserViewModel(string username, string userId);
         Task<AppUser> GetUserById(string id);
         Task<AppUser> GetCurrentUser(string username);
         Task<Result> UpdateUser(AppUser user);
-        Task<List<UserFollowVm>> SeachUsers(string search);
+        Task<List<UserFollowVm>> SeachUsers(string search, string userId);
         Task<List<AppUser>> ValidateUsersnames(IEnumerable<string> usernames);
         string NormalizeName(string name);
     }

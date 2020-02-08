@@ -11,6 +11,6 @@ namespace Persistence.Configuration
                 .IsRequired()
                 .IsFixedLength()
                 .HasMaxLength(36)
-                .HasColumnType("char(36)");
+                .IsUnicode(false);
     }
 }

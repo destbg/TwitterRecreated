@@ -9,25 +9,30 @@ namespace Persistence.Configuration
         public void Configure(EntityTypeBuilder<UserFollow> builder)
         {
             builder.Property(f => f.FollowerId)
-               .IsRequired()
-               .IsFixedLength()
-               .HasMaxLength(36)
-               .HasColumnType("char(36)");
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(36)
+                .IsUnicode(false);
 
             builder.Property(f => f.FollowingId)
-               .IsRequired()
-               .IsFixedLength()
-               .HasMaxLength(36)
-               .HasColumnType("char(36)");
+                .IsRequired()
+                .IsFixedLength()
+                .HasMaxLength(36)
+                .IsUnicode(false);
 
             builder.Property(f => f.CreatedOn)
-                .IsRequired()
-                .HasColumnType("datetime");
+                .IsRequired();
 
             builder.Property(f => f.CreatedByIp)
                 .IsRequired()
-                .HasMaxLength(15)
-                .HasColumnType("varchar(15)");
+                .HasMaxLength(60)
+                .IsUnicode(false);
+
+            builder.HasOne(f => f.Follower)
+                .WithMany(f => f.UserFollowers);
+
+            builder.HasOne(f => f.Following)
+                .WithMany(f => f.UserFollowing);
         }
     }
 }

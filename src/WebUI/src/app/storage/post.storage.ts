@@ -27,8 +27,8 @@ export class PostStorage {
       this.hasReachedEnd = true;
     }
     this.hasProcessed = true;
-    this.socketService.followPosts(posts.map((post: IPost) => post.id));
     this.postsArray.push.apply(this.postsArray, posts);
+    this.socketService.followPosts(posts.map((post: IPost) => post.id));
   }
 
   public hasProcessed: boolean;

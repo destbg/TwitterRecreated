@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Application.Common.Exceptions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace WebApi.Common
@@ -17,7 +18,7 @@ namespace WebApi.Common
             _next = next;
         }
 
-        public async Task Invoke(HttpContext context)
+        public async Task Invoke(HttpContext context, ILogger<CustomExceptionHandlerMiddleware> logger)
         {
             try
             {
@@ -25,11 +26,11 @@ namespace WebApi.Common
             }
             catch (Exception ex)
             {
-                await HandleExceptionAsync(context, ex);
+                await HandleExceptionAsync(context, ex, logger);
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception exception)
+        private Task HandleExceptionAsync(HttpContext context, Exception exception, ILogger<CustomExceptionHandlerMiddleware> logger)
         {
             var code = HttpStatusCode.InternalServerError;
 
@@ -55,6 +56,8 @@ namespace WebApi.Common
 
             if (string.IsNullOrEmpty(result))
                 result = exception.Message;
+
+            logger.LogError(result);
 
             return context.Response.WriteAsync(result);
         }

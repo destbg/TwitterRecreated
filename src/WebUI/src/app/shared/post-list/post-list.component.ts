@@ -43,34 +43,6 @@ export class PostListComponent implements OnInit, OnDestroy {
       this.posts.unshift(post);
       this.socketService.followPosts([post.id]);
     });
-    this.socketService.hubConnection.on('likedPost', (postLike: IPostLike) => {
-      const index = this.posts.findIndex(
-        (f: IPost) => f.id === postLike.postId,
-      );
-      if (index !== -1) {
-        if (postLike.isLike) {
-          this.posts[index].likes++;
-        } else {
-          this.posts[index].likes--;
-        }
-      }
-    });
-    this.socketService.hubConnection.on(
-      'votedOnPoll',
-      (pollVoted: IPollVoted) => {
-        const index = this.posts.findIndex(
-          (post: IPost) => post.id === pollVoted.postId,
-        );
-        if (index !== -1) {
-          const pollIndex = this.posts[index].poll.findIndex(
-            (f: IPoll) => f.id === pollVoted.optionId,
-          );
-          if (pollIndex !== -1) {
-            this.posts[index].poll[pollIndex].votes++;
-          }
-        }
-      },
-    );
     this.socketService.followPosts(this.posts.map((post: IPost) => post.id));
   }
 

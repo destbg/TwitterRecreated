@@ -9,6 +9,8 @@ namespace Domain.Entities
         public AppUser()
         {
             Posts = new HashSet<Post>();
+            UserFollowing = new HashSet<UserFollow>();
+            UserFollowers = new HashSet<UserFollow>();
         }
 
         public string Image { get; set; }
@@ -22,5 +24,7 @@ namespace Domain.Entities
         public DateTime LastLogin { get; set; }
 
         public ICollection<Post> Posts { get; set; }
+        public ICollection<UserFollow> UserFollowing { get; set; }
+        public ICollection<UserFollow> UserFollowers { get; set; }
     }
 }

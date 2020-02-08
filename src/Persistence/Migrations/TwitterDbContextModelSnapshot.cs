@@ -24,7 +24,8 @@ namespace Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -62,10 +63,11 @@ namespace Persistence.Migrations
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("JoinedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("LastLogin")
                         .HasColumnType("datetime2");
@@ -84,7 +86,8 @@ namespace Persistence.Migrations
                     b.Property<string>("NormalizedUserName")
                         .IsRequired()
                         .HasColumnType("varchar(32)")
-                        .HasMaxLength(32);
+                        .HasMaxLength(32)
+                        .IsUnicode(false);
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -93,7 +96,8 @@ namespace Persistence.Migrations
 
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("varchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .IsUnicode(false);
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
@@ -101,12 +105,14 @@ namespace Persistence.Migrations
                     b.Property<string>("SecurityStamp")
                         .IsRequired()
                         .HasColumnType("varchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .IsUnicode(false);
 
                     b.Property<string>("Thumbnail")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -114,7 +120,8 @@ namespace Persistence.Migrations
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("varchar(32)")
-                        .HasMaxLength(32);
+                        .HasMaxLength(32)
+                        .IsUnicode(false);
 
                     b.Property<bool>("Verified")
                         .HasColumnType("bit");
@@ -140,11 +147,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
@@ -153,7 +161,8 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -173,22 +182,25 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Image")
                         .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<bool>("IsGroup")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -207,35 +219,39 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("IsModerator")
                         .HasColumnType("bit");
 
-                    b.Property<long>("MessageReadId")
+                    b.Property<long?>("MessageReadId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("OthersColor")
                         .IsRequired()
                         .HasColumnType("char(6)")
                         .IsFixedLength(true)
-                        .HasMaxLength(6);
+                        .HasMaxLength(6)
+                        .IsUnicode(false);
 
                     b.Property<string>("SelfColor")
                         .IsRequired()
                         .HasColumnType("char(6)")
                         .IsFixedLength(true)
-                        .HasMaxLength(6);
+                        .HasMaxLength(6)
+                        .IsUnicode(false);
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -259,15 +275,17 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("char(2)")
                         .IsFixedLength(true)
-                        .HasMaxLength(2);
+                        .HasMaxLength(2)
+                        .IsUnicode(false);
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Posts")
                         .HasColumnType("int");
@@ -291,11 +309,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
@@ -304,7 +323,8 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -327,11 +347,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("EditedOn")
                         .HasColumnType("datetime2");
@@ -345,7 +366,8 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -365,17 +387,19 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("ForUserId")
                         .IsRequired()
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.Property<int>("NotificationType")
                         .HasColumnType("int");
@@ -387,9 +411,12 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ForUserId");
 
                     b.HasIndex("PostId");
 
@@ -434,7 +461,8 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -462,11 +490,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("Likes")
                         .HasColumnType("int");
@@ -487,11 +516,13 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.Property<string>("Video")
                         .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -518,7 +549,8 @@ namespace Persistence.Migrations
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
@@ -543,11 +575,12 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<long>("PostId")
                         .HasColumnType("bigint");
@@ -559,7 +592,8 @@ namespace Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -579,23 +613,26 @@ namespace Persistence.Migrations
 
                     b.Property<string>("CreatedByIp")
                         .IsRequired()
-                        .HasColumnType("varchar(15)")
-                        .HasMaxLength(15);
+                        .HasColumnType("varchar(60)")
+                        .HasMaxLength(60)
+                        .IsUnicode(false);
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FollowerId")
                         .IsRequired()
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.Property<string>("FollowingId")
                         .IsRequired()
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -693,23 +730,27 @@ namespace Persistence.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("char(36)")
                         .IsFixedLength(true)
-                        .HasMaxLength(36);
+                        .HasMaxLength(36)
+                        .IsUnicode(false);
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .IsRequired()
                         .HasColumnType("varchar(256)")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .IsUnicode(false);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.Property<string>("NormalizedName")
                         .IsRequired()
                         .HasColumnType("varchar(100)")
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .IsUnicode(false);
 
                     b.HasKey("Id");
 
@@ -735,7 +776,7 @@ namespace Persistence.Migrations
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(36)");
 
                     b.HasKey("Id");
 
@@ -759,7 +800,7 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(36)");
 
                     b.HasKey("Id");
 
@@ -783,7 +824,7 @@ namespace Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(36)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -795,10 +836,10 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(36)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(36)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -810,7 +851,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(36)");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(128)")
@@ -833,13 +874,13 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Post", "Post")
                         .WithMany()
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -848,19 +889,17 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Chat", "Chat")
                         .WithMany("ChatUsers")
                         .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Message", "MessageRead")
                         .WithMany("ChatUsers")
-                        .HasForeignKey("MessageReadId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .HasForeignKey("MessageReadId");
 
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -869,13 +908,13 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Post", "Post")
                         .WithMany("LikedPosts")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -884,18 +923,24 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Chat", "Chat")
                         .WithMany("Messages")
                         .HasForeignKey("ChatId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.Notification", b =>
                 {
+                    b.HasOne("Domain.Entities.AppUser", "ForUser")
+                        .WithMany()
+                        .HasForeignKey("ForUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entities.Post", "Post")
                         .WithMany()
                         .HasForeignKey("PostId");
@@ -903,7 +948,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -912,7 +957,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Post", "Post")
                         .WithMany("Poll")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -921,13 +966,13 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.PollOption", "Option")
                         .WithMany("Votes")
                         .HasForeignKey("OptionId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -944,7 +989,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany("Posts")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -953,7 +998,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.Post", "Post")
                         .WithMany("Images")
                         .HasForeignKey("PostId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -966,22 +1011,22 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.UserFollow", b =>
                 {
                     b.HasOne("Domain.Entities.AppUser", "Follower")
-                        .WithMany()
+                        .WithMany("UserFollowers")
                         .HasForeignKey("FollowerId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.AppUser", "Following")
-                        .WithMany()
+                        .WithMany("UserFollowing")
                         .HasForeignKey("FollowingId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -990,7 +1035,7 @@ namespace Persistence.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -999,7 +1044,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -1008,7 +1053,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -1017,13 +1062,13 @@ namespace Persistence.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -1032,7 +1077,7 @@ namespace Persistence.Migrations
                     b.HasOne("Domain.Entities.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

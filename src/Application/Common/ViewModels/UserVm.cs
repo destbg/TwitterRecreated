@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain.Entities;
 using System;
+using System.Linq;
 
 namespace Application.Common.ViewModels
 {
@@ -18,10 +19,14 @@ namespace Application.Common.ViewModels
         public string Thumbnail { get; set; }
         public bool Verified { get; set; }
 
-        public void Mapping(Profile profile) =>
+        public void Mapping(Profile profile)
+        {
+            string userId = null;
             profile.CreateMap<AppUser, UserVm>()
                 .ForMember(f => f.Username, f => f.MapFrom(s => s.UserName))
-                .ForMember(f => f.CreatedOn, f => f.MapFrom(s => s.JoinedOn));
+                .ForMember(f => f.CreatedOn, f => f.MapFrom(s => s.JoinedOn))
+                .ForMember(f => f.Followed, f => f.MapFrom(s => s.UserFollowing.Any(w => w.FollowerId == userId)));
+        }
     }
 
     public class UserShortVm : IMapFrom<AppUser>
@@ -42,9 +47,12 @@ namespace Application.Common.ViewModels
         public string Image { get; set; }
         public bool Followed { get; set; }
 
-        public void Mapping(Profile profile) =>
+        public void Mapping(Profile profile)
+        {
+            string userId = null;
             profile.CreateMap<AppUser, UserFollowVm>()
                 .ForMember(f => f.Username, f => f.MapFrom(s => s.UserName))
-                .ForMember(f => f.Followed, f => f.MapFrom(_ => false));
+                .ForMember(f => f.Followed, f => f.MapFrom(s => s.UserFollowing.Any(w => w.FollowerId == userId)));
+        }
     }
 }
