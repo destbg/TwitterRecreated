@@ -29,6 +29,7 @@ export class PostContent {
 export interface IPostLike {
   postId: number;
   isLike: boolean;
+  username: string;
 }
 
 export interface IPostReply {
