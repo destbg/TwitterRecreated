@@ -63,7 +63,12 @@ namespace Application.Like.Command.Like
                     });
                 }
 
-                await _mainHub.SendLikedPost(new LikeVm { IsLike = true, PostId = post.Id });
+                await _mainHub.SendLikedPost(new LikeVm
+                {
+                    IsLike = true,
+                    PostId = post.Id,
+                    Username = _currentUser.User.UserName
+                });
             }
             return Unit.Value;
         }

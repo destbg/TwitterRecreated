@@ -4,5 +4,6 @@
     {
         public long PostId { get; set; }
         public bool IsLike { get; set; }
+        public string Username { get; set; }
     }
 }
