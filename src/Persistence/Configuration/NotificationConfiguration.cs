@@ -31,7 +31,7 @@ namespace Persistence.Configuration
 
             builder.Property(f => f.CreatedByIp)
                 .IsRequired()
-                .HasMaxLength(15)
+                .HasMaxLength(50)
                 .IsUnicode(false);
         }
     }
