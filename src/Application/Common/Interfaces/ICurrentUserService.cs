@@ -11,6 +11,6 @@ namespace Application.Common.Interfaces
         string Ip { get; }
         AppUser User { get; }
         bool IsAuthenticated { get; }
-        Task Initialize(ClaimsPrincipal user, ConnectionInfo connection, IUserManager userManager, IMemoryCacheService cacheService);
+        Task Initialize(ClaimsPrincipal user, ConnectionInfo connection, IUserManager userManager);
     }
 }

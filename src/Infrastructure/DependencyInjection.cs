@@ -34,7 +34,6 @@ namespace Infrastructure
             services.AddTransient<IVideoService, VideoService>();
             services.AddTransient<ICountryService, CountryService>();
             services.AddSingleton<IConnectionMapping, ConnectionMapping>();
-            services.AddSingleton<IMemoryCacheService, MemoryCacheService>();
 
             services.AddDefaultIdentity<AppUser>(opt =>
             {
