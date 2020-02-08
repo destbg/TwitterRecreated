@@ -54,7 +54,7 @@ namespace WebApi.Common
             context.Response.StatusCode = (int)code;
 
             if (string.IsNullOrEmpty(result))
-                result = exception.Message;
+                result = JsonConvert.SerializeObject(exception);
 
             return context.Response.WriteAsync(result);
         }
