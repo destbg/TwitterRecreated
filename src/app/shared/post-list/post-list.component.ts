@@ -47,7 +47,7 @@ export class PostListComponent implements OnInit, OnDestroy {
       const index = this.posts.findIndex(
         (f: IPost) => f.id === postLike.postId,
       );
-      if (index !== -1) {
+      if (index !== -1 && this.username !== postLike.username) {
         if (postLike.isLike) {
           this.posts[index].likes++;
         } else {

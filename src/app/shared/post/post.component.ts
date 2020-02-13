@@ -3,13 +3,11 @@ import {
   Component,
   ElementRef,
   Input,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
-import { IPoll, IPollVoted } from 'src/app/model/poll.model';
-import { IPost, IPostLike } from 'src/app/model/post.model';
+import { IPost } from 'src/app/model/post.model';
 import { LikeService } from 'src/app/service/like.service';
 import { OverlayService } from 'src/app/service/overlay.service';
 import { SocketService } from 'src/app/service/socket.service';
@@ -20,7 +18,7 @@ import { ReplyDialogComponent } from '../reply-dialog/reply-dialog.component';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
 })
-export class PostComponent implements OnInit, AfterViewInit {
+export class PostComponent implements AfterViewInit {
   @Input() post: IPost;
   @Input() displayTop: boolean;
   @Input() username: string;
@@ -36,36 +34,6 @@ export class PostComponent implements OnInit, AfterViewInit {
     private readonly dialog: MatDialog,
   ) {
     this.displayTop = true;
-  }
-
-  ngOnInit(): void {
-    this.socketService.hubConnection.on(
-      'votedOnPoll',
-      (pollVote: IPollVoted) => {
-        if (this.post.id !== pollVote.postId) {
-          return;
-        }
-        const index = this.post.poll.findIndex(
-          (f: IPoll) => f.id === pollVote.optionId,
-        );
-        if (index !== -1) {
-          this.post.poll[index].votes++;
-        }
-      },
-    );
-    this.socketService.hubConnection.on('likedPost', (postLike: IPostLike) => {
-      if (
-        this.post.id !== postLike.postId ||
-        this.post.user.username === postLike.username
-      ) {
-        return;
-      }
-      if (postLike.isLike) {
-        this.post.likes++;
-      } else {
-        this.post.likes--;
-      }
-    });
   }
 
   ngAfterViewInit(): void {

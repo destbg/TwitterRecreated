@@ -2,11 +2,12 @@ import { isPlatformServer } from '@angular/common';
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import * as moment from 'moment';
 import { ISelfUser } from '../model/auth.model';
-import { IPost } from '../model/post.model';
+import { IPost, IPostLike } from '../model/post.model';
 import { AuthService } from '../service/auth.service';
 import { FollowService } from '../service/follow.service';
 import { PostService } from '../service/post.service';
 import { SocketService } from '../service/socket.service';
+import { IPollVoted, IPoll } from '../model/poll.model';
 
 @Injectable({
   providedIn: 'root',
@@ -63,6 +64,12 @@ export class PostStorage {
     });
     socketService.hubConnection.on('newPost', (post: IPost) => {
       this.handleNewPost(post);
+    });
+    socketService.hubConnection.on('likedPost', (postLike: IPostLike) => {
+      this.handleLikedPost(postLike);
+    });
+    socketService.hubConnection.on('votedOnPoll', (pollVoted: IPollVoted) => {
+      this.handleVotedOnPoll(pollVoted);
     });
   }
 
@@ -189,5 +196,30 @@ export class PostStorage {
     }
     this.postsArray.unshift(post);
     this.socketService.followPosts([post.id]);
+  }
+
+  private handleLikedPost(postLike: IPostLike): void {
+    const index = this.posts.findIndex((f: IPost) => f.id === postLike.postId);
+    if (index !== -1 && this.username !== postLike.username) {
+      if (postLike.isLike) {
+        this.posts[index].likes++;
+      } else {
+        this.posts[index].likes--;
+      }
+    }
+  }
+
+  private handleVotedOnPoll(pollVoted: IPollVoted): void {
+    const index = this.posts.findIndex(
+      (post: IPost) => post.id === pollVoted.postId,
+    );
+    if (index !== -1) {
+      const pollIndex = this.posts[index].poll.findIndex(
+        (f: IPoll) => f.id === pollVoted.optionId,
+      );
+      if (pollIndex !== -1) {
+        this.posts[index].poll[pollIndex].votes++;
+      }
+    }
   }
 }
