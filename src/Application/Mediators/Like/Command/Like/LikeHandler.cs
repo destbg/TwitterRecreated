@@ -43,7 +43,12 @@ namespace Application.Like.Command.Like
             {
                 await _likedPost.Delete(like, cancellationToken);
 
-                await _mainHub.SendLikedPost(new LikeVm { IsLike = false, PostId = post.Id });
+                await _mainHub.SendLikedPost(new LikeVm
+                {
+                    IsLike = false,
+                    PostId = post.Id,
+                    Username = _currentUser.User.UserName
+                });
             }
             else
             {
