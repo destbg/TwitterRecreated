@@ -11,7 +11,6 @@ namespace Persistence.Configuration
             builder.Property(f => f.Country)
                 .IsFixedLength()
                 .HasMaxLength(2)
-                .IsRequired()
                 .IsUnicode(false);
 
             builder.Property(f => f.Tag)
