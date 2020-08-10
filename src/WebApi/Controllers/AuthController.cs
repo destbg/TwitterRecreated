@@ -1,5 +1,6 @@
 ﻿using Application.Auth.Commands.CurrentUser;
 using Application.Auth.Commands.LoginAuth;
+using Application.Auth.Commands.MobileLogin;
 using Application.Auth.Commands.RegisterAuth;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -10,6 +11,10 @@ namespace WebApi.Controllers
     {
         [HttpPost("Login")]
         public async Task<IActionResult> Login(LoginAuthCommand command) =>
+            Ok(await Mediator.Send(command));
+
+        [HttpPost("MobileLogin")]
+        public async Task<IActionResult> MobileLogin(MobileLoginCommand command) =>
             Ok(await Mediator.Send(command));
 
         [HttpPost("Register")]
